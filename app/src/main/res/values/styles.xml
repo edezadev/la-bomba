@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ButtonOutlineStyle" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeWidth">@dimen/outline_width</item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadlineSmall</item>
+        <item name="rippleColor">@color/ripple</item>
+    </style>
+</resources>

@@ -1,8 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.LaBombaV2" parent="Theme.Material3.Dark.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.LaBombaV2" parent="Theme.Material3.Light.NoActionBar">
+         <item name="colorPrimary">@color/primary</item>
+         <item name="colorOutline">@color/outline</item>
+
+        <!--Recursos generales de la app-->
+<!--        <item name="fontFamily"></item>-->
+        <item name="android:windowBackground">@drawable/background</item>
+
+        <!--No permitir el modo oscuro-->
+        <item name="android:forceDarkAllowed" tools:targetApi="Q">false</item>
     </style>
 
     <style name="Theme.LaBombaV2" parent="Base.Theme.LaBombaV2" />

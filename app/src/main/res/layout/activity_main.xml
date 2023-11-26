@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <ImageView
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@drawable/logo"
         android:contentDescription="@null"
+        android:layout_marginHorizontal="@dimen/padding_xlarge"
+        android:layout_marginVertical="@dimen/padding_large"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,31 +23,29 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".6"
+        app:layout_constraintGuide_percent=".7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnStart"
         android:layout_width="@dimen/btn_normal_width"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/btn_normal_height"
         android:text="@string/start_play"
-        android:textAppearance="?attr/textAppearanceTitleLarge"
         app:layout_constraintTop_toBottomOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="?materialButtonOutlinedStyle"/>
+        style="@style/ButtonOutlineStyle"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnInstructions"
         android:layout_width="@dimen/btn_normal_width"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/btn_normal_height"
         android:text="@string/intructions"
-        android:textAppearance="?attr/textAppearanceTitleLarge"
-        android:layout_marginTop="@dimen/common_padding"
+        android:layout_marginTop="@dimen/padding_medium"
         app:layout_constraintTop_toBottomOf="@id/btnStart"
         app:layout_constraintStart_toStartOf="@id/btnStart"
         app:layout_constraintEnd_toEndOf="@id/btnStart"
-        style="?materialButtonOutlinedStyle"/>
+        style="@style/ButtonOutlineStyle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
