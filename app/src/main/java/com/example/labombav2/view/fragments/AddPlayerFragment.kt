@@ -6,28 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.labombav2.R
-import com.example.labombav2.databinding.FragmentPenaltyBinding
+import com.example.labombav2.databinding.FragmentAddPlayerBinding
 import com.example.labombav2.view.activities.SettingsActivity
 import com.google.android.material.button.MaterialButton
 
-class PenaltyFragment : Fragment() {
-    private var binding: FragmentPenaltyBinding? = null
+class AddPlayerFragment : Fragment() {
+    private var binding: FragmentAddPlayerBinding? = null
     private lateinit var btnNext: MaterialButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPenaltyBinding.inflate(inflater, container, false)
+        binding = FragmentAddPlayerBinding.inflate(inflater, container, false)
         val view = binding?.root
-        val activity = activity as? SettingsActivity//obtener la actividad
+        val activity = activity as? SettingsActivity
 
         activity?.let {
-            it.updateView(this, getString(R.string.penalty_name))
-            btnNext = it.findViewById(R.id.btnNext)
+//            btnNext = it.findViewById(R.id.btnNext)
+            it.updateView(this, getString(R.string.players_name))
         }
-
-        btnNext.setOnClickListener { activity?.addFragment(AddPlayerFragment()) }
 
         return view
     }

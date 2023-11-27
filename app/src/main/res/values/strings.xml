@@ -4,4 +4,6 @@
     <string name="intructions">¿Cómo jugar?</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="penalty_name">Castigo</string>
+    <string name="next">Siguiente</string>
+    <string name="players_name">Jugadores</string>
 </resources>

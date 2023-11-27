@@ -16,7 +16,16 @@
             android:layout_height="?actionBarSize"
             app:navigationIcon="@drawable/arrow_back"
             app:titleTextColor="?colorPrimary"
-            app:titleCentered="true"/>
+            app:titleCentered="true">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/arrow_next"
+                app:iconSize="@dimen/icon_size"
+                android:layout_gravity="end"
+                style="?attr/materialIconButtonStyle"/>
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
