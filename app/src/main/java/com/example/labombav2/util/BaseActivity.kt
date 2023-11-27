@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+/* Todas las activies deberán extender de BaseActivity en lugar de AppCompatActivity para que
+ * esta configuración de las barras del sistema esté en todas las pantallas */
 
 open class BaseActivity: AppCompatActivity() {
     private fun hideSystemUiHighR() {

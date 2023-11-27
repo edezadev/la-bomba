@@ -2,8 +2,6 @@
 <resources>
     <dimen name="zero">0dp</dimen>
     <dimen name="btn_normal_width">220dp</dimen>
-    <dimen name="padding_common">16dp</dimen>
-    <dimen name="padding_small">12dp</dimen>
     <dimen name="padding_medium">20dp</dimen>
     <dimen name="padding_large">24dp</dimen>
     <dimen name="padding_xlarge">28dp</dimen>

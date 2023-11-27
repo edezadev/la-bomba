@@ -5,7 +5,7 @@
          <item name="colorOutline">@color/outline</item>
 
         <!--Recursos generales de la app-->
-<!--        <item name="fontFamily"></item>-->
+        <item name="fontFamily">@font/piximisa</item>
         <item name="android:windowBackground">@drawable/background</item>
 
         <!--No permitir el modo oscuro-->
