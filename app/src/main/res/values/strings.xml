@@ -6,4 +6,5 @@
     <string name="penalty_name">Castigo</string>
     <string name="next">Siguiente</string>
     <string name="players_name">Jugadores</string>
+    <string name="hint_name_penalty">Nombre de castigo</string>
 </resources>

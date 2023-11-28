@@ -1,4 +1,4 @@
-package com.example.labombav2.view.activities
+package com.example.labombav2.controller.activities
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import com.example.labombav2.R
 import com.example.labombav2.databinding.ActivitySettingsBinding
 import com.example.labombav2.util.BaseActivity
-import com.example.labombav2.view.fragments.AddPlayerFragment
-import com.example.labombav2.view.fragments.PenaltyFragment
+import com.example.labombav2.controller.fragments.AddPlayerFragment
+import com.example.labombav2.controller.fragments.PenaltyFragment
 import com.google.android.material.button.MaterialButton
 
 class SettingsActivity : BaseActivity() {

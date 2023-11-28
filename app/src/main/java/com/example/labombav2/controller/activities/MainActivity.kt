@@ -1,4 +1,4 @@
-package com.example.labombav2.view.activities
+package com.example.labombav2.controller.activities
 
 import android.content.Intent
 import android.os.Bundle

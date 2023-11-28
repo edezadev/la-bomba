@@ -1,4 +1,4 @@
-package com.example.labombav2.view.fragments
+package com.example.labombav2.controller.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.labombav2.R
 import com.example.labombav2.databinding.FragmentAddPlayerBinding
-import com.example.labombav2.view.activities.SettingsActivity
+import com.example.labombav2.controller.activities.SettingsActivity
 import com.google.android.material.button.MaterialButton
 
 class AddPlayerFragment : Fragment() {
