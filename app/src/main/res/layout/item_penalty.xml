@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioGroup
+<com.google.android.material.checkbox.MaterialCheckBox
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cbPenalty"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <RadioButton
-        android:id="@+id/rbPenalty"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_checkbox"
-        android:text="@string/hint_name_penalty"
-        android:textColor="?colorPrimary"
-        android:textSize="@dimen/size_text_cb"
-        tools:ignore="SpUsage"
-        android:paddingHorizontal="@dimen/padding_common"
-        android:paddingVertical="@dimen/padding_small"
-        android:layout_marginHorizontal="@dimen/padding_xlarge"
-        android:layout_marginBottom="@dimen/padding_medium"/>
-</RadioGroup>
-
-<!--
+    android:layout_height="@dimen/height_checkbox"
+    android:text="@string/hint_name_penalty"
+    android:textColor="?colorPrimary"
+    android:textSize="@dimen/size_text_cb"
+    tools:ignore="SpUsage"
     android:background="@drawable/background_edge"
     android:button="@null"
-    android:drawableEnd="@drawable/checkbox"-->
+    android:drawableEnd="@drawable/checkbox"
+    android:paddingHorizontal="@dimen/padding_common"
+    android:paddingVertical="@dimen/padding_small"
+    android:layout_marginHorizontal="@dimen/padding_xlarge"
+    android:layout_marginBottom="@dimen/padding_medium"/>

@@ -5,4 +5,13 @@
         <item name="android:textAppearance">?attr/textAppearanceHeadlineSmall</item>
         <item name="rippleColor">@color/ripple</item>
     </style>
+
+    <!--<style name="FABStyle" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+        <item name="materialThemeOverlay">@style/FAB.ThemeOverlay</item>
+    </style>
+    
+    <style name="FAB.ThemeOverlay" parent="">
+        <item name="colorContainer">?colorPrimary</item>
+        <item name="colorOnContainer">?colorOnPrimary</item>
+    </style>-->
 </resources>

@@ -13,29 +13,33 @@ import com.example.labombav2.model.PenaltyModel
 import com.example.labombav2.controller.activities.SettingsActivity
 import com.example.labombav2.controller.adapters.PenaltyAdapter
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PenaltyFragment : Fragment() {
     private var binding: FragmentPenaltyBinding? = null
     private var adapter: PenaltyAdapter? = null
     private lateinit var btnNext: MaterialButton
     private lateinit var recyclerPenalty: RecyclerView
+    private lateinit var fabAddPenalty: FloatingActionButton
+
     private val listPenalty = listOf(
         PenaltyModel("Bailar", false),
         PenaltyModel("Cantar", false),
         PenaltyModel("Beber", false),
-        PenaltyModel("Contar un chiste", false)
+        PenaltyModel("Contar un chiste", false),
     )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?) : View? {
+
         binding = FragmentPenaltyBinding.inflate(inflater, container, false)
         val view = binding?.root
         val activity = activity as? SettingsActivity//obtener la actividad
         recyclerPenalty = binding?.recyclerPenalty!!
+        fabAddPenalty = binding?.fabAddPenalty!!
 
-        addData()
+        addDataRecyclerView()
 
         activity?.let {
             it.updateView(this, getString(R.string.penalty_name))
@@ -43,11 +47,12 @@ class PenaltyFragment : Fragment() {
         }
 
         btnNext.setOnClickListener { activity?.addFragment(AddPlayerFragment()) }
+        fabAddPenalty.setOnClickListener {  }
 
         return view
     }
 
-    private fun addData() {
+    private fun addDataRecyclerView() {
         recyclerPenalty.layoutManager  = LinearLayoutManager(activity?.applicationContext)
         adapter = PenaltyAdapter(listPenalty)
         recyclerPenalty.adapter = adapter

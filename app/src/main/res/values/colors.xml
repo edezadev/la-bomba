@@ -3,4 +3,6 @@
     <color name="primary">#f9cc0e </color>
     <color name="outline">#f9cc0e </color>
     <color name="ripple">#12F9CC0E</color>
+    <color name="primaryContainer">#FFE080</color>
+    <color name="onPrimaryContainer">#231B00 </color>
 </resources>
