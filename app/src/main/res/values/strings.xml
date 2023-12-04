@@ -8,4 +8,7 @@
     <string name="players_name">Jugadores</string>
     <string name="hint_name_penalty">Nombre de castigo</string>
     <string name="add_penalty">Botón para agregar un castigo</string>
+    <string name="add_penaty_title">Agrega un nuevo castigo</string>
+    <string name="hint_txt_penalty">Castigo</string>
+    <string name="add_button">Agregar</string>
 </resources>

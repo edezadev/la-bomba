@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.labombav2.databinding.ItemPenaltyBinding
 import com.example.labombav2.model.PenaltyModel
 
-class PenaltyAdapter(private val items: List<PenaltyModel>) :
-    RecyclerView.Adapter<PenaltyAdapter.ViewHolder>() {
+class PenaltyAdapter(private var items: MutableList<PenaltyModel>) : RecyclerView.Adapter<PenaltyAdapter.ViewHolder>() {
 
     inner class ViewHolder(binding: ItemPenaltyBinding):
         RecyclerView.ViewHolder(binding.root) {

@@ -1,4 +1,4 @@
-package com.example.labombav2.util
+package com.example.labombav2.utils
 
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity

@@ -2,7 +2,7 @@ package com.example.labombav2.controller.activities
 
 import android.content.Intent
 import android.os.Bundle
-import com.example.labombav2.util.BaseActivity
+import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity() {

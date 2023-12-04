@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ButtonOutlineStyle" parent="Widget.Material3.Button.OutlinedButton">
+    <style name="ButtonOutlineStyleMedium" parent="Widget.Material3.Button.OutlinedButton">
         <item name="strokeWidth">@dimen/outline_width</item>
         <item name="android:textAppearance">?attr/textAppearanceHeadlineSmall</item>
+        <item name="rippleColor">@color/ripple</item>
+    </style>
+    <style name="ButtonOutlineStyle" parent="Widget.Material3.Button.OutlinedButton">
         <item name="rippleColor">@color/ripple</item>
     </style>
 
@@ -13,5 +16,9 @@
     <style name="FAB.ThemeOverlay" parent="">
         <item name="colorContainer">?colorPrimary</item>
         <item name="colorOnContainer">?colorOnPrimary</item>
+    </style>-->
+
+    <!--<style name="ModalBottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">?colorSurface</item>
     </style>-->
 </resources>

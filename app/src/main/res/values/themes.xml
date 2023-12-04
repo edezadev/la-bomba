@@ -5,14 +5,21 @@
          <item name="colorPrimaryContainer">@color/primaryContainer</item>
          <item name="colorOnPrimaryContainer">@color/onPrimaryContainer</item>
          <item name="colorOutline">@color/outline</item>
+         <item name="colorSurface">@color/surface</item>
+         <item name="colorOnSurfaceVariant">@color/onSurfaceVariant</item>
 
         <!--Recursos generales de la app-->
         <item name="fontFamily">@font/piximisa</item>
         <item name="android:windowBackground">@drawable/background</item>
+<!--        <item name="bottomSheetDialogTheme">@style/ThemeModalBottomSheetDialog</item>-->
 
         <!--No permitir el modo oscuro-->
         <item name="android:forceDarkAllowed" tools:targetApi="Q">false</item>
     </style>
 
     <style name="Theme.LaBombaV2" parent="Base.Theme.LaBombaV2" />
+
+    <!--<style name="ThemeModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
+    </style>-->
 </resources>

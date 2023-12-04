@@ -12,17 +12,19 @@ import com.example.labombav2.databinding.FragmentPenaltyBinding
 import com.example.labombav2.model.PenaltyModel
 import com.example.labombav2.controller.activities.SettingsActivity
 import com.example.labombav2.controller.adapters.PenaltyAdapter
+import com.example.labombav2.controller.dialogs.AddPenaltyBottomSheet
+import com.example.labombav2.utils.OnPenaltyInsertedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class PenaltyFragment : Fragment() {
+class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
     private var binding: FragmentPenaltyBinding? = null
     private var adapter: PenaltyAdapter? = null
     private lateinit var btnNext: MaterialButton
     private lateinit var recyclerPenalty: RecyclerView
     private lateinit var fabAddPenalty: FloatingActionButton
 
-    private val listPenalty = listOf(
+    private var listPenalties: MutableList<PenaltyModel> = mutableListOf(
         PenaltyModel("Bailar", false),
         PenaltyModel("Cantar", false),
         PenaltyModel("Beber", false),
@@ -47,14 +49,28 @@ class PenaltyFragment : Fragment() {
         }
 
         btnNext.setOnClickListener { activity?.addFragment(AddPlayerFragment()) }
-        fabAddPenalty.setOnClickListener {  }
+        fabAddPenalty.setOnClickListener { showAddPenalty() }
 
         return view
     }
 
     private fun addDataRecyclerView() {
         recyclerPenalty.layoutManager  = LinearLayoutManager(activity?.applicationContext)
-        adapter = PenaltyAdapter(listPenalty)
+        adapter = PenaltyAdapter(listPenalties)
         recyclerPenalty.adapter = adapter
+    }
+
+    private fun showAddPenalty() {
+        val bottomSheet = AddPenaltyBottomSheet()
+        /*Antes de mostrar el bottomSheet, asignamos el fragmento como OnPenaltyinsertedListener.
+        * Esto garantiza que cuando el bottomSheet necesite insertar datos, pueda comunicarse con
+        * el fragmento a través de la interfaz*/
+        bottomSheet.setOnDataInsertedListener(this)
+        bottomSheet.show(parentFragmentManager.beginTransaction(), AddPenaltyBottomSheet.TAG)
+    }
+
+    override fun onPenaltyInserted(newPenalty: PenaltyModel) {
+        listPenalties.add(newPenalty)
+        adapter!!.notifyItemInserted(listPenalties.size - 1)
     }
 }

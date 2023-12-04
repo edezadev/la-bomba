@@ -23,7 +23,7 @@
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="LockedOrientationActivity"/>
         <!--
         configChanges="uiMode": indica que desea manejar estos cambios tú mismo y evitar
         que la actividad se destruya y vuelva a crearse.
