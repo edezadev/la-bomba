@@ -6,7 +6,13 @@
          <item name="colorOnPrimaryContainer">@color/onPrimaryContainer</item>
          <item name="colorOutline">@color/outline</item>
          <item name="colorSurface">@color/surface</item>
+         <item name="colorOnSurface">@color/onSurface</item>
+         <item name="colorSurfaceVariant">@color/surfaceVariant</item>
          <item name="colorOnSurfaceVariant">@color/onSurfaceVariant</item>
+         <item name="colorError">@color/error</item>
+         <item name="colorOnError">@color/onError</item>
+         <item name="colorErrorContainer">@color/errorContainer</item>
+         <item name="colorOnErrorContainer">@color/onErrorContainer</item>
 
         <!--Recursos generales de la app-->
         <item name="fontFamily">@font/piximisa</item>

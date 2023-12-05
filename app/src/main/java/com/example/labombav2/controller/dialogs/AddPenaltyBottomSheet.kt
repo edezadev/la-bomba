@@ -14,11 +14,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
     private var binding: BottomSheetAddPenaltyBinding? = null
 
     private lateinit var bottomSheet: LinearLayout
+    private lateinit var tilPenalty: TextInputLayout
     private lateinit var etPenalty: TextInputEditText
     private lateinit var btnAddPenalty: MaterialButton
     private var insertedListener: OnPenaltyInsertedListener? = null
@@ -31,6 +33,7 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
         binding = BottomSheetAddPenaltyBinding.inflate(inflater, container, false)
         binding?.let {
             bottomSheet = it.bottomSheet
+            tilPenalty = it.tilPenalty
             etPenalty = it.etPenalty
             btnAddPenalty = it.btnAddPenalty
         }
@@ -54,8 +57,24 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
 
     private fun addPenalty() {
         val namePenalty = etPenalty.text?.toString()?.trim()
+        namePenalty.let {
+            if (it.isNullOrEmpty()) {
+                setError(getString(R.string.error_empty_penalty))
+                return
+            }
+
+            if (it.length < 5) {
+                setError(getString(R.string.error_length_penalty))
+                return
+            }
+        }
         insertedListener?.onPenaltyInserted(PenaltyModel(namePenalty!!, false))
         dismiss()
+    }
+
+    private fun setError(text: String) {
+        tilPenalty.error = text
+        tilPenalty.requestFocus()
     }
 
     companion object {

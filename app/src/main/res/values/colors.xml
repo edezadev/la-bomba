@@ -6,5 +6,11 @@
     <color name="primaryContainer">#564500</color>
     <color name="onPrimaryContainer">#FFE080 </color>
     <color name="surface">#15130e</color>
-    <color name="onSurfaceVariant">#4C4639</color>
+    <color name="onSurface">#CCC6BD</color>
+    <color name="surfaceVariant">#4C4639</color>
+    <color name="onSurfaceVariant">#CDBA8D</color>
+    <color name="error">#FF6653</color>
+    <color name="onError">#690005</color>
+    <color name="errorContainer">#93000A</color>
+    <color name="onErrorContainer">#FFDAD6</color>
 </resources>

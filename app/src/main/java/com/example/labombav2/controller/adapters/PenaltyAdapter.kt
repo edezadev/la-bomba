@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
+import com.example.labombav2.R
 import com.example.labombav2.databinding.ItemPenaltyBinding
 import com.example.labombav2.model.PenaltyModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class PenaltyAdapter(private var items: MutableList<PenaltyModel>) : RecyclerView.Adapter<PenaltyAdapter.ViewHolder>() {
 
@@ -36,6 +38,22 @@ class PenaltyAdapter(private var items: MutableList<PenaltyModel>) : RecyclerVie
             //cambiar a true solo el seleccionado
             item.isChecked = holder.cbPenalty.isChecked
         }
+        if (position >= 4) {
+            holder.cbPenalty.setOnLongClickListener {
+                MaterialAlertDialogBuilder(holder.cbPenalty.context)
+                    .setTitle(R.string.title_alert)
+                    .setMessage(R.string.message_delete_penalty)
+                    .setPositiveButton(R.string.action_positive) { dialog, _ ->
+                        deleteItem(position)
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(R.string.action_negative) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+                true//Obligatorio para longClick, indica que se manejó el evento
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -51,5 +69,10 @@ class PenaltyAdapter(private var items: MutableList<PenaltyModel>) : RecyclerVie
             }
         }
         notifyDataSetChanged()
+    }
+
+    private fun deleteItem(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(itemCount)
     }
 }

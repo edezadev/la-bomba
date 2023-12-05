@@ -11,4 +11,10 @@
     <string name="add_penaty_title">Agrega un nuevo castigo</string>
     <string name="hint_txt_penalty">Castigo</string>
     <string name="add_button">Agregar</string>
+    <string name="error_empty_penalty">Ingrese un castigo</string>
+    <string name="error_length_penalty">Texto muy corto</string>
+    <string name="title_alert">¡ALERTA!</string>
+    <string name="message_delete_penalty">¿Seguro que deseas eliminar el castigo?</string>
+    <string name="action_positive">Confirmar</string>
+    <string name="action_negative">Cancelar</string>
 </resources>
