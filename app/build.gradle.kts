@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -46,7 +48,15 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0") //para implementar NestedScroll
+    //Implementar NestedScroll
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    /* Importar el Firebase BoM, con esto la app siempre utilizará las versiones compatibles
+     * de las bibliotecas de Firebase para Android */
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    // Dependencia para Firebase SDK for Google Analytics
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    // Dependencia para Firebase Authentication
+    implementation("com.google.firebase:firebase-auth")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
