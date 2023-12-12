@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.databinding.ActivityMainBinding
+import com.example.labombav2.utils.FirebaseAuthManager
 
 class MainActivity : BaseActivity() {
     private var binding: ActivityMainBinding? = null
@@ -12,6 +13,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        FirebaseAuthManager.getAuthToken {}
 
         binding?.btnStart?.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
