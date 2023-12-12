@@ -57,6 +57,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     // Dependencia para Firebase Authentication
     implementation("com.google.firebase:firebase-auth-ktx")
+    // Dependencia para Cloud Firestore
+    implementation("com.google.firebase:firebase-firestore-ktx")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
