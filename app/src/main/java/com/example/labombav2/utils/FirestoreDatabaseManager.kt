@@ -6,20 +6,19 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 object FirestoreDatabaseManager {
     val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    val userRef by lazy { db.collection(Constants.USERS) }
 
-    private val listPenalties: List<PenaltyModel> = listOf(
-        PenaltyModel("Bailar", false),
-        PenaltyModel("Cantar", false),
-        PenaltyModel("Beber", false),
-        PenaltyModel("Contar un chiste", false),
-    )
-
-    val prueba = PenaltyModel("Bailar", false)
     fun saveDataUser(uid: String) {
-        val collectionRef = db.collection("users").document(uid).collection("penalties")
+        val listPenalties: List<PenaltyModel> = listOf(
+            PenaltyModel("Bailar", false),
+            PenaltyModel("Cantar", false),
+            PenaltyModel("Beber", false),
+            PenaltyModel("Contar un chiste", false),
+        )
+        val penaltiesRef = userRef.document(uid).collection(Constants.PENALTIES)
 
-        listPenalties.forEach{penalty ->
-            collectionRef.add(penalty)
+        listPenalties.forEach{ penalty ->
+            penaltiesRef.add(penalty)
                 .addOnSuccessListener {
                     Log.d("DataSuccesfullyAdded", "Penalty successfully created")
                 }
@@ -28,6 +27,24 @@ object FirestoreDatabaseManager {
 
                 }
         }
+    }
+
+    fun getPenalties(uid: String, callback: (PenaltyModel) -> Unit) {
+        userRef.document(uid).collection(Constants.PENALTIES).get()
+            .addOnSuccessListener {result ->
+                for (document in result) {
+                    callback(
+                        PenaltyModel(
+                            document.data["name"].toString(),
+                            document.data["isChecked"].toString().toBoolean()
+                        )
+                    )
+                }
+            }
+            .addOnFailureListener {
+                Log.e("ERROR", "ERROR AL CONSEGUIR LOS CASTIGOS")
+            }
+
     }
 
     fun createPenalty(penalty: PenaltyModel) {

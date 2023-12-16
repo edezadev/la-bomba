@@ -8,19 +8,7 @@ object FirebaseAuthManager {
     val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     private lateinit var authToken: String
-
-    fun createUserAnonymously() {
-        auth.signInAnonymously()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Log.d("CreatedUser", "Successfully created an anonymous user in Firebase")
-//                  crear documento del usuario en la base de datos
-                    FirestoreDatabaseManager.saveDataUser(auth.uid!!)
-                } else {
-                    Log.e("ErrorCreatingUser", it.exception.toString())
-                }
-            }
-    }
+    private lateinit var uid: String
 
     fun getAuthToken(callback: (String) -> Unit) {
         if (::authToken.isInitialized) {
@@ -40,6 +28,33 @@ object FirebaseAuthManager {
                         callback("")
                     }
                 }
+        }
+    }
+
+    fun createUserAnonymously() {
+        auth.signInAnonymously()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Log.d("CreatedUser", "Successfully created an anonymous user in Firebase")
+//                  crear documento del usuario en la base de datos
+                    FirestoreDatabaseManager.saveDataUser(auth.uid!!)
+                } else {
+                    Log.e("ErrorCreatingUser", it.exception.toString())
+                }
+            }
+    }
+
+    fun getUid(callBack: (String) -> Unit) {
+        if (::uid.isInitialized) {
+            callBack(uid)
+        } else {
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                uid = currentUser.uid
+                callBack(uid)
+            }else {
+                Log.e("ErrorGettingUid", "Couldn't get UID, user not found")
+            }
         }
     }
 }
