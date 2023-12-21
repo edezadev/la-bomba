@@ -1,7 +1,7 @@
 package com.example.labombav2.controller.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +14,12 @@ import com.example.labombav2.model.PenaltyModel
 import com.example.labombav2.controller.activities.SettingsActivity
 import com.example.labombav2.controller.adapters.PenaltyAdapter
 import com.example.labombav2.controller.dialogs.AddPenaltyBottomSheet
-import com.example.labombav2.utils.Constants
 import com.example.labombav2.utils.FirebaseAuthManager
 import com.example.labombav2.utils.FirestoreDatabaseManager
 import com.example.labombav2.utils.OnPenaltyInsertedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.ListenerRegistration
 
 class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
     private var binding: FragmentPenaltyBinding? = null
@@ -28,6 +28,8 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
     private lateinit var recyclerPenalty: RecyclerView
     private lateinit var fabAddPenalty: FloatingActionButton
     private var listPenalties: MutableList<PenaltyModel> = mutableListOf()
+
+    private lateinit var listenerRegistration: ListenerRegistration
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +41,7 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
         recyclerPenalty = binding?.recyclerPenalty!!
         fabAddPenalty = binding?.fabAddPenalty!!
 
-        addDataRecyclerView()
+        setupRecyclerView()
 
         activity?.let {
             it.updateView(this, getString(R.string.penalty_name))
@@ -52,19 +54,17 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
         return view
     }
 
-    private fun addDataRecyclerView() {
-//      limpiar la lista antes de agregar nuevos elementos cunando se crea este fragmento
-        listPenalties.clear()
-
-        FirebaseAuthManager.getUid {
-            FirestoreDatabaseManager.getPenalties(it) { penalty ->
-                onPenaltyInserted(penalty)
-
-            }
-        }
-        recyclerPenalty.layoutManager  = LinearLayoutManager(activity?.applicationContext)
+    private fun setupRecyclerView() {
         adapter = PenaltyAdapter(listPenalties)
+        recyclerPenalty.layoutManager  = LinearLayoutManager(activity?.applicationContext)
         recyclerPenalty.adapter = adapter
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun addDataRecyclerView(penalties: MutableList<PenaltyModel>) {
+        listPenalties.clear()
+        listPenalties.addAll(penalties)
+        adapter?.notifyDataSetChanged()
     }
 
     private fun showAddPenalty() {
@@ -77,32 +77,22 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
     }
 
     override fun onPenaltyInserted(newPenalty: PenaltyModel) {
-        listPenalties.add(newPenalty)
-        adapter!!.notifyItemInserted(listPenalties.size - 1)
+        FirebaseAuthManager.getUid { uid ->
+            FirestoreDatabaseManager.createPenalty(uid, newPenalty)
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        FirebaseAuthManager.getUid {
-            FirestoreDatabaseManager.userRef.document(it).collection(Constants.PENALTIES)
-                .addSnapshotListener { snapshot, error ->
-                    if (error != null) {
-                        Log.w("ListenerFailed", "Failed to listen penalties.", error)
-                        return@addSnapshotListener
-                    }
-
-                    val source = if (snapshot != null && snapshot.metadata.hasPendingWrites()) {
-                        "Local"
-                    } else {
-                        "Server"
-                    }
-
-                    if (snapshot != null) {
-                        Log.d("SNAPSHOT", "$source data: ${snapshot.metadata}")
-                    } else {
-                        Log.d("ERROR", "$source data: null")
-                    }
-                }
+        FirebaseAuthManager.getUid {uid ->
+            listenerRegistration = FirestoreDatabaseManager.getPenaltiesListener(uid) {
+                addDataRecyclerView(it)
+            }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        listenerRegistration.remove()
     }
 }
