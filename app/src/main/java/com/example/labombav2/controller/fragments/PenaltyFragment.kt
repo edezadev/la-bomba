@@ -42,6 +42,11 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
         fabAddPenalty = binding?.fabAddPenalty!!
 
         setupRecyclerView()
+        FirebaseAuthManager.getUid {uid ->
+            listenerRegistration = FirestoreDatabaseManager.getPenaltiesListener(uid) {
+                addDataRecyclerView(it)
+            }
+        }
 
         activity?.let {
             it.updateView(this, getString(R.string.penalty_name))
@@ -82,17 +87,10 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        FirebaseAuthManager.getUid {uid ->
-            listenerRegistration = FirestoreDatabaseManager.getPenaltiesListener(uid) {
-                addDataRecyclerView(it)
-            }
-        }
-    }
-
     override fun onStop() {
         super.onStop()
-        listenerRegistration.remove()
+        if (::listenerRegistration.isInitialized){
+            listenerRegistration.remove()
+        }
     }
 }

@@ -68,7 +68,7 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
                 return
             }
         }
-        insertedListener?.onPenaltyInserted(PenaltyModel(namePenalty!!, false))
+        insertedListener?.onPenaltyInserted(PenaltyModel(name = namePenalty!!, isChecked = false))
         dismiss()
     }
 
