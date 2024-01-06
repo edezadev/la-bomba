@@ -2,7 +2,6 @@ package com.example.labombav2.utils
 
 import android.util.Log
 import com.example.labombav2.model.PenaltyModel
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
@@ -23,11 +22,11 @@ object FirestoreDatabaseManager {
         listPenalties.forEach{ penalty ->
             penaltiesRef.add(penalty)
                 .addOnSuccessListener {
-                    updateIdPenalty(penaltiesRef, it.id)
+                    updatePenalty(uid, it.id, mapOf(Constants.ID to it.id))
                     Log.d("DataSuccessfullyAdded", "Penalty created successfully")
                 }
                 .addOnFailureListener {
-                    Log.e("ErrorAddingData", "Error creating penalty")
+                    Log.e("ErrorAddingData", "Error creating penalty", it)
 
                 }
         }
@@ -54,15 +53,14 @@ object FirestoreDatabaseManager {
 
                 listenerPenalties(penalties)
             }
-
     }
 
 //  Crar un nuevo castigo para el usuario
     fun createPenalty(uid: String, penalty: PenaltyModel) {
-        val penaltyRef = userRef.document(uid).collection(Constants.PENALTIES)
-        penaltyRef.add(penalty)
+        userRef.document(uid).collection(Constants.PENALTIES).add(penalty)
             .addOnSuccessListener {
-                updateIdPenalty(penaltyRef, it.id)
+                //  Actualizar el id que por defecto que se crea vacío
+                updatePenalty(uid, it.id, mapOf(Constants.ID to it.id))
                 Log.d("PenaltySuccessfullyAdded", "New penalty added successfully")
             }
             .addOnFailureListener {
@@ -71,19 +69,23 @@ object FirestoreDatabaseManager {
 
     }
 
-//  Actualizar el id que por defecto que se crea vacío
-    private fun updateIdPenalty(penaltyRef: CollectionReference, id: String){
-        penaltyRef.document(id).update("id",id)
+     fun updatePenalty(uid: String, id: String, updates: Map<String, Any>){
+        userRef.document(uid).collection(Constants.PENALTIES).document(id).update(updates)
             .addOnSuccessListener {
-                Log.d("PenaltySuccessfullyUpdated",
-                    "The ID of the penalty was updated successfully.")
+                Log.d("PenaltySuccessfullyUpdated", "The penalty was updated successfully")
             }
             .addOnFailureListener {
-                Log.e("ErrorUpdatingPenalty", "Couldn´t update the ID of the penalty")
+                Log.e("ErrorUpdatingPenalty", "Couldn't update the penalty", it)
             }
     }
 
     fun deletePenalty(uid: String, idPenalty: String){
-        
+        userRef.document(uid).collection(Constants.PENALTIES).document(idPenalty).delete()
+            .addOnSuccessListener {
+                Log.d("PenaltyDeleted", "The penalty was deleted successfully")
+            }
+            .addOnFailureListener {
+                Log.e("ErrorDeletingPenalty", "Couldn't delete the penalty",it)
+            }
     }
 }
