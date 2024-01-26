@@ -10,10 +10,11 @@ import com.example.labombav2.databinding.ItemPenaltyBinding
 import com.example.labombav2.model.PenaltyModel
 import com.example.labombav2.utils.Constants
 import com.example.labombav2.utils.FirebaseAuthManager
-import com.example.labombav2.utils.FirestoreDatabaseManager
+import com.example.labombav2.utils.PenaltyDbManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class PenaltyAdapter(private var items: MutableList<PenaltyModel>) : RecyclerView.Adapter<PenaltyAdapter.ViewHolder>() {
+class PenaltyAdapter(private var items: MutableList<PenaltyModel>) :
+    RecyclerView.Adapter<PenaltyAdapter.ViewHolder>() {
     inner class ViewHolder(binding: ItemPenaltyBinding):
         RecyclerView.ViewHolder(binding.root) {
         val cbPenalty = binding.cbPenalty
@@ -60,7 +61,7 @@ class PenaltyAdapter(private var items: MutableList<PenaltyModel>) : RecyclerVie
             if (index != position) {
 //              cambiar a false el estado del item que es distinto al que fue accionado
 //                items[index].isChecked = false
-                FirestoreDatabaseManager.updatePenalty(
+                PenaltyDbManager.updatePenalty(
                     holder.uid,
                     items[index].id,
                     mapOf(Constants.IS_CHECKED to false)
@@ -68,7 +69,7 @@ class PenaltyAdapter(private var items: MutableList<PenaltyModel>) : RecyclerVie
             }else{
                 /* Se asigna "checked" y no solo "true" porque contiene el valor de cuando se
                  * acciona el mismo checkbox */
-                FirestoreDatabaseManager.updatePenalty(
+                PenaltyDbManager.updatePenalty(
                     holder.uid,
                     items[index].id,
                     mapOf(Constants.IS_CHECKED to checked)
@@ -84,7 +85,7 @@ class PenaltyAdapter(private var items: MutableList<PenaltyModel>) : RecyclerVie
             .setMessage(R.string.message_delete_penalty)
             .setPositiveButton(R.string.action_positive) { dialog, _ ->
 //              Eliminar de la BD
-                FirestoreDatabaseManager.deletePenalty(holder.uid, item.id)
+                PenaltyDbManager.deletePenalty(holder.uid, item.id)
                 notifyItemRemoved(itemCount)
                 dialog.dismiss()
             }

@@ -37,7 +37,7 @@ object FirebaseAuthManager {
                 if (it.isSuccessful) {
                     Log.d("CreatedUser", "Successfully created an anonymous user in Firebase")
 //                  crear documento del usuario en la base de datos
-                    FirestoreDatabaseManager.saveDataUser(auth.uid!!)
+                    PenaltyDbManager.saveDataUser(auth.uid!!)
                 } else {
                     Log.e("ErrorCreatingUser", it.exception.toString())
                 }

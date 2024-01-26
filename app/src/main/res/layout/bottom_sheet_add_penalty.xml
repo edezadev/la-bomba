@@ -7,7 +7,7 @@
     tools:context=".controller.dialogs.AddPenaltyBottomSheet">
 
     <LinearLayout
-        android:id="@+id/bottomSheet"
+        android:id="@+id/bshAddPenalty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -27,7 +27,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/add_penaty_title"
+                android:text="@string/add_penalty_title"
                 android:textColor="@color/primary"
                 android:textAppearance="?attr/textAppearanceTitleMedium"/>
 
@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_txt_penalty"
-                    android:textColor="@color/primary"
+                    android:textColor="?colorPrimary"
                     android:inputType="textPersonName|textCapSentences"/>
             </com.google.android.material.textfield.TextInputLayout>
 

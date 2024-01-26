@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">LaBombaV2</string>
     <string name="start_play">Comenzar</string>
-    <string name="intructions">¿Cómo jugar?</string>
+    <string name="instructions">¿Cómo jugar?</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="penalty_name">Castigo</string>
     <string name="next">Siguiente</string>
     <string name="players_name">Jugadores</string>
-    <string name="hint_name_penalty">Nombre de castigo</string>
+    <string name="hint_name_penalty">Nombre del castigo</string>
     <string name="add_penalty">Botón para agregar un castigo</string>
-    <string name="add_penaty_title">Agrega un nuevo castigo</string>
+    <string name="add_penalty_title">Agrega un nuevo castigo</string>
     <string name="hint_txt_penalty">Castigo</string>
     <string name="add_button">Agregar</string>
     <string name="error_empty_penalty">Ingrese un castigo</string>
-    <string name="error_length_penalty">Texto muy corto</string>
+    <string name="error_length_short">Texto muy corto</string>
     <string name="title_alert">¡ALERTA!</string>
     <string name="message_delete_penalty">¿Seguro que deseas eliminar el castigo?</string>
     <string name="action_positive">Confirmar</string>

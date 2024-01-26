@@ -5,7 +5,7 @@ import com.example.labombav2.model.PenaltyModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
-object FirestoreDatabaseManager {
+object PenaltyDbManager {
     private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val userRef by lazy { db.collection(Constants.USERS) }
 

@@ -15,7 +15,7 @@ import com.example.labombav2.controller.activities.SettingsActivity
 import com.example.labombav2.controller.adapters.PenaltyAdapter
 import com.example.labombav2.controller.dialogs.AddPenaltyBottomSheet
 import com.example.labombav2.utils.FirebaseAuthManager
-import com.example.labombav2.utils.FirestoreDatabaseManager
+import com.example.labombav2.utils.PenaltyDbManager
 import com.example.labombav2.utils.OnPenaltyInsertedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -43,7 +43,7 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
 
         setupRecyclerView()
         FirebaseAuthManager.getUid {uid ->
-            listenerRegistration = FirestoreDatabaseManager.getPenaltiesListener(uid) {
+            listenerRegistration = PenaltyDbManager.getPenaltiesListener(uid) {
                 addDataRecyclerView(it)
             }
         }
@@ -53,7 +53,7 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
             btnNext = it.findViewById(R.id.btnNext)
         }
 
-        btnNext.setOnClickListener { activity?.addFragment(AddPlayerFragment()) }
+        btnNext.setOnClickListener { activity?.addFragment(PlayerFragment()) }
         fabAddPenalty.setOnClickListener { showAddPenalty() }
 
         return view
@@ -83,7 +83,7 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
 
     override fun onPenaltyInserted(newPenalty: PenaltyModel) {
         FirebaseAuthManager.getUid { uid ->
-            FirestoreDatabaseManager.createPenalty(uid, newPenalty)
+            PenaltyDbManager.createPenalty(uid, newPenalty)
         }
     }
 

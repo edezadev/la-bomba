@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputLayout
 class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
     private var binding: BottomSheetAddPenaltyBinding? = null
 
-    private lateinit var bottomSheet: LinearLayout
+    private lateinit var bshAddPenalty: LinearLayout
     private lateinit var tilPenalty: TextInputLayout
     private lateinit var etPenalty: TextInputEditText
     private lateinit var btnAddPenalty: MaterialButton
@@ -32,7 +32,7 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
     ): View? {
         binding = BottomSheetAddPenaltyBinding.inflate(inflater, container, false)
         binding?.let {
-            bottomSheet = it.bottomSheet
+            bshAddPenalty = it.bshAddPenalty
             tilPenalty = it.tilPenalty
             etPenalty = it.etPenalty
             btnAddPenalty = it.btnAddPenalty
@@ -40,7 +40,7 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
 //      limitar caracteres
         etPenalty.filters = arrayOf(InputFilter.LengthFilter(resources.getInteger(R.integer.max_length_penalty)))
 
-        val mBehavior = BottomSheetBehavior.from(bottomSheet)
+        val mBehavior = BottomSheetBehavior.from(bshAddPenalty)
         mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         btnAddPenalty.setOnClickListener {
@@ -57,18 +57,17 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
 
     private fun addPenalty() {
         val namePenalty = etPenalty.text?.toString()?.trim()
-        namePenalty.let {
-            if (it.isNullOrEmpty()) {
-                setError(getString(R.string.error_empty_penalty))
-                return
-            }
-
-            if (it.length < 5) {
-                setError(getString(R.string.error_length_penalty))
-                return
-            }
+        if (namePenalty.isNullOrEmpty()) {
+            setError(getString(R.string.error_empty_penalty))
+            return
         }
-        insertedListener?.onPenaltyInserted(PenaltyModel(name = namePenalty!!, isChecked = false))
+
+        if (namePenalty.length < 5) {
+            setError(getString(R.string.error_length_short))
+            return
+        }
+
+        insertedListener?.onPenaltyInserted(PenaltyModel(name = namePenalty, isChecked = false))
         dismiss()
     }
 
@@ -78,6 +77,6 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val TAG = "ModalBottomSheet"
+        const val TAG = "AddPenaltyModalBottomSheet"
     }
 }
