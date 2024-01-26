@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.fragments.AddPlayerFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".controller.fragments.PlayerFragment">
 
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/players_name" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPlayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_common"
+                android:paddingBottom="@dimen/height_item"
+                android:clipToPadding="false"
+                tools:listitem="@layout/item_player"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</FrameLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/add_player"
+        app:srcCompat="@drawable/ic_add"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/padding_common"
+        android:layout_marginBottom="@dimen/padding_xlarge"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

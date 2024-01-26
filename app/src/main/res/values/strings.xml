@@ -17,4 +17,9 @@
     <string name="message_delete_penalty">¿Seguro que deseas eliminar el castigo?</string>
     <string name="action_positive">Confirmar</string>
     <string name="action_negative">Cancelar</string>
+    <string name="add_player">Botón para agregar un jugador</string>
+    <string name="hint_name_player">Nombre del jugador</string>
+    <string name="add_player_title">Agrega un nuevo jugador</string>
+    <string name="hint_txt_player">Jugador</string>
+    <string name="error_empty_player">Ingrese un jugador</string>
 </resources>
