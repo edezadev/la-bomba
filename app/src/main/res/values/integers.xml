@@ -2,4 +2,5 @@
 <resources>
     <integer name="max_length_penalty">40</integer>
     <integer name="max_length_player">50</integer>
+    <integer name="max_lines_item">1</integer>
 </resources>

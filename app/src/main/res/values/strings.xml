@@ -22,4 +22,6 @@
     <string name="add_player_title">Agrega un nuevo jugador</string>
     <string name="hint_txt_player">Jugador</string>
     <string name="error_empty_player">Ingrese un jugador</string>
+    <string name="edit">Editar\n</string>
+    <string name="delete">Eliminar</string>
 </resources>
