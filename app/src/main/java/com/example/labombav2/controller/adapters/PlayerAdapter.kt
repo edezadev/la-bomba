@@ -6,12 +6,19 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.widget.ListPopupWindow
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.labombav2.R
+import com.example.labombav2.controller.dialogs.AddPlayerBottomSheet
 import com.example.labombav2.databinding.ItemPlayerBinding
 import com.example.labombav2.model.PlayerModel
+import com.example.labombav2.utils.Constants
 
-class PlayerAdapter(private var items: MutableList<PlayerModel>) :
+class PlayerAdapter(
+    private var items: MutableList<PlayerModel>,
+    private var fragmentManager: FragmentManager
+) :
     RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
     inner class ViewHolder(binding: ItemPlayerBinding):
         RecyclerView.ViewHolder(binding.root) {
@@ -31,7 +38,7 @@ class PlayerAdapter(private var items: MutableList<PlayerModel>) :
 
     override fun onBindViewHolder(holder: PlayerAdapter.ViewHolder, position: Int) {
         val item = items[position]
-        val popUp: ListPopupWindow = setPopUp(holder.tvPlayer.context, holder)
+        val popUp: ListPopupWindow = setPopUp(holder.tvPlayer.context, holder, item.id)
 
         holder.tvPlayer.text = item.name
 
@@ -41,7 +48,7 @@ class PlayerAdapter(private var items: MutableList<PlayerModel>) :
         }
     }
 
-    private fun setPopUp(context: Context, holder: PlayerAdapter.ViewHolder): ListPopupWindow {
+    private fun setPopUp(context: Context, holder: ViewHolder, id: String): ListPopupWindow {
         val popUp = ListPopupWindow(
             context,
             null,
@@ -55,14 +62,20 @@ class PlayerAdapter(private var items: MutableList<PlayerModel>) :
         val adapter = ArrayAdapter(holder.tvPlayer.context, R.layout.item_popup_menu, items)
         popUp.setAdapter(adapter)
 
-        popUp.setOnItemClickListener { _, _, position, _ ->
-            when(position) {
-                0 -> Toast.makeText(context, "Edit", Toast.LENGTH_LONG).show()
+        popUp.setOnItemClickListener { _, _, index, _ ->
+            when(index) {
+                0 -> showEditPlayer(id)
                 1 -> Toast.makeText(context, "Eliminar", Toast.LENGTH_LONG).show()
             }
             popUp.dismiss()
         }
 
         return popUp
+    }
+
+    private fun showEditPlayer(id: String) {
+        val bottomSheet = AddPlayerBottomSheet()
+        bottomSheet.arguments = bundleOf(Constants.ID_PLAYER to id)
+        bottomSheet.show(fragmentManager.beginTransaction(), AddPlayerBottomSheet.TAG)
     }
 }

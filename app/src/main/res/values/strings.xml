@@ -24,4 +24,6 @@
     <string name="error_empty_player">Ingrese un jugador</string>
     <string name="edit">Editar\n</string>
     <string name="delete">Eliminar</string>
+    <string name="edit_button">Editar</string>
+    <string name="hint_no_players">No creaste ningún jugador.</string>
 </resources>

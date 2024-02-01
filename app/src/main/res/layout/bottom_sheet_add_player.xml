@@ -52,6 +52,16 @@
                 android:text="@string/add_button"
                 style="@style/ButtonOutlineStyle"
                 android:layout_marginTop="@dimen/padding_common"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:text="@string/edit_button"
+                style="@style/ButtonOutlineStyle"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/padding_common"/>
         </LinearLayout>
     </LinearLayout>
 

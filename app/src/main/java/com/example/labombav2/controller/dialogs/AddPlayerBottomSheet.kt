@@ -9,7 +9,10 @@ import android.widget.LinearLayout
 import com.example.labombav2.R
 import com.example.labombav2.databinding.BottomSheetAddPlayerBinding
 import com.example.labombav2.model.PlayerModel
+import com.example.labombav2.utils.Constants
+import com.example.labombav2.utils.FirebaseAuthManager
 import com.example.labombav2.utils.OnPlayerInsertedListener
+import com.example.labombav2.utils.PlayerDbManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -22,6 +25,7 @@ class AddPlayerBottomSheet : BottomSheetDialogFragment() {
     private lateinit var tilPlayer: TextInputLayout
     private lateinit var etPlayer: TextInputEditText
     private lateinit var btnAddPlayer: MaterialButton
+    private lateinit var btnEditPlayer: MaterialButton
     private var insertedListener: OnPlayerInsertedListener? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +38,7 @@ class AddPlayerBottomSheet : BottomSheetDialogFragment() {
             tilPlayer = it.tilPlayer
             etPlayer = it.etPlayer
             btnAddPlayer = it.btnAddPlayer
+            btnEditPlayer = it.btnEditPlayer
         }
 //      limitar caracteres
         etPlayer.filters = arrayOf(InputFilter.LengthFilter(resources.getInteger(R.integer.max_length_player)))
@@ -41,35 +46,77 @@ class AddPlayerBottomSheet : BottomSheetDialogFragment() {
         val mBehavior = BottomSheetBehavior.from(bshAddPlayer)
         mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
+//      Recibir el id del jugador y cambiar la acción de AGREGAR a EDITAR
+        val idPlayer = arguments?.getString(Constants.ID_PLAYER)
+        idPlayer?.let { changeActionButton(it) }
+
         btnAddPlayer.setOnClickListener { addPlayer() }
+        btnEditPlayer.setOnClickListener { editPlayer(idPlayer) }
 
         return binding?.root
     }
 
-//  Metodo de configuración para el linster
-    fun setOnDataInsertedListener(listener: OnPlayerInsertedListener) {
-        this.insertedListener = listener
+    private fun changeActionButton(idPlayer: String) {
+        btnAddPlayer.visibility = View.GONE
+        btnEditPlayer.visibility = View.VISIBLE
+        getNamePlayer(idPlayer)
+    }
+
+    private fun getNamePlayer(idPlayer: String) {
+        FirebaseAuthManager.getUid { uid ->
+            PlayerDbManager.getPlayer(uid, idPlayer) { player ->
+                etPlayer.setText(player.name)
+            }
+        }
     }
 
     private fun addPlayer() {
         val namePlayer = etPlayer.text?.toString()?.trim()
+
+        if (textValidation(namePlayer)) {
+            if (namePlayer!=null) {
+                insertedListener?.onPlayerInserted(PlayerModel(name = namePlayer))
+                dismiss()
+            }
+        }
+    }
+
+    private fun editPlayer(idPlayer: String?) {
+        val namePlayer = etPlayer.text?.toString()?.trim()
+
+        if (textValidation(namePlayer)) {
+            FirebaseAuthManager.getUid { uid ->
+                if (namePlayer != null) {
+                    PlayerDbManager.updatePlayer(uid,
+                        idPlayer!!,
+                        mapOf(Constants.NAME_PLAYER to namePlayer))
+                    dismiss()
+                }
+            }
+        }
+    }
+
+    private fun textValidation(namePlayer: String?): Boolean {
         if (namePlayer.isNullOrEmpty()) {
             setError(getString(R.string.error_empty_player))
-            return
+            return false
         }
 
         if(namePlayer.length < 5) {
             setError(getString(R.string.error_length_short))
-            return
+            return false
         }
-
-        insertedListener?.onPlayerInserted(PlayerModel(name = namePlayer))
-        dismiss()
+        return true
     }
 
     private fun setError(text: String) {
         tilPlayer.error = text
         tilPlayer.requestFocus()
+    }
+
+    //  Metodo de configuración para el linster
+    fun setOnDataInsertedListener(listener: OnPlayerInsertedListener) {
+        this.insertedListener = listener
     }
 
     companion object {
