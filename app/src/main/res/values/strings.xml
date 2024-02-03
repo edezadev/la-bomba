@@ -26,4 +26,6 @@
     <string name="delete">Eliminar</string>
     <string name="edit_button">Editar</string>
     <string name="hint_no_players">No creaste ningún jugador.</string>
+    <string name="message_delete_player">¿Seguro que deseas eliminar el jugador?</string>
+    <string name="hint_no_penalties">No creaste ningún castigo.</string>
 </resources>

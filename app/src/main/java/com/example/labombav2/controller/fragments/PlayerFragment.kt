@@ -10,10 +10,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.labombav2.R
-import com.example.labombav2.databinding.FragmentAddPlayerBinding
 import com.example.labombav2.controller.activities.SettingsActivity
 import com.example.labombav2.controller.adapters.PlayerAdapter
 import com.example.labombav2.controller.dialogs.AddPlayerBottomSheet
+import com.example.labombav2.databinding.FragmentPlayerBinding
 import com.example.labombav2.model.PlayerModel
 import com.example.labombav2.utils.FirebaseAuthManager
 import com.example.labombav2.utils.OnPlayerInsertedListener
@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ListenerRegistration
 
 class PlayerFragment : Fragment(), OnPlayerInsertedListener {
-    private var binding: FragmentAddPlayerBinding? = null
+    private var binding: FragmentPlayerBinding? = null
     private var adapter: PlayerAdapter? = null
     private lateinit var btnNext: MaterialButton
     private lateinit var tvNoPlayers: TextView
@@ -37,7 +37,7 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAddPlayerBinding.inflate(inflater, container, false)
+        binding = FragmentPlayerBinding.inflate(inflater, container, false)
         val view = binding?.root
         val activity = activity as? SettingsActivity
         binding?.let {
@@ -51,6 +51,7 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
         FirebaseAuthManager.getUid { uid ->
             listenerRegistration = PlayerDbManager.getPlayersListener(uid) {
                 if(it.isEmpty()) {
+                    listPlayers.clear()
                     tvNoPlayers.visibility = View.VISIBLE
                 } else {
                     tvNoPlayers.visibility = View.GONE
@@ -59,8 +60,12 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
             }
         }
 
-        activity?.updateView(this, getString(R.string.players_name))
+        activity?.let{
+            it.updateView(this, getString(R.string.players_name))
+            btnNext = it.findViewById(R.id.btnNext)
+        }
 
+        btnNext.setOnClickListener { activity?.addFragment(TopicsFragment()) }
         fabAddPlayer.setOnClickListener{ showAddPlayer() }
 
         return view
