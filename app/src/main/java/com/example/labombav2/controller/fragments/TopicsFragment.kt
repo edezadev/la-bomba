@@ -6,13 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.labombav2.R
-class TopicsFragment : Fragment() {
+import com.example.labombav2.controller.activities.SettingsActivity
+import com.example.labombav2.databinding.FragmentTopicsBinding
 
+class TopicsFragment : Fragment() {
+    private var binding: FragmentTopicsBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_topics, container, false)
+        binding = FragmentTopicsBinding.inflate(inflater, container, false)
+        val view = binding?.root
+        val activity = activity as? SettingsActivity
+
+        activity?.updateView(this, getString(R.string.topics_name))
+        return view
     }
 }

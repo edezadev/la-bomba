@@ -28,4 +28,5 @@
     <string name="hint_no_players">No creaste ningún jugador.</string>
     <string name="message_delete_player">¿Seguro que deseas eliminar el jugador?</string>
     <string name="hint_no_penalties">No creaste ningún castigo.</string>
+    <string name="topics_name">Temas</string>
 </resources>
