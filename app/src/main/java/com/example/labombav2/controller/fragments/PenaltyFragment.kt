@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.labombav2.R
@@ -26,6 +27,7 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
     private var adapter: PenaltyAdapter? = null
     private lateinit var btnNext: MaterialButton
     private lateinit var recyclerPenalty: RecyclerView
+    private lateinit var tvNoPenalties: TextView
     private lateinit var fabAddPenalty: FloatingActionButton
     private var listPenalties: MutableList<PenaltyModel> = mutableListOf()
 
@@ -38,13 +40,22 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
         binding = FragmentPenaltyBinding.inflate(inflater, container, false)
         val view = binding?.root
         val activity = activity as? SettingsActivity//obtener la actividad
-        recyclerPenalty = binding?.recyclerPenalty!!
-        fabAddPenalty = binding?.fabAddPenalty!!
+        binding?.let {
+            recyclerPenalty = it.recyclerPenalty
+            tvNoPenalties = it.tvNoPenalties
+            fabAddPenalty = it.fabAddPenalty
+        }
 
         setupRecyclerView()
         FirebaseAuthManager.getUid {uid ->
             listenerRegistration = PenaltyDbManager.getPenaltiesListener(uid) {
-                addDataRecyclerView(it)
+                if (it.isEmpty()){
+                    listPenalties.clear()
+                    tvNoPenalties.visibility = View.VISIBLE
+                } else {
+                    tvNoPenalties.visibility = View.GONE
+                    addDataRecyclerView(it)
+                }
             }
         }
 

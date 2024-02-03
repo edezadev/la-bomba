@@ -13,6 +13,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvNoPenalties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_no_penalties"
+                android:textSize="@dimen/size_text_item"
+                tools:ignore="SpUsage"
+                android:textColor="?colorOnSurface"
+                android:paddingHorizontal="@dimen/padding_common"
+                android:visibility="gone"/>
             <!--La propiedad clipToPadding sirve para que el padding declarado no este visible
             todoo el tiempo, ya que se declaró el paddingBottom, éste solo se mostrará cuando se
             baje totalmente-->
