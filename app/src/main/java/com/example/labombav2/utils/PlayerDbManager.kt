@@ -49,10 +49,20 @@ object PlayerDbManager {
             }
     }
 
-    fun getPlayer(uid: String, id: String, player: (PlayerModel) -> Unit)  {
-        userRef.document(uid).collection(Constants.PLAYERS).document(id).get()
+    fun getPlayer(uid: String, idPlayer: String, player: (PlayerModel) -> Unit)  {
+        userRef.document(uid).collection(Constants.PLAYERS).document(idPlayer).get()
             .addOnSuccessListener { snapshot ->
                 snapshot.toObject(PlayerModel::class.java)?.let { player(it) }
+            }
+    }
+
+    fun deletePlayer(uid: String, idPlayer: String) {
+        userRef.document(uid).collection(Constants.PLAYERS).document(idPlayer).delete()
+            .addOnSuccessListener {
+                Log.d("PlayerDeleted", "The player was deleted successfully")
+            }
+            .addOnFailureListener {
+                Log.e("ErrorDeletingPlayer", "Couldn't delete the player", it)
             }
     }
 }

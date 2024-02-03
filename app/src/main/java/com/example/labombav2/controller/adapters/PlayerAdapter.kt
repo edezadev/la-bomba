@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
@@ -14,6 +13,9 @@ import com.example.labombav2.controller.dialogs.AddPlayerBottomSheet
 import com.example.labombav2.databinding.ItemPlayerBinding
 import com.example.labombav2.model.PlayerModel
 import com.example.labombav2.utils.Constants
+import com.example.labombav2.utils.FirebaseAuthManager
+import com.example.labombav2.utils.PlayerDbManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class PlayerAdapter(
     private var items: MutableList<PlayerModel>,
@@ -39,6 +41,9 @@ class PlayerAdapter(
     override fun onBindViewHolder(holder: PlayerAdapter.ViewHolder, position: Int) {
         val item = items[position]
         val popUp: ListPopupWindow = setPopUp(holder.tvPlayer.context, holder, item.id)
+        FirebaseAuthManager.getUid {
+            holder.uid = it
+        }
 
         holder.tvPlayer.text = item.name
 
@@ -65,7 +70,7 @@ class PlayerAdapter(
         popUp.setOnItemClickListener { _, _, index, _ ->
             when(index) {
                 0 -> showEditPlayer(id)
-                1 -> Toast.makeText(context, "Eliminar", Toast.LENGTH_LONG).show()
+                1 -> showDeleteDialog(holder, id)
             }
             popUp.dismiss()
         }
@@ -77,5 +82,20 @@ class PlayerAdapter(
         val bottomSheet = AddPlayerBottomSheet()
         bottomSheet.arguments = bundleOf(Constants.ID_PLAYER to id)
         bottomSheet.show(fragmentManager.beginTransaction(), AddPlayerBottomSheet.TAG)
+    }
+
+    private fun showDeleteDialog(holder: ViewHolder, id: String) {
+        MaterialAlertDialogBuilder(holder.tvPlayer.context)
+            .setTitle(R.string.title_alert)
+            .setMessage(R.string.message_delete_player)
+            .setPositiveButton(R.string.action_positive) {dialog, _ ->
+                PlayerDbManager.deletePlayer(holder.uid, id)
+                notifyItemRemoved(itemCount)
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.action_negative) {dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }

@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import com.example.labombav2.R
 import com.example.labombav2.databinding.ActivitySettingsBinding
 import com.example.labombav2.utils.BaseActivity
-import com.example.labombav2.controller.fragments.PlayerFragment
 import com.example.labombav2.controller.fragments.PenaltyFragment
+import com.example.labombav2.controller.fragments.TopicsFragment
 import com.google.android.material.button.MaterialButton
 
 class SettingsActivity : BaseActivity() {
@@ -47,7 +47,7 @@ class SettingsActivity : BaseActivity() {
         currentFragment = fragment
 
         if (::btnNext.isInitialized) {
-            if (currentFragment is PlayerFragment) {
+            if (currentFragment is TopicsFragment) {
                 btnNext.visibility = View.GONE
             }else {
                 btnNext.visibility = View.VISIBLE
