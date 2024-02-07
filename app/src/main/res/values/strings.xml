@@ -29,4 +29,10 @@
     <string name="message_delete_player">¿Seguro que deseas eliminar el jugador?</string>
     <string name="hint_no_penalties">No creaste ningún castigo.</string>
     <string name="topics_name">Temas</string>
+    <string name="image_instruction">Imagen representativa de la instrucción</string>
+    <string name="instruction_penalty">Agrega un castigo para el jugador que pierda</string>
+    <string name="instruction_players">Agrega a dos o más jugadores</string>
+    <string name="instruction_time">Determina el tiempo para la bomba</string>
+    <string name="instruction_game">Responde correctamente y pasa la bomba antes que explote</string>
+    <string name="instruction_topics">Selecciona mínimo tres temas para empezar a jugar con tus amigos</string>
 </resources>

@@ -8,4 +8,7 @@ object Constants {
     const val IS_CHECKED = "isChecked"
     const val ID_PLAYER = "idPlayer"
     const val PLAYERS = "players"
+    const val COD_HTML_DOTS = "&#8226;"
+    const val TITLE = "title"
+    const val IMAGE = "image"
 }
