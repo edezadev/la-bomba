@@ -46,6 +46,10 @@ class SliderFragment : Fragment() {
         btnStart.setOnClickListener {
             Toast.makeText(it.context, "Aqui va anuncio", Toast.LENGTH_SHORT).show()
             startActivity(Intent(it.context, SettingsActivity::class.java))
+            /* Destruir la activity y eliminarla de la pila de activities, esto con el fin de que al
+            * presionar el botón "atrás" de SettingActvity, no regrese a InstructionsActivity sino
+            * redirija a MainActivity */
+            activity?.finish()
         }
 
         return view
