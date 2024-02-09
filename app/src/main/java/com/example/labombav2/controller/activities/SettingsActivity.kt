@@ -1,7 +1,6 @@
 package com.example.labombav2.controller.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -30,8 +29,6 @@ class SettingsActivity : BaseActivity() {
 
 //      Primer fragmento
         addFragment(PenaltyFragment())
-        Log.e("STACK", supportFragmentManager.backStackEntryCount.toString())
-
     }
 
     fun addFragment(fragment: Fragment) {
