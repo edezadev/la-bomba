@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.checkbox.MaterialCheckBox
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cbTopic"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_item"
+    android:text="@string/hint_name_topic"
+    android:textColor="?colorPrimary"
+    android:textSize="@dimen/size_text_item"
+    tools:ignore="SpUsage"
+    android:background="@drawable/background_edge"
+    android:button="@null"
+    android:drawableEnd="@drawable/checkbox"
+    android:paddingHorizontal="@dimen/padding_common"
+    android:paddingVertical="@dimen/padding_small"
+    android:layout_marginHorizontal="@dimen/padding_xlarge"
+    android:layout_marginBottom="@dimen/padding_medium"/>

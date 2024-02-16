@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controller.fragments.TopicsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/tvNoTopics"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:text="@string/hint_no_topics"
+        android:textSize="@dimen/size_text_item"
+        tools:ignore="SpUsage"
+        android:textColor="?colorOnSurface"
+        android:paddingHorizontal="@dimen/padding_common"
+        android:visibility="gone"/>
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerTopic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_common"
+        android:paddingBottom="@dimen/height_item"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_topic"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddTopic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/add_topic"
+        android:src="@drawable/ic_add"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="@dimen/padding_common"
+        android:layout_marginBottom="@dimen/padding_xlarge"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
