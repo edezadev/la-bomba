@@ -31,7 +31,7 @@ object PlayerDbManager {
     }
 
     fun getPlayersListener(uid: String, listenerPlayers: (MutableList<PlayerModel>) -> Unit) : ListenerRegistration {
-        return userRef.document(uid).collection(Constants.PLAYERS).orderBy("name")
+        return userRef.document(uid).collection(Constants.PLAYERS).orderBy(Constants.NAME)
             .addSnapshotListener{snapshot, error ->
                 if (error != null) {
                     Log.e("ErrorGettingPlayers",
