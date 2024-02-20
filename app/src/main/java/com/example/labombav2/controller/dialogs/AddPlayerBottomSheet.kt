@@ -89,7 +89,7 @@ class AddPlayerBottomSheet : BottomSheetDialogFragment() {
                 if (namePlayer != null) {
                     PlayerDbManager.updatePlayer(uid,
                         idPlayer!!,
-                        mapOf(Constants.NAME_PLAYER to namePlayer))
+                        mapOf(Constants.NAME to namePlayer))
                     dismiss()
                 }
             }
