@@ -12,5 +12,5 @@ object Constants {
     const val COD_HTML_DOTS = "&#8226;"
     const val TITLE = "title"
     const val IMAGE = "image"
-    const val PAGE_SIZE = 10
+    const val PAGE_SIZE = 2
 }

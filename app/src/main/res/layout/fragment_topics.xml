@@ -5,25 +5,36 @@
     android:layout_height="match_parent"
     tools:context=".controller.fragments.TopicsFragment">
 
-    <TextView
-        android:id="@+id/tvNoTopics"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hint_no_topics"
-        android:textSize="@dimen/size_text_item"
-        tools:ignore="SpUsage"
-        android:textColor="?colorOnSurface"
-        android:paddingHorizontal="@dimen/padding_common"
-        android:visibility="gone"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvNoTopics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_no_topics"
+            android:textSize="@dimen/size_text_item"
+            tools:ignore="SpUsage"
+            android:textColor="?colorOnSurface"
+            android:paddingHorizontal="@dimen/padding_common"
+            android:visibility="gone"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerTopic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/padding_common"
-        android:paddingBottom="@dimen/height_item"
-        android:clipToPadding="false"
-        tools:listitem="@layout/item_topic"/>
+        <!--Indicadores de página-->
+        <LinearLayout
+            android:id="@+id/pageIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginVertical="@dimen/padding_xsmall"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddTopic"

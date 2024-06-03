@@ -5,12 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.labombav2.R
 import com.example.labombav2.controller.activities.SettingsActivity
-import com.example.labombav2.controller.adapters.TopicAdapter
+import com.example.labombav2.controller.adapters.PageTopicsAdapter
 import com.example.labombav2.controller.dialogs.AddTopicBottomSheet
 import com.example.labombav2.databinding.FragmentTopicsBinding
 import com.example.labombav2.model.TopicModel
@@ -21,11 +21,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TopicsFragment : Fragment(), OnTopicInsertedListener {
     private var binding: FragmentTopicsBinding? = null
-    private var adapter: TopicAdapter? = null
+    private var adapter: PageTopicsAdapter? = null
     private lateinit var tvNoTopics: TextView
-    private lateinit var recyclerTopic: RecyclerView
+    private lateinit var pageIndicator: LinearLayout
+    private lateinit var page: ViewPager2
     private lateinit var fabAddTopic: FloatingActionButton
-    private var listTopics: MutableList<TopicModel> = mutableListOf()
+    private var listPages: MutableList<MutableList<TopicModel>> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,11 +37,12 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
         val activity = activity as? SettingsActivity
         binding?.let {
             tvNoTopics = it.tvNoTopics
-            recyclerTopic = it.recyclerTopic
+            pageIndicator = it.pageIndicator
+            page = it.page
             fabAddTopic = it.fabAddTopic
         }
 
-        setupRecyclerView()
+        getListPages()
 
         activity?.updateView(this, getString(R.string.topics_name))
 
@@ -48,10 +50,55 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
         return view
     }
 
-    private fun setupRecyclerView() {
-        adapter = TopicAdapter(listTopics)
-        recyclerTopic.layoutManager = LinearLayoutManager(activity?.applicationContext)
-        recyclerTopic.adapter = adapter
+    private fun getListPages() {
+        FirebaseAuthManager.getUid { uid ->
+            TopicDbManager.getListPages(uid) { pages ->
+                listPages.addAll(pages)
+                setupViewPager()
+                if (pages.size <= 0) {
+                    tvNoTopics.visibility = View.VISIBLE
+                } else {
+                    tvNoTopics.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun setupViewPager() {
+        adapter = PageTopicsAdapter(listPages)
+        page.adapter = adapter
+
+        page.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                addPageIndicators(position, listPages.size)
+            }
+        })
+    }
+
+    //  Método para crear los indicadores de la página
+    private fun addPageIndicators(currentPage: Int, totalPages: Int) {
+        //Eliminar indicadores anteriores
+        pageIndicator.removeAllViews()
+
+        //Crear indicadores para cada página
+        for (i in 0 until totalPages) {
+            val textView = TextView(requireContext())
+            textView.text = (i + 1).toString() //Mostrar número de página
+            textView.setPadding(16, 0, 16, 0)
+            textView.textSize = 20f
+//          Manejar el color de los indicadores segun la página actual
+            if (i == currentPage){
+                textView.setTextColor(resources.getColor(R.color.onSurface, activity?.theme))
+            } else {
+                textView.setTextColor(resources.getColor(R.color.primary, activity?.theme))
+            }
+            textView.setOnClickListener {
+                page.setCurrentItem(i, true)
+            }
+            //cambiar página al hacer click
+            pageIndicator.addView(textView)
+        }
     }
 
     private fun showAddTopic() {
