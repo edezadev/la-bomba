@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".controllers.fragments.TopicsFragment">
 
     <LinearLayout
@@ -21,16 +22,19 @@
             android:visibility="gone"/>
 
         <!--Indicadores de página-->
-        <LinearLayout
-            android:id="@+id/pageIndicator"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPageIndicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:scrollbars="none"
             android:gravity="center"
+            tools:listitem="@layout/item_page_indicator"
             android:layout_marginVertical="@dimen/padding_xsmall"/>
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/page"
+            android:id="@+id/vpPageTopics"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

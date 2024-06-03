@@ -5,8 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.labombav2.R
 import com.example.labombav2.controllers.activities.SettingsActivity
@@ -17,15 +18,17 @@ import com.example.labombav2.models.TopicModel
 import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.example.labombav2.utils.listeners.OnTopicInsertedListener
 import com.example.labombav2.config.database.TopicDbManager
+import com.example.labombav2.controllers.adapters.PageIndicatorAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ListenerRegistration
 
 class TopicsFragment : Fragment(), OnTopicInsertedListener {
     private var binding: FragmentTopicsBinding? = null
-    private var adapter: PageTopicsAdapter? = null
+    private var pageTopicsAdapter: PageTopicsAdapter? = null
+    private var pageIndicatorAdapter: PageIndicatorAdapter? = null
     private lateinit var tvNoTopics: TextView
-    private lateinit var pageIndicator: LinearLayout
-    private lateinit var page: ViewPager2
+    private lateinit var recyclerPageIndicator: RecyclerView
+    private lateinit var vpPageTopics: ViewPager2
     private lateinit var fabAddTopic: FloatingActionButton
     private var listPages: MutableList<MutableList<TopicModel>> = mutableListOf()
 
@@ -40,8 +43,8 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
         val activity = activity as? SettingsActivity
         binding?.let {
             tvNoTopics = it.tvNoTopics
-            pageIndicator = it.pageIndicator
-            page = it.page
+            recyclerPageIndicator = it.recyclerPageIndicator
+            vpPageTopics = it.vpPageTopics
             fabAddTopic = it.fabAddTopic
         }
 
@@ -69,10 +72,10 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     }
 
     private fun setupViewPager() {
-        adapter = PageTopicsAdapter(listPages)
-        page.adapter = adapter
+        pageTopicsAdapter = PageTopicsAdapter(listPages)
+        vpPageTopics.adapter = pageTopicsAdapter
 
-        page.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        vpPageTopics.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 addPageIndicators(position, listPages.size)
@@ -82,27 +85,12 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
 
     //  Método para crear los indicadores de la página
     private fun addPageIndicators(currentPage: Int, totalPages: Int) {
-        //Eliminar indicadores anteriores
-        pageIndicator.removeAllViews()
-
-        //Crear indicadores para cada página
-        for (i in 0 until totalPages) {
-            val textView = TextView(requireContext())
-            textView.text = (i + 1).toString() //Mostrar número de página
-            textView.setPadding(16, 0, 16, 0)
-            textView.textSize = 20f
-//          Manejar el color de los indicadores segun la página actual
-            if (i == currentPage){
-                textView.setTextColor(resources.getColor(R.color.onSurface, activity?.theme))
-            } else {
-                textView.setTextColor(resources.getColor(R.color.primary, activity?.theme))
-            }
-            textView.setOnClickListener {
-                page.setCurrentItem(i, true)
-            }
-            //cambiar página al hacer click
-            pageIndicator.addView(textView)
+        recyclerPageIndicator.layoutManager = LinearLayoutManager(requireContext(),
+            LinearLayoutManager.HORIZONTAL, false)
+        pageIndicatorAdapter = PageIndicatorAdapter(currentPage, totalPages) { page ->
+            vpPageTopics.setCurrentItem(page, true)
         }
+        recyclerPageIndicator.adapter = pageIndicatorAdapter
     }
 
     private fun showAddTopic() {
