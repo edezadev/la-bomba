@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.labombav2.databinding.ItemTopicBinding
 import com.example.labombav2.models.TopicModel
-
+/**
+ * Recibir una página con la lista de temas, y crear/mostrar los items para cada tema
+ **/
 class TopicAdapter(private var items: MutableList<TopicModel>):
     RecyclerView.Adapter<TopicAdapter.ViewHolder>() {
     inner class ViewHolder(binding: ItemTopicBinding):

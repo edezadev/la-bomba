@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.labombav2.databinding.ItemPageTopicsBinding
 import com.example.labombav2.models.TopicModel
-
+/**
+ * Manejar la lista de las páginas con su respectiva lista de temas, y pasar cada página con su
+ * lista de temas a Topic Adapter
+ **/
 class PageTopicsAdapter(private val items:MutableList<MutableList<TopicModel>>) :
     RecyclerView.Adapter<PageTopicsAdapter.ViewHolder>(){
     inner class ViewHolder(binding: ItemPageTopicsBinding) : RecyclerView.ViewHolder(binding.root) {
