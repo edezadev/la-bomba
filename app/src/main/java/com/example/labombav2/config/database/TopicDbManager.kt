@@ -5,6 +5,7 @@ import com.example.labombav2.models.TopicModel
 import com.example.labombav2.utils.Constants
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
@@ -36,14 +37,23 @@ object TopicDbManager {
     }
 
 //  Método para obtener una página de datos de Firestore
-//  TODO: Modificar funcion con un listener para que escuche los cambios cuando se agregue o elimine un tema
-    fun getListPages(uid: String, onSuccess: (MutableList<MutableList<TopicModel>>) -> Unit) {
-        userRef.document(uid).collection(Constants.TOPICS).get()
-            .addOnSuccessListener {
+    fun getListPagesListener(uid: String, listenerTopics: (MutableList<MutableList<TopicModel>>) -> Unit) : ListenerRegistration {
+        return userRef.document(uid).collection(Constants.TOPICS)
+            .addSnapshotListener {snapshot, error ->
+                if (error != null) {
+                    Log.e("ErrorGettingTopics",
+                        "The topics for user could not be retrieved", error)
+                    return@addSnapshotListener
+                }
+
 //              Calcular la cantidad total de páginas
-                val totalPages = ceil(
-                    it.documents.size.toDouble() / Constants.PAGE_SIZE.toDouble()
-                ).toInt()
+                var totalPages = 0
+                if (snapshot != null){
+                    totalPages = ceil(
+                        snapshot.documents.size.toDouble() / Constants.PAGE_SIZE.toDouble()
+                    ).toInt()
+                }
+
                 var lastDocument: DocumentSnapshot? = null
                 var query: QuerySnapshot?
                 val listPages = mutableListOf<MutableList<TopicModel>>()
@@ -62,10 +72,7 @@ object TopicDbManager {
                         }
                     }
                 }
-                onSuccess(listPages)
-            }
-            .addOnFailureListener {
-                Log.e("ERROR", it.toString())
+                listenerTopics(listPages)
             }
     }
 

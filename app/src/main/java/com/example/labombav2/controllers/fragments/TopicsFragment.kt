@@ -18,6 +18,7 @@ import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.example.labombav2.utils.listeners.OnTopicInsertedListener
 import com.example.labombav2.config.database.TopicDbManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.ListenerRegistration
 
 class TopicsFragment : Fragment(), OnTopicInsertedListener {
     private var binding: FragmentTopicsBinding? = null
@@ -27,6 +28,8 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     private lateinit var page: ViewPager2
     private lateinit var fabAddTopic: FloatingActionButton
     private var listPages: MutableList<MutableList<TopicModel>> = mutableListOf()
+
+    private lateinit var listenerRegistration: ListenerRegistration
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,13 +55,14 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
 
     private fun getListPages() {
         FirebaseAuthManager.getUid { uid ->
-            TopicDbManager.getListPages(uid) { pages ->
-                listPages.addAll(pages)
-                setupViewPager()
+            listenerRegistration = TopicDbManager.getListPagesListener(uid) { pages ->
+                listPages.clear() //limpiar antes de agregar, sirve para cuando se agrega un nuevo tema
                 if (pages.size <= 0) {
                     tvNoTopics.visibility = View.VISIBLE
                 } else {
                     tvNoTopics.visibility = View.GONE
+                    listPages.addAll(pages)
+                    setupViewPager()
                 }
             }
         }
@@ -113,6 +117,13 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     override fun onTopicInserted(newTopic: TopicModel) {
         FirebaseAuthManager.getUid { uid ->
             TopicDbManager.createTopic(uid, newTopic)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (::listenerRegistration.isInitialized) {
+            listenerRegistration.remove()
         }
     }
 }
