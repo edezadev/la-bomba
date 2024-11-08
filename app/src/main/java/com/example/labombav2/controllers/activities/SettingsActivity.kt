@@ -10,7 +10,6 @@ import com.example.labombav2.databinding.ActivitySettingsBinding
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.controllers.fragments.PenaltyFragment
 import com.example.labombav2.controllers.fragments.TimerFragment
-import com.example.labombav2.controllers.fragments.TopicsFragment
 import com.google.android.material.button.MaterialButton
 
 class SettingsActivity : BaseActivity() {
