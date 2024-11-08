@@ -3,6 +3,7 @@
     <dimen name="zero">0dp</dimen>
     <dimen name="btn_normal_width">220dp</dimen>
     <dimen name="padding_medium">20dp</dimen>
+    <dimen name="padding_common">16dp</dimen>
     <dimen name="padding_large">24dp</dimen>
     <dimen name="padding_xlarge">28dp</dimen>
     <dimen name="outline_width">2dp</dimen>
@@ -12,7 +13,6 @@
     <dimen name="height_item">90dp</dimen>
     <dimen name="background_radius">8dp</dimen>
     <dimen name="outline_width_medium">3dp</dimen>
-    <dimen name="padding_common">16dp</dimen>
     <dimen name="padding_small">12dp</dimen>
     <dimen name="max_width_checkbox">312dp</dimen>
     <dimen name="space_large">60dp</dimen>

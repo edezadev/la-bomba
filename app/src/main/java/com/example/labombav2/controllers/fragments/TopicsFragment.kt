@@ -19,6 +19,7 @@ import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.example.labombav2.utils.listeners.OnTopicInsertedListener
 import com.example.labombav2.config.database.TopicDbManager
 import com.example.labombav2.controllers.adapters.PageIndicatorAdapter
+import com.example.labombav2.utils.listeners.OnCurrentPageListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ListenerRegistration
 
@@ -33,6 +34,7 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     private var listPages: MutableList<MutableList<TopicModel>> = mutableListOf()
 
     private lateinit var listenerRegistration: ListenerRegistration
+    private var changeListener: OnCurrentPageListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,6 +68,7 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
                     tvNoTopics.visibility = View.GONE
                     listPages.addAll(pages)
                     setupViewPager()
+                    addPageIndicators(0,listPages.size)
                 }
             }
         }
@@ -78,17 +81,21 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
         vpPageTopics.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+//              Permite cambiar visualmente el indicador de la página actual
                 addPageIndicators(position, listPages.size)
+//              Aqui se deberia cambiar el valor de currentpage para que sea escuchado en el adapter
+                changeListener?.onCurrentPageChange(position)
             }
         })
     }
 
-    //  Método para crear los indicadores de la página
+    //  Métodoo para crear los indicadores de la página
     private fun addPageIndicators(currentPage: Int, totalPages: Int) {
         recyclerPageIndicator.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL, false)
-        pageIndicatorAdapter = PageIndicatorAdapter(currentPage, totalPages) { page ->
-            vpPageTopics.setCurrentItem(page, true)
+        pageIndicatorAdapter = PageIndicatorAdapter(currentPage, totalPages) { numPage ->
+//          Cambiar la página de acuerdo a la posición del indicador que se hizo click
+            vpPageTopics.setCurrentItem(numPage, true)
         }
         recyclerPageIndicator.adapter = pageIndicatorAdapter
     }
@@ -106,6 +113,15 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
         FirebaseAuthManager.getUid { uid ->
             TopicDbManager.createTopic(uid, newTopic)
         }
+    }
+    /**
+     * Crear interfaz para listener
+     * Aqui crear metodo de configruacion para listener, variable para instanciar al metodo de la interfaz enviando el nuevo dato
+     * que en este caso seria el nuevo currentPage
+     * En el adapter extender de la interfaz, lo que implementará el metodo de ésta y ahi manejar el valor de currentPage, ademas crear un
+     * objeto de este fragment y llamar al metodo de configuracion */
+    fun setOnDataChangeListener(listener: OnCurrentPageListener) {
+        this.changeListener = listener
     }
 
     override fun onStop() {

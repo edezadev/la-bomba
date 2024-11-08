@@ -5,8 +5,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/hint_indicator_page"
-    android:textColor="?colorPrimary"
     android:textSize="@dimen/size_text_item"
-    tools:ignore="SpUsage"
-    android:paddingHorizontal="@dimen/padding_common">
+    android:textColor="?colorPrimary"
+    android:padding="@dimen/padding_large"
+    android:background="@drawable/background_edge"
+    android:layout_marginHorizontal="@dimen/padding_small"
+    tools:ignore="SpUsage">
 </TextView>
