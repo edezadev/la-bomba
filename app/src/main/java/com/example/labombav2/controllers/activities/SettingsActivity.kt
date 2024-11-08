@@ -9,6 +9,7 @@ import com.example.labombav2.R
 import com.example.labombav2.databinding.ActivitySettingsBinding
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.controllers.fragments.PenaltyFragment
+import com.example.labombav2.controllers.fragments.TimerFragment
 import com.example.labombav2.controllers.fragments.TopicsFragment
 import com.google.android.material.button.MaterialButton
 
@@ -48,7 +49,7 @@ class SettingsActivity : BaseActivity() {
         currentFragment = fragment
 
         if (::btnNext.isInitialized) {
-            if (currentFragment is TopicsFragment) {
+            if (currentFragment is TimerFragment) {
                 btnNext.visibility = View.GONE
             }else {
                 btnNext.visibility = View.VISIBLE

@@ -20,6 +20,7 @@ import com.example.labombav2.utils.listeners.OnTopicInsertedListener
 import com.example.labombav2.config.database.TopicDbManager
 import com.example.labombav2.controllers.adapters.PageIndicatorAdapter
 import com.example.labombav2.utils.listeners.OnCurrentPageListener
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ListenerRegistration
 
@@ -27,6 +28,7 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     private var binding: FragmentTopicsBinding? = null
     private var pageTopicsAdapter: PageTopicsAdapter? = null
     private var pageIndicatorAdapter: PageIndicatorAdapter? = null
+    private lateinit var btnNext: MaterialButton
     private lateinit var tvNoTopics: TextView
     private lateinit var recyclerPageIndicator: RecyclerView
     private lateinit var vpPageTopics: ViewPager2
@@ -52,8 +54,12 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
 
         getListPages()
 
-        activity?.updateView(this, getString(R.string.topics_name))
+        activity?.let{
+            it.updateView(this, getString(R.string.topics_name))
+            btnNext = it.findViewById(R.id.btnNext)
+        }
 
+        btnNext.setOnClickListener { activity?.addFragment(TimerFragment()) }
         fabAddTopic.setOnClickListener{showAddTopic()}
         return view
     }
