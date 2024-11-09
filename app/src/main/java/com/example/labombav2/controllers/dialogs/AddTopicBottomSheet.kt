@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.example.labombav2.R
+import com.example.labombav2.config.auth.FirebaseAuthManager
+import com.example.labombav2.config.database.TopicDbManager
 import com.example.labombav2.databinding.BottomSheetAddTopicBinding
 import com.example.labombav2.models.TopicModel
+import com.example.labombav2.utils.Constants
 import com.example.labombav2.utils.listeners.OnTopicInsertedListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -44,16 +47,28 @@ class AddTopicBottomSheet : BottomSheetDialogFragment() {
         val mBehavior = BottomSheetBehavior.from(bshAddTopic)
         mBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
-        btnAddTopic.setOnClickListener {
-            addTopic()
-        }
+//      Recibir el id del Tema y cambiar la acción de AGREGAR o EDITAR
+        val idTopic = arguments?.getString(Constants.ID_TOPIC)
+        idTopic?.let { changeActionButton(it) }
+
+        btnAddTopic.setOnClickListener { addTopic() }
+        btnEditTopic.setOnClickListener { editTopic(idTopic) }
 
         return binding?.root
     }
 
-//  Método de configuración para asignar un listener específico que implementa la interfaz
-    fun setOnDataInsertedListener(listener: OnTopicInsertedListener) {
-        this.insertedListener = listener
+    private fun changeActionButton(idTopic: String) {
+        btnAddTopic.visibility = View.GONE
+        btnEditTopic.visibility = View.VISIBLE
+        getNameTopic(idTopic)
+    }
+
+    private fun getNameTopic(idTopic: String) {
+        FirebaseAuthManager.getUid { uid ->
+            TopicDbManager.getTopic(uid, idTopic) { topic ->
+                etTopic.setText(topic.name)
+            }
+        }
     }
 
     private fun addTopic() {
@@ -63,6 +78,21 @@ class AddTopicBottomSheet : BottomSheetDialogFragment() {
             if (nameTopic != null) {
                 insertedListener?.onTopicInserted(TopicModel(name = nameTopic))
                 dismiss()
+            }
+        }
+    }
+
+    private fun editTopic(idTopic: String?) {
+        val nameTopic = etTopic.text?.toString()?.trim()
+
+        if (textValidation(nameTopic)) {
+            FirebaseAuthManager.getUid { uid ->
+                if (nameTopic != null) {
+                    TopicDbManager.updateTopic(uid,
+                        idTopic!!,
+                        mapOf(Constants.NAME to nameTopic))
+                    dismiss()
+                }
             }
         }
     }
@@ -83,6 +113,11 @@ class AddTopicBottomSheet : BottomSheetDialogFragment() {
     private fun setError(text: String) {
         tilTopic.error = text
         tilTopic.requestFocus()
+    }
+
+    //  Métodoo de configuración para asignar un listener específico que implementa la interfaz
+    fun setOnDataInsertedListener(listener: OnTopicInsertedListener) {
+        this.insertedListener = listener
     }
 
     companion object {
