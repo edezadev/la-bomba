@@ -81,7 +81,7 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     }
 
     private fun setupViewPager() {
-        pageTopicsAdapter = PageTopicsAdapter(listPages)
+        pageTopicsAdapter = PageTopicsAdapter(listPages, parentFragmentManager)
         vpPageTopics.adapter = pageTopicsAdapter
 
         vpPageTopics.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){

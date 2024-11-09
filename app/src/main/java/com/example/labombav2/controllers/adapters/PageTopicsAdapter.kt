@@ -2,6 +2,7 @@ package com.example.labombav2.controllers.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.labombav2.databinding.ItemPageTopicsBinding
@@ -10,7 +11,10 @@ import com.example.labombav2.models.TopicModel
  * Manejar la lista de las páginas con su respectiva lista de temas, y pasar cada página con su
  * lista de temas a Topic Adapter
  **/
-class PageTopicsAdapter(private val items:MutableList<MutableList<TopicModel>>) :
+class PageTopicsAdapter(
+    private val items:MutableList<MutableList<TopicModel>>,
+    private var fragmentManager: FragmentManager
+) :
     RecyclerView.Adapter<PageTopicsAdapter.ViewHolder>(){
     inner class ViewHolder(binding: ItemPageTopicsBinding) : RecyclerView.ViewHolder(binding.root) {
         val recyclerTopic = binding.recyclerTopic
@@ -30,7 +34,7 @@ class PageTopicsAdapter(private val items:MutableList<MutableList<TopicModel>>) 
         val page = items[position]
         val layoutManager = LinearLayoutManager(holder.itemView.context)
         holder.recyclerTopic.layoutManager = layoutManager
-        val adapter = TopicAdapter(page)
+        val adapter = TopicAdapter(page, fragmentManager)
         holder.recyclerTopic.adapter = adapter
     }
 }

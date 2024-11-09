@@ -42,4 +42,5 @@
     <string name="hint_txt_topic">Tema</string>
     <string name="error_empty_topic">Ingrese un tema</string>
     <string name="hint_indicator_page">1</string>
+    <string name="message_delete_topic">¿Seguro que deseas eliminar el tema?</string>
 </resources>
