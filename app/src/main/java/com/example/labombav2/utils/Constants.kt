@@ -9,6 +9,7 @@ object Constants {
     const val NAME = "name"
     const val IS_CHECKED = "isChecked"
     const val ID_PLAYER = "idPlayer"
+    const val ID_TOPIC = "idTopic"
     const val COD_HTML_DOTS = "&#8226;"
     const val TITLE = "title"
     const val IMAGE = "image"

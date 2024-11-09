@@ -36,7 +36,7 @@ object TopicDbManager {
             }
     }
 
-//  Método para obtener una página de datos de Firestore
+//  Métodoo para obtener una página de datos de Firestore
     fun getListPagesListener(uid: String, listenerTopics: (MutableList<MutableList<TopicModel>>) -> Unit) : ListenerRegistration {
         return userRef.document(uid).collection(Constants.TOPICS)
             .addSnapshotListener {snapshot, error ->
@@ -91,5 +91,22 @@ object TopicDbManager {
         }catch (e: Exception) {
             null
         }
+    }
+
+    fun getTopic (uid: String, idTopic: String, topic: (TopicModel) -> Unit) {
+        userRef.document(uid).collection(Constants.TOPICS).document(idTopic).get()
+            .addOnSuccessListener { snapshot ->
+                snapshot.toObject(TopicModel::class.java)?.let { topic(it) }
+            }
+    }
+
+    fun deleteTopic(uid: String, idTopic: String) {
+        userRef.document(uid).collection(Constants.TOPICS).document(idTopic).delete()
+            .addOnSuccessListener {
+                Log.d("TopicDeleted", "The topic was deleted successfully")
+            }
+            .addOnFailureListener {
+                Log.e("ErrorDeletingTopic", "Couldn't delete the topic", it)
+            }
     }
 }
