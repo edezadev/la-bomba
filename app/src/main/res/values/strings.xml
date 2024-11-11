@@ -43,4 +43,12 @@
     <string name="error_empty_topic">Ingrese un tema</string>
     <string name="hint_indicator_page">1</string>
     <string name="message_delete_topic">¿Seguro que deseas eliminar el tema?</string>
+    <string name="timer_name">Tiempo de bomba</string>
+    <string name="title_time_seg">Tiempo de bomba: Seg.</string>
+    <string name="image_time">Imagen representativa de un timer</string>
+    <string name="start_game">¡A jugar!</string>
+    <string name="text_30sec">30</string>
+    <string name="text_45sec">45</string>
+    <string name="text_60sec">60</string>
+    <string name="text_90sec">90</string>
 </resources>

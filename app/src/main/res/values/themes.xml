@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.LaBombaV2" parent="Theme.Material3.Light.NoActionBar">
          <item name="colorPrimary">@color/primary</item>
+         <item name="colorOnPrimary">@color/onPrimary</item>
          <item name="colorPrimaryContainer">@color/primaryContainer</item>
          <item name="colorOnPrimaryContainer">@color/onPrimaryContainer</item>
          <item name="colorOutline">@color/outline</item>

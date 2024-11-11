@@ -1,14 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/padding_medium"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".controllers.fragments.TimerFragment">
+    <ImageView
+        android:id="@+id/imgTime"
+        android:layout_width="@dimen/width_img"
+        android:layout_height="@dimen/zero"
+        android:src="@drawable/ic_time"
+        android:contentDescription="@string/image_time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline"/>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="@dimen/zero"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_time_seg"
+        android:textColor="?colorPrimary"
+        android:textSize="@dimen/size_text_common"
+        tools:ignore="SpUsage"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/padding_medium"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb30sec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_30sec"
+            android:textSize="@dimen/size_text_xlarge"
+            tools:ignore="SpUsage"
+            android:textColor="?colorOnPrimary"
+            android:button="@null"
+            android:checked="true"
+            android:background="@drawable/radio_button"
+            android:paddingHorizontal="@dimen/padding_small"
+            android:paddingVertical="@dimen/padding_large"
+            android:layout_marginEnd="@dimen/padding_common"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb45sec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_45sec"
+            android:textSize="@dimen/size_text_xlarge"
+            tools:ignore="SpUsage"
+            android:textColor="?colorPrimary"
+            android:button="@null"
+            android:background="@drawable/radio_button"
+            android:paddingHorizontal="@dimen/padding_small"
+            android:paddingVertical="@dimen/padding_large"
+            android:layout_marginEnd="@dimen/padding_common"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb60sec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_60sec"
+            android:textSize="@dimen/size_text_xlarge"
+            tools:ignore="SpUsage"
+            android:textColor="?colorPrimary"
+            android:button="@null"
+            android:background="@drawable/radio_button"
+            android:paddingHorizontal="@dimen/padding_small"
+            android:paddingVertical="@dimen/padding_large"
+            android:layout_marginEnd="@dimen/padding_common"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/rb90sec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_90sec"
+            android:textSize="@dimen/size_text_xlarge"
+            tools:ignore="SpUsage"
+            android:textColor="?colorPrimary"
+            android:button="@null"
+            android:background="@drawable/radio_button"
+            android:paddingHorizontal="@dimen/padding_small"
+            android:paddingVertical="@dimen/padding_large"/>
+    </RadioGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStartGame"
+        android:layout_width="@dimen/btn_normal_width"
+        android:layout_height="@dimen/btn_normal_height"
+        android:text="@string/start_game"
+        android:layout_marginBottom="@dimen/padding_xxlarge"
+        style="@style/ButtonOutlineStyleMedium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
