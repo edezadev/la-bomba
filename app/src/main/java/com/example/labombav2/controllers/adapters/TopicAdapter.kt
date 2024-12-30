@@ -128,5 +128,3 @@ class TopicAdapter(
             .show()
     }
 }
-/*TODO: continuar con el castigo y finalizar con la impresion por consola de todos los
-* datos guardados para el juego*/
