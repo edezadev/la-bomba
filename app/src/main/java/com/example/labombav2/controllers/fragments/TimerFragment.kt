@@ -1,7 +1,6 @@
 package com.example.labombav2.controllers.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.example.labombav2.R
 import com.example.labombav2.controllers.activities.SettingsActivity
 import com.example.labombav2.databinding.FragmentTimerBinding
+import com.example.labombav2.utils.GameSession
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.radiobutton.MaterialRadioButton
 
@@ -37,10 +37,29 @@ class TimerFragment : Fragment() {
     }
 
     private fun getSelectedTime() {
+        /*Setear el tiempo guardado en GameSession*/
+        GameSession.time?.let { time ->
+            getRadioButtonId(time).takeIf { it != -1 }?.let { radioButtonId ->
+                radioGroup.check(radioButtonId)
+                changeStyle(radioButtonId)
+            }
+        }
+
         radioGroup.setOnCheckedChangeListener { _, checkedId ->
             changeStyle(checkedId)
-            val selectedValue = radioGroup.findViewById<MaterialRadioButton>(checkedId)
-            Log.e("valor del tiempo", selectedValue.text.toString())
+            val selectedTime = radioGroup.findViewById<MaterialRadioButton>(checkedId)
+                .text.toString().toInt()
+            GameSession.time = selectedTime * 1000
+        }
+    }
+
+    private fun getRadioButtonId(milliseconds: Int?): Int {
+        return when (milliseconds) {
+            30000 -> R.id.rb30sec
+            45000 -> R.id.rb45sec
+            60000 -> R.id.rb60sec
+            90000 -> R.id.rb90sec
+            else -> -1
         }
     }
 
@@ -53,5 +72,4 @@ class TimerFragment : Fragment() {
             }
         }
     }
-
 }
