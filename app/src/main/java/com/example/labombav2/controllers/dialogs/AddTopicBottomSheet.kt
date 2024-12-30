@@ -12,6 +12,7 @@ import com.example.labombav2.config.database.TopicDbManager
 import com.example.labombav2.databinding.BottomSheetAddTopicBinding
 import com.example.labombav2.models.TopicModel
 import com.example.labombav2.utils.Constants
+import com.example.labombav2.utils.GameSession
 import com.example.labombav2.utils.listeners.OnTopicInsertedListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -91,6 +92,10 @@ class AddTopicBottomSheet : BottomSheetDialogFragment() {
                     TopicDbManager.updateTopic(uid,
                         idTopic!!,
                         mapOf(Constants.NAME to nameTopic))
+                    //editar si existe en GameSession
+                    GameSession.topics.find { it.id == idTopic }?.let {
+                        it.name = nameTopic
+                    }
                     dismiss()
                 }
             }
