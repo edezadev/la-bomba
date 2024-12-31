@@ -18,6 +18,7 @@ import com.example.labombav2.models.PlayerModel
 import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.example.labombav2.utils.listeners.OnPlayerInsertedListener
 import com.example.labombav2.config.database.PlayerDbManager
+import com.example.labombav2.utils.GameSession
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ListenerRegistration
@@ -65,7 +66,12 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
             btnNext = it.findViewById(R.id.btnNext)
         }
 
-        btnNext.setOnClickListener { activity?.addFragment(TopicsFragment()) }
+        btnNext.setOnClickListener {
+            if (GameSession.players.isEmpty() && listPlayers != GameSession.players) {
+                GameSession.players.addAll(listPlayers)
+            }
+            activity?.addFragment(TopicsFragment())
+        }
         fabAddPlayer.setOnClickListener{ showAddPlayer() }
 
         return view

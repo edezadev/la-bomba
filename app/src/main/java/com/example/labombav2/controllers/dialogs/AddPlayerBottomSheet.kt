@@ -13,6 +13,7 @@ import com.example.labombav2.utils.Constants
 import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.example.labombav2.utils.listeners.OnPlayerInsertedListener
 import com.example.labombav2.config.database.PlayerDbManager
+import com.example.labombav2.utils.GameSession
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -90,6 +91,10 @@ class AddPlayerBottomSheet : BottomSheetDialogFragment() {
                     PlayerDbManager.updatePlayer(uid,
                         idPlayer!!,
                         mapOf(Constants.NAME to namePlayer))
+                    //Editar si existe
+                    GameSession.players.find { it.id == idPlayer }?.let {
+                        it.name = namePlayer
+                    }
                     dismiss()
                 }
             }

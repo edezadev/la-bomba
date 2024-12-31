@@ -15,6 +15,7 @@ import com.example.labombav2.models.PlayerModel
 import com.example.labombav2.utils.Constants
 import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.example.labombav2.config.database.PlayerDbManager
+import com.example.labombav2.utils.GameSession
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class PlayerAdapter(
@@ -25,7 +26,46 @@ class PlayerAdapter(
     inner class ViewHolder(binding: ItemPlayerBinding):
         RecyclerView.ViewHolder(binding.root) {
         val tvPlayer = binding.tvPlayer
-        lateinit var uid: String
+        var uid: String? = null
+        private val popUp: ListPopupWindow = createListPopupWindow(itemView.context)
+        lateinit var player: PlayerModel //Referencia la objeto(item) actual
+
+        init {
+            FirebaseAuthManager.getUid {
+                uid = it
+            }
+//          Establecer una vez el long click
+            tvPlayer.setOnLongClickListener{
+                if (::player.isInitialized) { //solo mostramos si hay un player cargado
+                    popUp.show()
+                }
+                    true
+            }
+        }
+        private fun createListPopupWindow(context: Context): ListPopupWindow {
+            val popUp = ListPopupWindow(
+                context,
+                null,
+                com.google.android.material.R.attr.listPopupWindowStyle)
+
+//          Establecer textView como ancla del popup
+            popUp.anchorView = tvPlayer
+
+//          Lista de contenido
+            val items = listOf(context.getString(R.string.edit), context.getString(R.string.delete))
+            val adapter = ArrayAdapter(context, R.layout.item_popup_menu, items)
+            popUp.setAdapter(adapter)
+
+            popUp.setOnItemClickListener { _, _, index, _ ->
+                when(index) {
+                    0 -> showEditPlayer(player.id)
+                    1 -> showDeleteDialog(this, player)
+                }
+                popUp.dismiss()
+            }
+
+            return popUp
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerAdapter.ViewHolder {
@@ -40,42 +80,9 @@ class PlayerAdapter(
 
     override fun onBindViewHolder(holder: PlayerAdapter.ViewHolder, position: Int) {
         val item = items[position]
-        val popUp: ListPopupWindow = setPopUp(holder.tvPlayer.context, holder, item.id)
-        FirebaseAuthManager.getUid {
-            holder.uid = it
-        }
+        holder.player = item //Almacenamos el objeto Payer
 
         holder.tvPlayer.text = item.name
-
-        holder.tvPlayer.setOnLongClickListener{
-            popUp.show()
-            true
-        }
-    }
-
-    private fun setPopUp(context: Context, holder: ViewHolder, id: String): ListPopupWindow {
-        val popUp = ListPopupWindow(
-            context,
-            null,
-            com.google.android.material.R.attr.listPopupWindowStyle)
-
-//      Establecer textView como ancla del popup
-        popUp.anchorView = holder.tvPlayer
-
-//      Lista de contenido
-        val items = listOf(context.getString(R.string.edit), context.getString(R.string.delete))
-        val adapter = ArrayAdapter(holder.tvPlayer.context, R.layout.item_popup_menu, items)
-        popUp.setAdapter(adapter)
-
-        popUp.setOnItemClickListener { _, _, index, _ ->
-            when(index) {
-                0 -> showEditPlayer(id)
-                1 -> showDeleteDialog(holder, id)
-            }
-            popUp.dismiss()
-        }
-
-        return popUp
     }
 
     private fun showEditPlayer(id: String) {
@@ -84,12 +91,18 @@ class PlayerAdapter(
         bottomSheet.show(fragmentManager.beginTransaction(), AddPlayerBottomSheet.TAG)
     }
 
-    private fun showDeleteDialog(holder: ViewHolder, id: String) {
+    private fun showDeleteDialog(holder: ViewHolder, item: PlayerModel) {
+        val position = items.indexOf(item)
         MaterialAlertDialogBuilder(holder.tvPlayer.context)
             .setTitle(R.string.title_alert)
             .setMessage(R.string.message_delete_player)
             .setPositiveButton(R.string.action_positive) {dialog, _ ->
-                PlayerDbManager.deletePlayer(holder.uid, id)
+                holder.uid?.let { PlayerDbManager.deletePlayer(it, item.id) }
+                GameSession.players.remove(item) //Eliminar cuando se elimine en la BD
+                if (position != -1) {
+                    items.removeAt(position)
+                    notifyItemRemoved(position)
+                }
                 notifyItemRemoved(itemCount)
                 dialog.dismiss()
             }
