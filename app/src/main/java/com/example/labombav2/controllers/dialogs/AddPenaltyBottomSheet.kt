@@ -50,7 +50,7 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
         return binding?.root
     }
 
-//  Método de configuración para asignar un listener específico que implementa la interfaz
+//  Métodoo de configuración para asignar un listener específico que implementa la interfaz
     fun setOnDataInsertedListener ( listener: OnPenaltyInsertedListener) {
         this.insertedListener = listener
     }
@@ -67,7 +67,7 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
             return
         }
 
-        insertedListener?.onPenaltyInserted(PenaltyModel(name = namePenalty, isChecked = false))
+        insertedListener?.onPenaltyInserted(PenaltyModel(name = namePenalty))
         dismiss()
     }
 

@@ -21,7 +21,7 @@ import com.example.labombav2.utils.listeners.OnPenaltyInsertedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ListenerRegistration
-
+/*TODO: Ahora agregar el penalty al game session, recordar modificar los atributos para quitar el ischecked*/
 class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
     private var binding: FragmentPenaltyBinding? = null
     private var adapter: PenaltyAdapter? = null

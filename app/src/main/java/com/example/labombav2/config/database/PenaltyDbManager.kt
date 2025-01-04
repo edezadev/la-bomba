@@ -13,10 +13,10 @@ object PenaltyDbManager {
 //   Crear el usuario con los temas predeterminados
     fun saveDataUser(uid: String) {
         val listPenalties: List<PenaltyModel> = listOf(
-            PenaltyModel(name = "Bailar", isChecked = false),
-            PenaltyModel(name = "Cantar", isChecked = false),
-            PenaltyModel(name = "Beber", isChecked = false),
-            PenaltyModel(name = "Contar un chiste", isChecked = false),
+            PenaltyModel(name = "Bailar"),
+            PenaltyModel(name = "Cantar"),
+            PenaltyModel(name = "Beber"),
+            PenaltyModel(name = "Contar un chiste"),
         )
         val penaltiesRef = userRef.document(uid).collection(Constants.PENALTIES)
 
