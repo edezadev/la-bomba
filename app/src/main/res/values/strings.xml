@@ -36,7 +36,7 @@
     <string name="instruction_game">Responde correctamente y pasa la bomba antes que explote</string>
     <string name="instruction_topics">Selecciona mínimo tres temas para empezar a jugar con tus amigos</string>
     <string name="add_topic">Botón para agregar un tema</string>
-    <string name="hint_no_topics">No creaste ningún tema</string>
+    <string name="hint_no_topics">Debes crear un tema, por ejemplo: "Nombres de personas que contengan la letra E"</string>
     <string name="hint_name_topic">Nombre del tema</string>
     <string name="add_topic_title">Agrega un nuevo tema</string>
     <string name="hint_txt_topic">Tema</string>
