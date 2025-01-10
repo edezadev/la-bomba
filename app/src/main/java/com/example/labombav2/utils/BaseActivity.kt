@@ -1,14 +1,32 @@
 package com.example.labombav2.utils
 
+import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+
 /* Todas las activies deberán extender de BaseActivity en lugar de AppCompatActivity para que
  * esta configuración de las barras del sistema esté en todas las pantallas */
 
 open class BaseActivity: AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        /* Habilitar edge to edge, para la función de pantalla completa con barras de estado
+         * transparentes, REQUIERE android 10 (API 29) */
+        enableEdgeToEdge()
+        /* Ajusta el espacio alrededor de la vista principal de la app para que no se superponga
+         * con las barras de sistema */
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+    }
+
     private fun hideSystemUiHighR() {
         val windowController = WindowCompat.getInsetsController(window, window.decorView)
         /* Configurar el comportamiento de las barras del sistema: esta opción muestra las barras del
