@@ -73,7 +73,10 @@ class PenaltyAdapter(private var items: MutableList<PenaltyModel>) :
 //              Eliminar de la BD
                 uid?.let {
                     PenaltyDbManager.deletePenalty(it, item.id)
-                    GameSession.penalty = null
+                    if (GameSession.penalty == item) {
+                        GameSession.penalty = null
+                    }
+
                     val position = items.indexOf(item)
                     if (position != -1) {
                         items.removeAt(position)
