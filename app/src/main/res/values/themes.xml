@@ -16,7 +16,7 @@
          <item name="colorOnErrorContainer">@color/onErrorContainer</item>
 
         <!--Recursos generales de la app-->
-        <item name="fontFamily">@font/piximisa</item>
+        <item name="android:fontFamily">@font/piximisa</item>
         <item name="android:windowBackground">@drawable/background</item>
 <!--        <item name="bottomSheetDialogTheme">@style/ThemeModalBottomSheetDialog</item>-->
 
