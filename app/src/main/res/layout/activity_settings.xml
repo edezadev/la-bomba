@@ -26,6 +26,7 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/arrow_next"
                 app:iconSize="@dimen/icon_size"
+                android:contentDescription="@string/text_description_next"
                 android:layout_gravity="end"
                 style="?attr/materialIconButtonStyle"/>
         </com.google.android.material.appbar.MaterialToolbar>
