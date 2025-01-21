@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controllers.activities.StartGameActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:menu="@menu/menu_toolbar"
+            app:titleTextColor="?colorPrimary"
+            app:titleCentered="true"
+            app:popupTheme="@style/PopupMenuStyle"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_bomb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imgBombTimer"
+                android:layout_width="@dimen/zero"
+                android:layout_height="@dimen/height_bomb_timer"
+                android:src="@drawable/bomba"
+                android:contentDescription="@null"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_init_timer"
+                android:textSize="@dimen/size_text_timer"
+                tools:ignore="SpUsage"
+                android:fontFamily="@font/open_24_display"
+                android:textColor="?colorOnSurface"
+                android:background="@drawable/style_timer"
+                android:paddingHorizontal="@dimen/padding_xlarge"
+                android:paddingBottom="@dimen/padding_xsmall"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.72"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPlayPause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_play"
+                app:iconSize="@dimen/icon_size_medium"
+                android:contentDescription="@string/text_description_play"
+                android:layout_marginTop="@dimen/padding_small"
+                android:padding="@dimen/zero"
+                style="?attr/materialIconButtonStyle"
+                app:iconTint="?colorOnSurface"
+                app:layout_constraintTop_toBottomOf="@id/tvTime"
+                app:layout_constraintStart_toStartOf="@id/tvTime"
+                app:layout_constraintEnd_toEndOf="@id/tvTime"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvLabelTopic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_label_topic"
+            android:textColor="?colorPrimary"
+            android:textSize="@dimen/size_label_topic"
+            tools:ignore="SpUsage"
+            android:layout_margin="@dimen/padding_medium"
+            android:layout_below="@id/container_bomb"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/tvTopicName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_name_topic"
+            android:textColor="?colorPrimary"
+            android:textSize="@dimen/size_label_topic"
+            tools:ignore="SpUsage"
+            android:layout_marginHorizontal="@dimen/padding_medium"
+            android:layout_below="@id/tvLabelTopic"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -51,4 +51,9 @@
     <string name="text_45sec">45</string>
     <string name="text_60sec">60</string>
     <string name="text_90sec">90</string>
+    <string name="exit">Salir</string>
+    <string name="text_init_timer">0:00</string>
+    <string name="text_description_play">Iniciar tiempo de bomba</string>
+    <string name="text_label_topic">Tema:</string>
+    <string name="text_description_next">Ir al siguiente ajuste de la partida</string>
 </resources>

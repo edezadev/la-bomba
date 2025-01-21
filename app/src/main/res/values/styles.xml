@@ -8,6 +8,9 @@
     <style name="ButtonOutlineStyle" parent="Widget.Material3.Button.OutlinedButton">
         <item name="rippleColor">@color/ripple</item>
     </style>
+    <style name="PopupMenuStyle" parent="Widget.Material3.PopupMenu">
+        <item name="android:textColor">?colorOnSurfaceVariant</item>
+    </style>
 
     <!--<style name="FABStyle" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
         <item name="materialThemeOverlay">@style/FAB.ThemeOverlay</item>

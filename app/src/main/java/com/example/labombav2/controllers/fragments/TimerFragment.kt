@@ -1,5 +1,6 @@
 package com.example.labombav2.controllers.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import com.example.labombav2.R
 import com.example.labombav2.controllers.activities.SettingsActivity
+import com.example.labombav2.controllers.activities.StartGameActivity
 import com.example.labombav2.databinding.FragmentTimerBinding
 import com.example.labombav2.utils.GameSession
 import com.google.android.material.button.MaterialButton
@@ -28,10 +30,14 @@ class TimerFragment : Fragment() {
         val activity = activity as? SettingsActivity
         binding?.let {
             radioGroup = it.radioGroup
+            btnStartGame = it.btnStartGame
         }
 
         activity?.updateView(this, getString(R.string.timer_name))
 
+        btnStartGame.setOnClickListener {
+            startActivity(Intent(requireContext(), StartGameActivity::class.java))
+        }
         getSelectedTime()
         return view
     }
