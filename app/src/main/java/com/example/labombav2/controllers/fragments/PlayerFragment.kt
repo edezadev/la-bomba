@@ -2,6 +2,7 @@ package com.example.labombav2.controllers.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +68,9 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
         }
 
         btnNext.setOnClickListener {
-            if (GameSession.players.isEmpty() && listPlayers != GameSession.players) {
+            if (GameSession.players.isEmpty() || listPlayers != GameSession.players) {
+                //Primero limpiar la lista de Game Session
+                GameSession.players.clear()
                 GameSession.players.addAll(listPlayers)
             }
             activity?.addFragment(TopicsFragment())
