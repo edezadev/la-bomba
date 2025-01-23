@@ -14,6 +14,7 @@ import com.example.labombav2.controllers.activities.StartGameActivity
 import com.example.labombav2.databinding.FragmentTimerBinding
 import com.example.labombav2.utils.GameSession
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.radiobutton.MaterialRadioButton
 
 class TimerFragment : Fragment() {
@@ -36,7 +37,11 @@ class TimerFragment : Fragment() {
         activity?.updateView(this, getString(R.string.timer_name))
 
         btnStartGame.setOnClickListener {
-            startActivity(Intent(requireContext(), StartGameActivity::class.java))
+            when (dataValidation()) {
+                1 -> showAlertDialog(getString(R.string.text_alert_players))
+                2 -> showAlertDialog(getString(R.string.text_alert_topics))
+                else -> startActivity(Intent(requireContext(), StartGameActivity::class.java))
+            }
         }
         getSelectedTime()
         return view
@@ -77,5 +82,27 @@ class TimerFragment : Fragment() {
                 radioButton.setTextColor(ContextCompat.getColor(requireContext(), colorRes))
             }
         }
+    }
+
+    private fun dataValidation(): Int {
+        if (GameSession.players.size < 2) {
+            return 1
+        }
+
+        if (GameSession.topics.size < 5) {
+            return 2
+        }
+
+        return -1
+    }
+
+    private fun showAlertDialog(message: String) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.title_alert))
+            .setMessage(message)
+            .setPositiveButton(getString(R.string.action_ok)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 }

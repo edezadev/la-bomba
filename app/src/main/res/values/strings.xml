@@ -15,6 +15,7 @@
     <string name="error_length_short">Texto muy corto</string>
     <string name="title_alert">¡ALERTA!</string>
     <string name="message_delete_penalty">¿Seguro que deseas eliminar el castigo?</string>
+    <string name="action_ok">Ok</string>
     <string name="action_positive">Confirmar</string>
     <string name="action_negative">Cancelar</string>
     <string name="add_player">Botón para agregar un jugador</string>
@@ -56,4 +57,6 @@
     <string name="text_description_play">Iniciar tiempo de bomba</string>
     <string name="text_label_topic">Tema:</string>
     <string name="text_description_next">Ir al siguiente ajuste de la partida</string>
+    <string name="text_alert_players">Deber agregar 2 o más jugadores para iniciar la partida.</string>
+    <string name="text_alert_topics">Debe seleccionar 5 o más temas para iniciar la partida.</string>
 </resources>
