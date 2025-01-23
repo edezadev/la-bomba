@@ -100,7 +100,7 @@ class TimerFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.title_alert))
             .setMessage(message)
-            .setPositiveButton(getString(R.string.action_ok)) { dialog, _ ->
+            .setPositiveButton(getString(android.R.string.ok)) { dialog, _ ->
                 dialog.dismiss()
             }
             .show()

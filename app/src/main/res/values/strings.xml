@@ -15,7 +15,6 @@
     <string name="error_length_short">Texto muy corto</string>
     <string name="title_alert">¡ALERTA!</string>
     <string name="message_delete_penalty">¿Seguro que deseas eliminar el castigo?</string>
-    <string name="action_ok">Ok</string>
     <string name="action_positive">Confirmar</string>
     <string name="action_negative">Cancelar</string>
     <string name="add_player">Botón para agregar un jugador</string>
