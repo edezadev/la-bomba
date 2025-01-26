@@ -1,13 +1,16 @@
 package com.example.labombav2.controllers.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.labombav2.R
 import com.example.labombav2.databinding.ActivityStartGameBinding
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.utils.GameSession
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
 
 class StartGameActivity : BaseActivity() {
@@ -28,6 +31,16 @@ class StartGameActivity : BaseActivity() {
             tvTopicName = it.tvTopicName
         }
         toolbar.overflowIcon?.setTint(ContextCompat.getColor(this, R.color.primary))
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.exit -> {
+                    showAlertExitGame()
+                    true
+                }
+                else -> false
+            }
+        }
+
         updateTitleAndTopics()
         setTimerSound()
     }
@@ -50,6 +63,22 @@ class StartGameActivity : BaseActivity() {
 
         val textTimer = String.format(Locale.getDefault(), "%01d:%02d", minutes, seconds)
         tvTime.text = textTimer
+    }
+
+    private fun showAlertExitGame() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.title_alert))
+            .setMessage(getString(R.string.message_exit_game))
+            .setPositiveButton(getString(R.string.exit)) { dialog, _ ->
+                Toast.makeText(this, "Aqui va anuncio", Toast.LENGTH_SHORT).show()
+                GameSession.reset()
+                dialog.dismiss()
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+            .setNegativeButton(getString(R.string.action_negative)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onDestroy() {

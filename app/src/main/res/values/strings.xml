@@ -59,4 +59,5 @@
     <string name="text_alert_players">Deber agregar 2 o más jugadores para iniciar la partida.</string>
     <string name="text_alert_topics">Debe seleccionar 5 o más temas para iniciar la partida.</string>
     <string name="titleRounds">Ronda N°</string>
+    <string name="message_exit_game">¿Estás seguro que deseas terminar la partida?</string>
 </resources>
