@@ -14,6 +14,6 @@ object GameSession {
         penalty = null
         players.clear()
         topics.clear()
-        time = null
+        time = 30000
     }
 }
