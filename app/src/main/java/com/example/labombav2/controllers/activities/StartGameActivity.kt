@@ -1,15 +1,24 @@
 package com.example.labombav2.controllers.activities
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
+import android.view.KeyEvent
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 import com.example.labombav2.R
 import com.example.labombav2.databinding.ActivityStartGameBinding
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.utils.GameSession
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
 
@@ -17,9 +26,14 @@ class StartGameActivity : BaseActivity() {
     private var binding: ActivityStartGameBinding? = null
     private lateinit var toolbar: MaterialToolbar
     private lateinit var tvTime: TextView
+    private lateinit var btnPlayPause: MaterialButton
     private lateinit var tvTopicName: TextView
     private var round = 0
-    private var timeMillisecond: Long? = 0
+    private var timeMilliseconds: Long? = 0
+    private lateinit var exoPlayer: ExoPlayer
+    private var isPlaying = false
+    private lateinit var mediaItem: MediaItem
+    private lateinit var timer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +42,7 @@ class StartGameActivity : BaseActivity() {
         binding?.let {
             toolbar = it.toolbar
             tvTime = it.tvTime
+            btnPlayPause = it.btnPlayPause
             tvTopicName = it.tvTopicName
         }
         toolbar.overflowIcon?.setTint(ContextCompat.getColor(this, R.color.primary))
@@ -41,8 +56,24 @@ class StartGameActivity : BaseActivity() {
             }
         }
 
+//      Inicializa el reproductor
+        exoPlayer = ExoPlayer.Builder(this).build()
+
+        btnPlayPause.setOnClickListener { playPause() }
+
         updateTitleAndTopics()
         setTimerSound()
+    }
+
+    private fun playPause() {
+        if (isPlaying) {
+            exoPlayer.pause()
+            pause()
+        } else {
+            exoPlayer.play()
+            play()
+        }
+        isPlaying = !isPlaying
     }
 
     private fun updateTitleAndTopics() {
@@ -51,21 +82,68 @@ class StartGameActivity : BaseActivity() {
         tvTopicName.text = GameSession.topics[round].name
     }
 
+//  Cargar un archivo de audio a exoPlayer y convertir tiempo a milisegundos
     private fun setTimerSound() {
-        timeMillisecond = GameSession.time?.toLong()
+        val soundMap = mapOf(
+            45000 to R.raw.forty_five_sec,
+            60000 to R.raw.minute,
+            90000 to R.raw.minute_thirty_sec
+        )
+        val resourceId = soundMap[GameSession.time] ?: R.raw.thirty_sec
+
+        mediaItem = MediaItem.fromUri(Uri.parse("android.resource://$packageName/$resourceId"))
+        exoPlayer.setMediaItem(mediaItem)
+        exoPlayer.prepare()
+
+        timeMilliseconds = GameSession.time?.toLong()
 
         updateTimer()
     }
 
     private fun updateTimer() {
-        val minutes = (timeMillisecond?.div(60000))?.toInt()
-        val seconds = ((timeMillisecond?.rem(60000))?.div(1000))?.toInt()
+        val minutes = (timeMilliseconds?.div(60000))?.toInt()
+        val seconds = ((timeMilliseconds?.rem(60000))?.div(1000))?.toInt()
 
         val textTimer = String.format(Locale.getDefault(), "%01d:%02d", minutes, seconds)
         tvTime.text = textTimer
     }
 
+    private fun play() {
+        timer = object : CountDownTimer(timeMilliseconds!!, 1000) {
+            override fun onTick(p0: Long) {
+                timeMilliseconds = p0 //Actualizando el tiempo en milisegundos
+                updateTimer() //Actualizando el texto del timer
+            }
+
+            override fun onFinish() {
+                tvTime.text = getString(R.string.text_init_timer) //volver a 0 el timer
+                btnPlayPause.icon = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_play)
+
+                round += 1 //incrementa para cambiar el tema y el titulo de la ronda
+
+//              Delay de 1.5 segundos
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (round < GameSession.topics.size) {
+                        timeMilliseconds = GameSession.time?.toLong()
+                    } else {
+                        GameSession.topics.clear()
+                    }
+//                    TODO: mostrar dialogo para seleccionar el perdedor de la ronda
+                }, 1500)
+            }
+        }.start()
+
+        btnPlayPause.icon = AppCompatResources.getDrawable(this, R.drawable.ic_pause)
+    }
+
+    private fun pause() {
+        timer.cancel()
+        btnPlayPause.icon = AppCompatResources.getDrawable(this, R.drawable.ic_play)
+    }
+
     private fun showAlertExitGame() {
+        tempPause()
+
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.title_alert))
             .setMessage(getString(R.string.message_exit_game))
@@ -74,6 +152,7 @@ class StartGameActivity : BaseActivity() {
                 GameSession.reset()
                 dialog.dismiss()
                 startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }
             .setNegativeButton(getString(R.string.action_negative)) { dialog, _ ->
                 dialog.dismiss()
@@ -81,8 +160,30 @@ class StartGameActivity : BaseActivity() {
             .show()
     }
 
+    private fun tempPause() {
+        if (isPlaying) {
+            exoPlayer.pause()
+            pause()
+        }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            showAlertExitGame()
+            return false
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    /* Pausar cuando se minimice la app*/
+    override fun onPause() {
+        super.onPause()
+        tempPause()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+        exoPlayer.release()
     }
 }
