@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controllers.dialogs.SelectLoserBottomSheet">
+    <LinearLayout
+        android:id="@+id/bshSelectLoser"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--Drag handle para accesibilidad-->
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSelectLoser"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/padding_xsmall"
+            tools:listitem="@layout/item_loser" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmLoser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/action_positive"
+            style="@style/ButtonOutlineStyle"
+            android:layout_margin="@dimen/padding_common"/>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
