@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.KeyEvent
 import android.widget.TextView
 import android.widget.Toast
@@ -14,15 +15,17 @@ import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.labombav2.R
+import com.example.labombav2.controllers.dialogs.SelectLoserBottomSheet
 import com.example.labombav2.databinding.ActivityStartGameBinding
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.utils.GameSession
+import com.example.labombav2.utils.listeners.OnLoserListener
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
 
-class StartGameActivity : BaseActivity() {
+class StartGameActivity : BaseActivity(), OnLoserListener {
     private var binding: ActivityStartGameBinding? = null
     private lateinit var toolbar: MaterialToolbar
     private lateinit var tvTime: TextView
@@ -76,7 +79,7 @@ class StartGameActivity : BaseActivity() {
         isPlaying = !isPlaying
     }
 
-    private fun updateTitleAndTopics() {
+    override fun updateTitleAndTopics() {
         val titleRounds = getString(R.string.titleRounds)
         toolbar.title = "$titleRounds ${round + 1}"
         tvTopicName.text = GameSession.topics[round].name
@@ -100,7 +103,7 @@ class StartGameActivity : BaseActivity() {
         updateTimer()
     }
 
-    private fun updateTimer() {
+    override fun updateTimer() {
         val minutes = (timeMilliseconds?.div(60000))?.toInt()
         val seconds = ((timeMilliseconds?.rem(60000))?.div(1000))?.toInt()
 
@@ -128,12 +131,17 @@ class StartGameActivity : BaseActivity() {
                     } else {
                         GameSession.topics.clear()
                     }
-//                    TODO: mostrar dialogo para seleccionar el perdedor de la ronda
+                    showSelectLoser()
                 }, 1500)
             }
         }.start()
 
         btnPlayPause.icon = AppCompatResources.getDrawable(this, R.drawable.ic_pause)
+    }
+
+    private fun showSelectLoser() {
+        val bottomSheet= SelectLoserBottomSheet()
+        bottomSheet.show(supportFragmentManager, SelectLoserBottomSheet.TAG)
     }
 
     private fun pause() {
@@ -163,6 +171,7 @@ class StartGameActivity : BaseActivity() {
     private fun tempPause() {
         if (isPlaying) {
             exoPlayer.pause()
+            isPlaying = !isPlaying
             pause()
         }
     }
