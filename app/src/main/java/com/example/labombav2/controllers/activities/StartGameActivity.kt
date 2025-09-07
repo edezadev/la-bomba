@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.KeyEvent
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +23,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
+import androidx.core.net.toUri
 
 class StartGameActivity : BaseActivity(), OnLoserListener {
     private var binding: ActivityStartGameBinding? = null
@@ -94,7 +94,7 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
         )
         val resourceId = soundMap[GameSession.time] ?: R.raw.thirty_sec
 
-        mediaItem = MediaItem.fromUri(Uri.parse("android.resource://$packageName/$resourceId"))
+        mediaItem = MediaItem.fromUri("android.resource://$packageName/$resourceId".toUri())
         exoPlayer.setMediaItem(mediaItem)
         exoPlayer.prepare()
 
