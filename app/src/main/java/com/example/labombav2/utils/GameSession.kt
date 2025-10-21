@@ -1,5 +1,6 @@
 package com.example.labombav2.utils
 
+import com.example.labombav2.models.LoserModel
 import com.example.labombav2.models.PenaltyModel
 import com.example.labombav2.models.PlayerModel
 import com.example.labombav2.models.TopicModel
@@ -9,11 +10,13 @@ object GameSession {
     var players: MutableList<PlayerModel> = mutableListOf()
     var topics: MutableList<TopicModel> = mutableListOf()
     var time: Int? = 30000
+    var loser: MutableList<LoserModel> = mutableListOf()
 
     fun reset() {
         penalty = null
         players.clear()
         topics.clear()
         time = 30000
+        loser.clear()
     }
 }
