@@ -1,7 +1,6 @@
 package com.example.labombav2.controllers.activities
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -24,6 +23,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
 import androidx.core.net.toUri
+import com.example.labombav2.models.LoserModel
 
 class StartGameActivity : BaseActivity(), OnLoserListener {
     private var binding: ActivityStartGameBinding? = null
@@ -66,20 +66,22 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
 
         updateTitleAndTopics()
         setTimerSound()
+        createLoserList()
     }
 
     private fun playPause() {
         if (isPlaying) {
             exoPlayer.pause()
             pause()
+            isPlaying = false
         } else {
             exoPlayer.play()
             play()
+            isPlaying = true
         }
-        isPlaying = !isPlaying
     }
 
-    override fun updateTitleAndTopics() {
+    private fun updateTitleAndTopics() {
         val titleRounds = getString(R.string.titleRounds)
         toolbar.title = "$titleRounds ${round + 1}"
         tvTopicName.text = GameSession.topics[round].name
@@ -102,8 +104,14 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
 
         updateTimer()
     }
+//Crear lista para la selección del perdedor
+    private fun createLoserList() {
+        for (item in GameSession.players) {
+            GameSession.loser.add(LoserModel(item, 0))
+        }
+    }
 
-    override fun updateTimer() {
+    private fun updateTimer() {
         val minutes = (timeMilliseconds?.div(60000))?.toInt()
         val seconds = ((timeMilliseconds?.rem(60000))?.div(1000))?.toInt()
 
@@ -119,19 +127,13 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
             }
 
             override fun onFinish() {
-                tvTime.text = getString(R.string.text_init_timer) //volver a 0 el timer
+                isPlaying = false
                 btnPlayPause.icon = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_play)
-
-                round += 1 //incrementa para cambiar el tema y el titulo de la ronda
+                tvTime.text = getString(R.string.text_init_timer)
 
 //              Delay de 1.5 segundos
                 Handler(Looper.getMainLooper()).postDelayed({
-                    if (round < GameSession.topics.size) {
-                        timeMilliseconds = GameSession.time?.toLong()
-                    } else {
-                        GameSession.topics.clear()
-                    }
-                    showSelectLoser()
+                  showSelectLoser()
                 }, 1500)
             }
         }.start()
@@ -141,6 +143,7 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
 
     private fun showSelectLoser() {
         val bottomSheet= SelectLoserBottomSheet()
+        bottomSheet.setOnLoserListener(this)
         bottomSheet.show(supportFragmentManager, SelectLoserBottomSheet.TAG)
     }
 
@@ -150,7 +153,7 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
     }
 
     private fun showAlertExitGame() {
-        tempPause()
+        emergencyPause()
 
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.title_alert))
@@ -168,12 +171,39 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
             .show()
     }
 
-    private fun tempPause() {
+    private fun emergencyPause() {
         if (isPlaying) {
             exoPlayer.pause()
-            isPlaying = !isPlaying
             pause()
+            isPlaying = false
         }
+    }
+
+    override fun onBottomSheetDismissed() {
+        round += 1 //Incrementa la ronda para cambiar el título y tema
+
+//        Valida si aún quedan rondas, en base a la cantidad de temas
+        if (round < GameSession.topics.size) {
+            timeMilliseconds = GameSession.time?.toLong()
+            prepareNextRound() //Prepara la siguiente ronda
+        } else {
+//            Fin del juego
+            GameSession.reset()
+        }
+    }
+
+    private fun prepareNextRound() {
+//        Actualiza la UI
+        updateTitleAndTopics()
+        updateTimer()
+
+//        Evita que exoplayer se reproduzca automaticamente cuando esté listo
+        exoPlayer.playWhenReady = false
+        exoPlayer.seekTo(0) //Regresa el audio al inicio
+        exoPlayer.prepare()
+
+        isPlaying = false
+        btnPlayPause.icon = AppCompatResources.getDrawable(this, R.drawable.ic_play)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -187,7 +217,7 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
     /* Pausar cuando se minimice la app*/
     override fun onPause() {
         super.onPause()
-        tempPause()
+        emergencyPause()
     }
 
     override fun onDestroy() {
