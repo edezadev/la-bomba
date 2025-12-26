@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/ic_penalty"
-            android:contentDescription="@string/image_instruction"
+            android:contentDescription="@null"
             android:layout_marginVertical="@dimen/space_common"
             android:layout_marginHorizontal="@dimen/padding_medium"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
