@@ -29,4 +29,5 @@
     <dimen name="height_bomb_timer">410dp</dimen>
     <dimen name="size_text_timer">55dp</dimen>
     <dimen name="size_label_topic">22dp</dimen>
+    <dimen name="size_label_medium">28dp</dimen>
 </resources>

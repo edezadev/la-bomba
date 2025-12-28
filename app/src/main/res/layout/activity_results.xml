@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controllers.activities.ResultsActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:titleTextColor="?colorPrimary"
+            app:titleCentered="true"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--FillViewPort: usarlo cuando el copntenido puede ser menor que la pantalla y cuando se
+    requiere ocupar todoo el alto visible-->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:fillViewport="true">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgResults"
+                android:layout_width="@dimen/width_img"
+                android:layout_height="@dimen/zero"
+                android:src="@drawable/ic_results"
+                android:contentDescription="@null"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/guideline"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/zero"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerResults"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_players_results"
+                tools:itemCount="4"
+                app:layout_constraintTop_toBottomOf="@id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRematch"
+                android:layout_width="@dimen/zero"
+                android:layout_height="@dimen/btn_normal_height"
+                android:text="@string/rematch"
+                style="@style/ButtonOutlineStyleMedium"
+                android:layout_marginBottom="@dimen/padding_xxlarge"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:layout_marginStart="@dimen/padding_common"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnGoToHome"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGoToHome"
+                android:layout_width="@dimen/zero"
+                android:layout_height="@dimen/btn_normal_height"
+                android:text="@string/go_to_home"
+                style="@style/ButtonOutlineStyleMedium"
+                android:layout_marginBottom="@dimen/padding_xxlarge"
+                android:layout_marginStart="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_common"
+                app:layout_constraintStart_toEndOf="@id/btnRematch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <!-- Este grupo agrupa los dos botones. Inicialmente está en "gone".
+             Cuando el grupo se hace "visible", los botones se mostrarán en la cadena. -->
+            <androidx.constraintlayout.widget.Group
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="btnRematch, btnGoToHome"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGoToHomeSingle"
+                android:layout_width="@dimen/btn_normal_width"
+                android:layout_height="@dimen/btn_normal_height"
+                android:text="@string/go_to_home"
+                style="@style/ButtonOutlineStyleMedium"
+                android:layout_marginBottom="@dimen/padding_xxlarge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

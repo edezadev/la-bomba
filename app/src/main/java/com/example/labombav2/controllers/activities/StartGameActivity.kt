@@ -188,7 +188,8 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
             prepareNextRound() //Prepara la siguiente ronda
         } else {
 //            Fin del juego
-            GameSession.reset()
+            Toast.makeText(this, "Aqui va anuncio", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ResultsActivity::class.java))
         }
     }
 
