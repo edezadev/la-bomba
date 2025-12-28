@@ -2,14 +2,12 @@ package com.example.labombav2.controllers.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.labombav2.databinding.ItemLoserBinding
 import com.example.labombav2.models.PlayerModel
 
 class LoserAdapter (
     private var items: MutableList<PlayerModel>,
-    private var fragmentManager: FragmentManager
 ): RecyclerView.Adapter<LoserAdapter.ViewHolder>() {
     private var selectedLoser: Int = RecyclerView.NO_POSITION //Controlar la seleccion de items
     inner class ViewHolder(binding: ItemLoserBinding) :

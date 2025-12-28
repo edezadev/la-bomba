@@ -67,7 +67,7 @@ class SelectLoserBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = LoserAdapter(GameSession.players, parentFragmentManager)
+        adapter = LoserAdapter(GameSession.players)
         recyclerSelectLoser.layoutManager = LinearLayoutManager(requireContext())
         recyclerSelectLoser.adapter = adapter
     }
