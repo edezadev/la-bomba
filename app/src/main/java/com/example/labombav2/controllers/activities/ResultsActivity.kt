@@ -40,8 +40,6 @@ class ResultsActivity : BaseActivity() {
         toolbar.title = getString(R.string.results_title)
         setupRecyclerView()
 
-
-
 //        Creas un solo objeto lambda en memoria y pasas su referencia a ambos listeners.
         val goToHomeAction = { goToHome() }
         btnGoToHome.setOnClickListener { goToHomeAction }
