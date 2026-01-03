@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="zero">0dp</dimen>
+    <dimen name="outline_width_small">1dp</dimen>
     <dimen name="outline_width">2dp</dimen>
     <dimen name="outline_width_medium">3dp</dimen>
     <dimen name="background_radius">8dp</dimen>
@@ -30,4 +31,5 @@
     <dimen name="size_text_timer">55dp</dimen>
     <dimen name="size_label_topic">22dp</dimen>
     <dimen name="size_label_medium">28dp</dimen>
+    <dimen name="size_text_large">24dp</dimen>
 </resources>

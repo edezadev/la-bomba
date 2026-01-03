@@ -61,4 +61,6 @@
     <string name="results_title">Resultados</string>
     <string name="go_to_home">Ir al inicio</string>
     <string name="rematch">¡Revancha!</string>
+    <string name="hint_points">0</string>
+    <string name="message_loser">Perdiste..</string>
 </resources>

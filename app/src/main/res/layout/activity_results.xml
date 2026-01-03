@@ -38,6 +38,31 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tvLoser"/>
+
+            <TextView
+                android:id="@+id/tvLoser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/message_loser"
+                android:textColor="?colorPrimary"
+                android:textSize="@dimen/size_text_large"
+                tools:ignore="SpUsage"
+                android:layout_marginHorizontal="@dimen/size_text_common"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgResults"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/divider"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/outline_width_small"
+                app:dividerColor="?colorOutline"
+                android:layout_marginVertical="@dimen/padding_common"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLoser"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/guideline"/>
 
             <androidx.constraintlayout.widget.Guideline
@@ -87,6 +112,7 @@
             <!-- Este grupo agrupa los dos botones. Inicialmente está en "gone".
              Cuando el grupo se hace "visible", los botones se mostrarán en la cadena. -->
             <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupButtonChain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
