@@ -2,7 +2,6 @@ package com.example.labombav2.controllers.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.constraintlayout.widget.Group
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
