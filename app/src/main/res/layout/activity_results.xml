@@ -38,10 +38,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/tvLoserAndPenalty"/>
+                app:layout_constraintBottom_toTopOf="@id/tvLoser"/>
 
             <TextView
-                android:id="@+id/tvLoserAndPenalty"
+                android:id="@+id/tvLoser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/message_loser"
@@ -61,7 +61,7 @@
                 app:dividerColor="?colorOutline"
                 android:layout_marginVertical="@dimen/padding_common"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvLoserAndPenalty"
+                app:layout_constraintTop_toBottomOf="@id/tvLoser"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/guideline"/>
 
