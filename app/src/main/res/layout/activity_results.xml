@@ -48,6 +48,8 @@
                 android:textColor="?colorPrimary"
                 android:textSize="@dimen/size_text_large"
                 tools:ignore="SpUsage"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/padding_common"
                 android:layout_marginHorizontal="@dimen/size_text_common"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imgResults"
@@ -76,11 +78,13 @@
                 android:id="@+id/recyclerResults"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:itemCount="15"
                 tools:listitem="@layout/item_players_results"
-                tools:itemCount="4"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/space_xxLarge"
                 app:layout_constraintTop_toBottomOf="@id/guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRematch"
