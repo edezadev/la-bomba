@@ -8,7 +8,7 @@ import com.example.labombav2.databinding.ActivityMainBinding
 import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-
+//TODO: AGREGAR ANUNCIOS
 class MainActivity : BaseActivity() {
     private var binding: ActivityMainBinding? = null
 
