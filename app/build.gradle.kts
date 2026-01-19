@@ -20,11 +20,23 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField(
+                "String",
+                "ADMOB_INTERSTITIAL_ID",
+                "\"ca-app-pub-3940256099942544/1033173712\""
+            )
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
+            )
+            buildConfigField(
+                "String",
+                "ADMOB_INTERSTITIAL_ID",
+                "\"ca-app-pub-5104866358258971/2376726136\""
             )
         }
     }
