@@ -3,6 +3,7 @@ package com.example.labombav2.config.auth
 import android.util.Log
 import com.example.labombav2.config.database.PenaltyDbManager
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.lazy
 
 object FirebaseAuthManager {
 //  Inicializar Firebase Auth
