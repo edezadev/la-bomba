@@ -1,8 +1,11 @@
 package com.example.labombav2.utils
 
+import android.app.Activity
 import android.content.Context
 import com.example.labombav2.BuildConfig
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
@@ -21,21 +24,48 @@ object AdsManager {
 
     private fun loadInterstitial(context: Context) {
         if (isLoading || interstitialAd != null) return
-        isLoading = true
+        isLoading = true //Marca que hay una petición activa
         InterstitialAd.load(
             context,
             BuildConfig.ADMOB_INTERSTITIAL_ID,
             AdRequest.Builder().build(),
             object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(p0: InterstitialAd) {
-                    super.onAdLoaded(p0)
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    interstitialAd = ad //Guarda el anuncio listo
+                    isLoading = false
                 }
 
-                override fun onAdFailedToLoad(p0: LoadAdError) {
-                    super.onAdFailedToLoad(p0)
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    interstitialAd = null
+                    isLoading = false
                 }
             }
         )
+    }
 
+    fun showAd(activity: Activity, onFinish: () -> Unit) {
+        val ad = interstitialAd
+
+//        Si no hay anuncio la app sigue normal, nunca se bloquea el flujo del juego
+        if (ad == null) {
+            onFinish()
+            return
+        }
+
+        ad.fullScreenContentCallback =
+            object : FullScreenContentCallback() { //Callback indica qué acción se toma con el anuncio
+                override fun onAdDismissedFullScreenContent() {
+                    interstitialAd = null
+                    loadInterstitial(activity)
+                    onFinish()
+                }
+
+                override fun onAdFailedToShowFullScreenContent(error: AdError) {
+                    interstitialAd = null
+                    loadInterstitial(activity)
+                    onFinish()
+                }
+            }
+        ad.show(activity)
     }
 }
