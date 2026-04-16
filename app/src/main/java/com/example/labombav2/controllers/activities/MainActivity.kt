@@ -6,9 +6,13 @@ import android.util.Log
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.databinding.ActivityMainBinding
 import com.example.labombav2.config.auth.FirebaseAuthManager
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-//TODO: AGREGAR ANUNCIOS
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
 class MainActivity : BaseActivity() {
     private var binding: ActivityMainBinding? = null
 
@@ -22,6 +26,11 @@ class MainActivity : BaseActivity() {
         setContentView(binding?.root)
         FirebaseAuthManager.getAuthToken {}
         initializeStateListener()
+
+//        Inicializar el SDK Google Mobile Ads en segundo plano
+        CoroutineScope(Dispatchers.IO).launch {
+            MobileAds.initialize(this@MainActivity)
+        }
 
         binding?.btnStart?.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
