@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.example.labombav2.R
 import com.example.labombav2.controllers.activities.SettingsActivity
 import com.example.labombav2.databinding.FragmentSliderBinding
+import com.example.labombav2.utils.AdsManager
 import com.example.labombav2.utils.Constants
 import com.google.android.material.button.MaterialButton
 
@@ -33,6 +33,7 @@ class SliderFragment : Fragment() {
             ivInstruction = it.ivInstruction
             btnStart = it.btnStart
         }
+        AdsManager.init(requireContext())
 
         if (arguments != null) {
             tvTitle.text = requireArguments().getString(Constants.TITLE)
@@ -44,12 +45,13 @@ class SliderFragment : Fragment() {
         }
 
         btnStart.setOnClickListener {
-            Toast.makeText(it.context, "Aqui va anuncio", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(it.context, SettingsActivity::class.java))
-            /* Destruir la activity y eliminarla de la pila de activities, esto con el fin de que al
-            * presionar el botón "atrás" de SettingActvity, no regrese a InstructionsActivity sino
-            * redirija a MainActivity */
-            activity?.finish()
+            AdsManager.showAd(requireActivity()) {
+                startActivity(Intent(it.context, SettingsActivity::class.java))
+                /* Destruir la activity y eliminarla de la pila de activities, esto con el fin de que al
+                * presionar el botón "atrás" de SettingActvity, no regrese a InstructionsActivity sino
+                * redirija a MainActivity */
+                activity?.finish()
+            }
         }
 
         return view
