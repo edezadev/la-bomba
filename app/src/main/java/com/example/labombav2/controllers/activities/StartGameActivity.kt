@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.KeyEvent
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
@@ -24,6 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
 import androidx.core.net.toUri
 import com.example.labombav2.models.LoserModel
+import com.example.labombav2.utils.AdsManager
 
 class StartGameActivity : BaseActivity(), OnLoserListener {
     private var binding: ActivityStartGameBinding? = null
@@ -42,6 +42,7 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
         super.onCreate(savedInstanceState)
         binding = ActivityStartGameBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        AdsManager.init(this) //Inicializar la carga del anuncio
         binding?.let {
             toolbar = it.toolbar
             tvTime = it.tvTime
@@ -159,11 +160,15 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
             .setTitle(getString(R.string.title_alert))
             .setMessage(getString(R.string.message_exit_game))
             .setPositiveButton(getString(R.string.exit)) { dialog, _ ->
-                Toast.makeText(this, "Aqui va anuncio", Toast.LENGTH_SHORT).show()
-                GameSession.reset()
-                dialog.dismiss()
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                AdsManager.showAd(this) {
+                    GameSession.reset()
+                    dialog.dismiss()
+                    val intent = Intent(this, MainActivity::class.java)
+//                    Aegrgar flag para eliminar pila de fragmentos/activities
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
             }
             .setNegativeButton(getString(R.string.action_negative)) { dialog, _ ->
                 dialog.dismiss()
@@ -188,8 +193,10 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
             prepareNextRound() //Prepara la siguiente ronda
         } else {
 //            Fin del juego
-            Toast.makeText(this, "Aqui va anuncio", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, ResultsActivity::class.java))
+            AdsManager.showAd(this) {
+                startActivity(Intent(this, ResultsActivity::class.java))
+                finish()
+            }
         }
     }
 
