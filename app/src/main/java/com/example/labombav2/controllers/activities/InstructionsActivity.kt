@@ -2,9 +2,9 @@ package com.example.labombav2.controllers.activities
 
 import android.os.Bundle
 import android.text.Html
-import android.view.KeyEvent
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.viewpager2.widget.ViewPager2
 import com.example.labombav2.R
 import com.example.labombav2.controllers.adapters.InstructionsAdapter
@@ -35,6 +35,7 @@ class InstructionsActivity : BaseActivity() {
         infoOfSlides()
         addDots(0) //Empieza indicando el slide 0
         setupViewPager()
+        setupBackPressed()
     }
 
     private fun infoOfSlides() {
@@ -105,11 +106,15 @@ class InstructionsActivity : BaseActivity() {
         return fragment
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            onBackPressed()
-        }
-        return super.onKeyDown(keyCode, event)
+    /*Configura el comportamiento específico del botón back del sistema, para esta activity,
+    * queda anulado el doble toque configurado en BaseActivity*/
+    private fun setupBackPressed() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                finish()
+            }
+
+        })
     }
 
     override fun onDestroy() {

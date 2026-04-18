@@ -64,4 +64,5 @@
     <string name="hint_points">0</string>
     <string name="message_loser">%1$s perdiste!!</string>
     <string name="message_tie">!Es un empate!</string>
+    <string name="action_back">¡Presiona de nuevo para salir!</string>
 </resources>

@@ -1,13 +1,18 @@
 package com.example.labombav2.utils
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.example.labombav2.R
 
 /* Todas las activies deberán extender de BaseActivity en lugar de AppCompatActivity para que
  * esta configuración de las barras del sistema esté en todas las pantallas */
@@ -26,6 +31,24 @@ abstract class BaseActivity: AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        /*Anular la navegación back del sistema, doble toque para salir de la app*/
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+//                Segundo toque dentro de 2 seg. ahora es true y sale de la app
+                if (doubleBackPressed) {
+                    finishAffinity()
+                    return
+                }
+//                Primer toque es ture y muestra el Toast
+                doubleBackPressed = true
+                Toast.makeText(this@BaseActivity, getString(R.string.action_back), Toast.LENGTH_LONG).show()
+//                Tras 2 seg. se vuelve a poner en false si el usuario no presiona de nuevo
+                Handler(Looper.getMainLooper()).postDelayed({
+                    doubleBackPressed = false
+                }, 2000)
+            }
+
+        })
     }
 
     private fun hideSystemUiHighR() {
