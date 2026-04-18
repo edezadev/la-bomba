@@ -13,6 +13,7 @@ import com.example.labombav2.config.database.PlayerDbManager
 import com.example.labombav2.controllers.adapters.PlayerResultsAdapter
 import com.example.labombav2.databinding.ActivityResultsBinding
 import com.example.labombav2.models.LoserModel
+import com.example.labombav2.utils.AdsManager
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.utils.GameSession
 import com.google.android.material.appbar.MaterialToolbar
@@ -34,6 +35,7 @@ class ResultsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityResultsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        AdsManager.init(this) //Inicializar la carga del anuncio
         binding?.let {
             toolbar = it.toolbar
             tvLoserAndPenalty = it.tvLoserAndPenalty
@@ -98,8 +100,10 @@ class ResultsActivity : BaseActivity() {
     }
 
     private fun goToHome() {
-        GameSession.reset() //Limpiar todos los datos del juego
-        startActivity(Intent(this, MainActivity::class.java))
+        AdsManager.showAd(this) {
+            GameSession.reset() //Limpiar todos los datos del juego
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 
     private fun goToRematch() {
