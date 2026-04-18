@@ -79,12 +79,12 @@ class InstructionsActivity : BaseActivity() {
         adapter = InstructionsAdapter(fragmentActivity = this)
         for (i in titles.indices) {
             /*Primero se agrga el SliderFrgament (es la vista de cada slide) al adapter
-            * el método newInstance crea cada fragment(slide), con los datos de los array*/
+            * el métodoo newInstance crea cada fragment(slide), con los datos de los array*/
             adapter.addFragment(setupFragment(titles[i], images[i]))
         }
         viewPager.adapter = adapter
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
-            /* Sobreescribir este método para poder saber en que página se ecnuentra el viewPeger e ir
+            /* Sobreescribir este métodoo para poder saber en que página se ecnuentra el viewPeger e ir
              * cambiando el estado de los indicadores */
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)

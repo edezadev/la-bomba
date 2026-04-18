@@ -17,7 +17,7 @@ class InstructionsAdapter(
         return slides[position]
     }
 
-    /*Método que agrega la vista de cada slide hecha en un fragment*/
+    /*Métodoo que agrega la vista de cada slide hecha en un fragment*/
     fun addFragment(fragment: Fragment) {
         slides.add(fragment)
     }
