@@ -12,7 +12,8 @@ import androidx.core.view.WindowInsetsControllerCompat
 /* Todas las activies deberán extender de BaseActivity en lugar de AppCompatActivity para que
  * esta configuración de las barras del sistema esté en todas las pantallas */
 
-open class BaseActivity: AppCompatActivity() {
+abstract class BaseActivity: AppCompatActivity() {
+    private var doubleBackPressed = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /* Habilitar edge to edge, para la función de pantalla completa con barras de estado
