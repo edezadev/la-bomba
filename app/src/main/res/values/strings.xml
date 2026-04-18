@@ -65,4 +65,5 @@
     <string name="message_loser">%1$s perdiste!!</string>
     <string name="message_tie">!Es un empate!</string>
     <string name="action_back">¡Presiona de nuevo para salir!</string>
+    <string name="select_loser_title">Selecciona un perdedor:</string>
 </resources>
