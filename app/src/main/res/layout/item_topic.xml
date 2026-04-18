@@ -13,6 +13,7 @@
     android:background="@drawable/background_edge"
     android:button="@null"
     android:drawableEnd="@drawable/checkbox"
+    android:drawablePadding="@dimen/padding_small"
     android:paddingHorizontal="@dimen/padding_common"
     android:paddingVertical="@dimen/padding_small"
     android:layout_marginHorizontal="@dimen/padding_xlarge"
