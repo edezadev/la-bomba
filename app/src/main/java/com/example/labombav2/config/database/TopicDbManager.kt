@@ -1,10 +1,10 @@
 package com.example.labombav2.config.database
 
+import android.annotation.SuppressLint
 import android.util.Log
 import com.example.labombav2.models.TopicModel
 import com.example.labombav2.utils.Constants
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.runBlocking
@@ -12,7 +12,8 @@ import kotlinx.coroutines.tasks.await
 import kotlin.math.ceil
 
 object TopicDbManager {
-    private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    @SuppressLint("StaticFieldLeak")
+    private val db = FirestoreConfig.db
     private val userRef by lazy { db.collection(Constants.USERS) }
 
     fun createTopic(uid: String, topic: TopicModel) {

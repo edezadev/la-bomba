@@ -1,13 +1,14 @@
 package com.example.labombav2.config.database
 
+import android.annotation.SuppressLint
 import android.util.Log
 import com.example.labombav2.models.PlayerModel
 import com.example.labombav2.utils.Constants
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
 object PlayerDbManager {
-    private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    @SuppressLint("StaticFieldLeak")
+    private val db = FirestoreConfig.db
     private val userRef by lazy { db.collection(Constants.USERS) }
 
     fun createPlayer(uid: String, player: PlayerModel) {
