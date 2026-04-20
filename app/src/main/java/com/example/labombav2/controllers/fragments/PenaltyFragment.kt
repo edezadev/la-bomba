@@ -74,7 +74,7 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
 
     private fun setupRecyclerView() {
         adapter = PenaltyAdapter(listPenalties)
-        recyclerPenalty.layoutManager  = LinearLayoutManager(activity?.applicationContext)
+        recyclerPenalty.layoutManager  = LinearLayoutManager(requireContext())
         recyclerPenalty.adapter = adapter
     }
 

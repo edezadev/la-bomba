@@ -84,7 +84,7 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
 
     private fun setupRecyclerView() {
         adapter = PlayerAdapter(listPlayers, parentFragmentManager)
-        recyclerPlayer.layoutManager = LinearLayoutManager(activity?.applicationContext)
+        recyclerPlayer.layoutManager = LinearLayoutManager(requireContext())
         recyclerPlayer.adapter = adapter
     }
 
