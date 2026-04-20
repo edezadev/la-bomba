@@ -7,7 +7,9 @@ import com.example.labombav2.utils.Constants
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.math.ceil
 
@@ -47,33 +49,38 @@ object TopicDbManager {
                     return@addSnapshotListener
                 }
 
-//              Calcular la cantidad total de páginas
-                var totalPages = 0
-                if (snapshot != null){
-                    totalPages = ceil(
+                if (snapshot == null) return@addSnapshotListener
+
+//                Todoo lo que pase aquí no bloquea la interfaz del usuario
+                CoroutineScope(Dispatchers.IO).launch {
+    //              Calcular la cantidad total de páginas
+                    val totalPages = ceil(
                         snapshot.documents.size.toDouble() / Constants.PAGE_SIZE.toDouble()
                     ).toInt()
-                }
+                    val listPages = mutableListOf<MutableList<TopicModel>>()
+                    var lastDocument: DocumentSnapshot? = null
 
-                var lastDocument: DocumentSnapshot? = null
-                var query: QuerySnapshot?
-                val listPages = mutableListOf<MutableList<TopicModel>>()
-                var page: MutableList<TopicModel>
-
-                for (i in 1..totalPages) {
-                    page = mutableListOf()
-                    runBlocking {
-                        query = getPage(uid, lastDocument)
+//                    Carga de páginas asíncrona
+                    repeat (totalPages) {
+                        /*Evita "congelar" el hilo, la coroutine se "pausa" hasta que Firestore
+                        * responda(desde la nube o la caché offline). Cuando recibe los datos,
+                        * continúa a la siguiente página*/
+                        val query = getPage(uid, lastDocument) //Llama a .get().await internamente
                         if (query != null) {
-                            lastDocument = query!!.documents.lastOrNull()
-                            query!!.documents.map { document ->
-                                document.toObject(TopicModel::class.java)?.let { doc -> page.add(doc) }
+                            val page = query.documents.mapNotNull {
+                                it.toObject(TopicModel::class.java) }.toMutableList()
+//                            Guarda la página y actualiza el último documento
+                            if (page.isNotEmpty()) {
+                                listPages.add(page)
+                                lastDocument = query.documents.lastOrNull()
                             }
-                            listPages.add(page)
                         }
                     }
+//                Volvemos al hilo principal para avisar a la UI
+                    launch ( Dispatchers.Main ) {
+                        listenerTopics(listPages)
+                    }
                 }
-                listenerTopics(listPages)
             }
     }
 
@@ -90,6 +97,7 @@ object TopicDbManager {
 
             result.get().await()
         }catch (e: Exception) {
+            Log.e("ErrorTopicsPage", "Failed to load the topics page", e)
             null
         }
     }
