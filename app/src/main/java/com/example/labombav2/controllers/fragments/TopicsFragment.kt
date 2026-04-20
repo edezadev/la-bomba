@@ -67,8 +67,11 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     private fun getListPages() {
         FirebaseAuthManager.getUid { uid ->
             listenerRegistration = TopicDbManager.getListPagesListener(uid) { pages ->
+//                Si el usuario se fue del fragmento miestras se cargaban los datos, salir
+                if (!isAdded) return@getListPagesListener
+
                 listPages.clear() //limpiar antes de agregar, sirve para cuando se agrega un nuevo tema
-                if (pages.size <= 0) {
+                if (pages.isEmpty()) {
                     tvNoTopics.visibility = View.VISIBLE
                 } else {
                     tvNoTopics.visibility = View.GONE
@@ -81,16 +84,21 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     }
 
     private fun setupViewPager() {
-        pageTopicsAdapter = PageTopicsAdapter(listPages, parentFragmentManager)
+//        Por seguridad se verifica si el fragmento sigue vinculado a la Activity
+        if (!isAdded || context == null) return
+//        Usar childFragmentManager para ViewPager dentro de fragments
+        pageTopicsAdapter = PageTopicsAdapter(listPages, childFragmentManager)
         vpPageTopics.adapter = pageTopicsAdapter
 
         vpPageTopics.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-//              Permite cambiar visualmente el indicador de la página actual
-                addPageIndicators(position, listPages.size)
-//              Aqui se deberia cambiar el valor de currentpage para que sea escuchado en el adapter
-                changeListener?.onCurrentPageChange(position)
+                if (isAdded) {
+//                  Permite cambiar visualmente el indicador de la página actual
+                    addPageIndicators(position, listPages.size)
+//                  Aqui se deberia cambiar el valor de currentpage para que sea escuchado en el adapter
+                    changeListener?.onCurrentPageChange(position)
+                }
             }
         })
     }
