@@ -49,6 +49,8 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
         setupRecyclerView()
         FirebaseAuthManager.getUid { uid ->
             listenerRegistration = PenaltyDbManager.getPenaltiesListener(uid) {
+                if (!isAdded) return@getPenaltiesListener
+
                 if (it.isEmpty()){
                     listPenalties.clear()
                     tvNoPenalties.visibility = View.VISIBLE

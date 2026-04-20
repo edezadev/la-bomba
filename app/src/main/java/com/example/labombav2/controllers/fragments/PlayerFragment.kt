@@ -51,6 +51,9 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
 //      Listar todos los jugadores
         FirebaseAuthManager.getUid { uid ->
             listenerRegistration = PlayerDbManager.getPlayersListener(uid) {
+//                Evita el crash si el usuario salió de la pantalla
+                if (!isAdded) return@getPlayersListener
+
                 if(it.isEmpty()) {
                     listPlayers.clear()
                     tvNoPlayers.visibility = View.VISIBLE
