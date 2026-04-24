@@ -66,4 +66,7 @@
     <string name="message_tie">!Es un empate!</string>
     <string name="action_back">¡Presiona de nuevo para salir!</string>
     <string name="select_loser_title">Selecciona un perdedor:</string>
+    <string name="title_connection_error">Conexión a internet necesaria</string>
+    <string name="message_connection_required">Necesitas una conexión a internet para configurar tu perfil y descargar los recursos del juego.</string>
+    <string name="action_retry">Reintentar</string>
 </resources>

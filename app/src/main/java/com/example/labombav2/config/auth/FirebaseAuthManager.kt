@@ -33,15 +33,24 @@ object FirebaseAuthManager {
         }
     }
 
-    fun createUserAnonymously() {
+    fun createUserAnonymously(onResult: (Boolean) -> Unit) {
         auth.signInAnonymously()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Log.d("CreatedUser", "Successfully created an anonymous user in Firebase")
-//                  crear documento del usuario en la base de datos
-                    PenaltyDbManager.saveDataUser(auth.uid!!)
+                    val user = it.result?.user
+                    if (user != null) {
+                        Log.d("CreatedUser", "Successfully created an anonymous user in Firebase")
+//                        Crear datos inciales en la base de datos
+                        PenaltyDbManager.saveDataUser(user.uid)
+//                        Avisar éxito (Devuelve true) a la activity
+                        onResult(true)
+                    } else {
+                        onResult(false)
+                    }
                 } else {
                     Log.e("ErrorCreatingUser", it.exception.toString())
+//                    Avisar error (devuelve false) a la activity
+                    onResult(false)
                 }
             }
     }

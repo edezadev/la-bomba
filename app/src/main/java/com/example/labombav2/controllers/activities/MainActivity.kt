@@ -3,22 +3,21 @@ package com.example.labombav2.controllers.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import com.example.labombav2.R
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.databinding.ActivityMainBinding
 import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 class MainActivity : BaseActivity() {
     private var binding: ActivityMainBinding? = null
 
     //  escucha cambios en el estado de la autenticación.
     private lateinit var stateListener: FirebaseAuth.AuthStateListener
-    private var user: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +44,29 @@ class MainActivity : BaseActivity() {
     //  Crear el escuchador de estados
     private fun initializeStateListener() {
         stateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-            user = firebaseAuth.currentUser
-            if (user != null) {
+            val currentUser = firebaseAuth.currentUser
+            if (currentUser != null) {
                 Log.d("UserFound", "User located in Firebase")
             } else {
-                FirebaseAuthManager.createUserAnonymously()
+//                Llamamos a la función y espramos el resultado (true/false)
+                FirebaseAuthManager.createUserAnonymously { success ->
+                    /*Si falló la creación (devuelve false) por internet, se muestra el dialogo
+                     que bloquea el juego*/
+                    if (!success)  showBlockingErrorDialog()
+                }
             }
         }
+    }
+
+    private fun showBlockingErrorDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.title_connection_error))
+            .setMessage(getString(R.string.message_connection_required))
+            .setPositiveButton(getString(R.string.action_retry)) {_ ,_ ->
+                initializeStateListener() // Reintenta el proceso
+            }
+            .setCancelable(false) // Evita que el usuario lo cierre tocando fuera
+            .show()
     }
 
     override fun onStart() {
