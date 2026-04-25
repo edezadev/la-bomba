@@ -69,4 +69,6 @@
     <string name="title_connection_error">Conexión a internet necesaria</string>
     <string name="message_connection_required">Necesitas una conexión a internet para configurar tu perfil y descargar los recursos del juego.</string>
     <string name="action_retry">Reintentar</string>
+    <string name="message_offline">Estás jugando sin conexión. Los cambios se sincronizarán después.</string>
+    <string name="action_confirm">Confirmar</string>
 </resources>

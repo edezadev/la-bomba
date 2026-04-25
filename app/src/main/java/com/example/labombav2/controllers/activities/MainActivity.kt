@@ -1,6 +1,8 @@
 package com.example.labombav2.controllers.activities
 
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import com.example.labombav2.R
@@ -9,6 +11,7 @@ import com.example.labombav2.databinding.ActivityMainBinding
 import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +28,7 @@ class MainActivity : BaseActivity() {
         setContentView(binding?.root)
         FirebaseAuthManager.getAuthToken {}
         initializeStateListener()
+        checkNetworkAndShowWarning()
 
 //        Inicializar el SDK Google Mobile Ads en segundo plano
         CoroutineScope(Dispatchers.IO).launch {
@@ -38,6 +42,26 @@ class MainActivity : BaseActivity() {
         binding?.btnInstructions?.setOnClickListener {
             val intent = Intent(this, InstructionsActivity::class.java)
             startActivity(intent)
+        }
+    }
+    private fun checkNetworkAndShowWarning() {
+        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+
+//        Verificamos si hay una red activa y si esa red tiene capacidad de internet
+        val isOnline = capabilities != null &&
+                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+
+//        Si no hay internet se muestra el snackbar
+        if (!isOnline) {
+            binding?.let {
+                Snackbar.make(
+                    it.root,
+                    getString(R.string.message_offline),
+                    Snackbar.LENGTH_LONG
+                ).setAction(getString(R.string.action_confirm)) {}.show()
+            }
         }
     }
 
