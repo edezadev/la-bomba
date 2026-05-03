@@ -5,23 +5,18 @@
         <item name="android:textAppearance">?attr/textAppearanceHeadlineSmall</item>
         <item name="rippleColor">@color/ripple</item>
     </style>
+
     <style name="ButtonOutlineStyle" parent="Widget.Material3.Button.OutlinedButton">
         <item name="rippleColor">@color/ripple</item>
     </style>
+
     <style name="PopupMenuStyle" parent="Widget.Material3.PopupMenu">
         <item name="android:textColor">?colorOnSurfaceVariant</item>
     </style>
 
-    <!--<style name="FABStyle" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
-        <item name="materialThemeOverlay">@style/FAB.ThemeOverlay</item>
+    <style name="LoadingDialogStyle" parent="Theme.Material3.DayNight.Dialog">
+        <!--Configura la opacidad del fondo de la pantalla del dialogo-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.7</item>
     </style>
-    
-    <style name="FAB.ThemeOverlay" parent="">
-        <item name="colorContainer">?colorPrimary</item>
-        <item name="colorOnContainer">?colorOnPrimary</item>
-    </style>-->
-
-    <!--<style name="ModalBottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
-        <item name="backgroundTint">?colorSurface</item>
-    </style>-->
 </resources>
