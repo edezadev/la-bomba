@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import com.example.labombav2.R
 import com.example.labombav2.utils.BaseActivity
@@ -70,13 +71,18 @@ class MainActivity : BaseActivity() {
         stateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val currentUser = firebaseAuth.currentUser
             if (currentUser != null) {
+                dismissLoading()
                 Log.d("UserFound", "User located in Firebase")
             } else {
+                showLoading() //Mostramos carga antes de llamar a Firebase
 //                Llamamos a la función y espramos el resultado (true/false)
                 FirebaseAuthManager.createUserAnonymously { success ->
-                    /*Si falló la creación (devuelve false) por internet, se muestra el dialogo
-                     que bloquea el juego*/
-                    if (!success)  showBlockingErrorDialog()
+                    Handler(mainLooper).postDelayed({
+                        dismissLoading() //Ocultamos carga al recibir respuesta
+                        /*Si falló la creación (devuelve false) por internet, se muestra el dialogo
+                         que bloquea el juego*/
+                        if (!success)  showBlockingErrorDialog()
+                    }, 1000)
                 }
             }
         }
@@ -87,7 +93,10 @@ class MainActivity : BaseActivity() {
             .setTitle(getString(R.string.title_connection_error))
             .setMessage(getString(R.string.message_connection_required))
             .setPositiveButton(getString(R.string.action_retry)) {_ ,_ ->
-                initializeStateListener() // Reintenta el proceso
+                showLoading()
+                // Refrescamos el listener que ya existe
+                FirebaseAuthManager.auth.removeAuthStateListener (stateListener)
+                FirebaseAuthManager.auth.addAuthStateListener(stateListener)
             }
             .setCancelable(false) // Evita que el usuario lo cierre tocando fuera
             .show()
