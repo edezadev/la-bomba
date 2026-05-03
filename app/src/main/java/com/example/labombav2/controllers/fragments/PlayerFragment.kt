@@ -19,6 +19,8 @@ import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.example.labombav2.utils.listeners.OnPlayerInsertedListener
 import com.example.labombav2.config.database.PlayerDbManager
 import com.example.labombav2.utils.GameSession
+import com.example.labombav2.utils.dismissLoading
+import com.example.labombav2.utils.showLoading
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ListenerRegistration
@@ -48,21 +50,7 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
         }
 
         setupRecyclerView()
-//      Listar todos los jugadores
-        FirebaseAuthManager.getUid { uid ->
-            listenerRegistration = PlayerDbManager.getPlayersListener(uid) {
-//                Evita el crash si el usuario salió de la pantalla
-                if (!isAdded) return@getPlayersListener
-
-                if(it.isEmpty()) {
-                    listPlayers.clear()
-                    tvNoPlayers.visibility = View.VISIBLE
-                } else {
-                    tvNoPlayers.visibility = View.GONE
-                    addDataRecyclerView(it)
-                }
-            }
-        }
+        getListData()
 
         activity?.let{
             it.updateView(this, getString(R.string.players_name))
@@ -80,6 +68,25 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
         fabAddPlayer.setOnClickListener{ showAddPlayer() }
 
         return view
+    }
+
+    private fun getListData() {
+        showLoading()
+        FirebaseAuthManager.getUid { uid ->
+            listenerRegistration = PlayerDbManager.getPlayersListener(uid) {
+                dismissLoading()
+                // Evita el crash si el usuario salió de la pantalla
+                if (!isAdded) return@getPlayersListener
+
+                if(it.isEmpty()) {
+                    listPlayers.clear()
+                    tvNoPlayers.visibility = View.VISIBLE
+                } else {
+                    tvNoPlayers.visibility = View.GONE
+                    addDataRecyclerView(it)
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
