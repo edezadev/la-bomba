@@ -19,7 +19,9 @@ import com.example.labombav2.config.auth.FirebaseAuthManager
 import com.example.labombav2.utils.listeners.OnTopicInsertedListener
 import com.example.labombav2.config.database.TopicDbManager
 import com.example.labombav2.controllers.adapters.PageIndicatorAdapter
+import com.example.labombav2.utils.dismissLoading
 import com.example.labombav2.utils.listeners.OnCurrentPageListener
+import com.example.labombav2.utils.showLoading
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ListenerRegistration
@@ -65,9 +67,11 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     }
 
     private fun getListPages() {
+        showLoading()
         FirebaseAuthManager.getUid { uid ->
             listenerRegistration = TopicDbManager.getListPagesListener(uid) { pages ->
-//                Si el usuario se fue del fragmento miestras se cargaban los datos, salir
+                dismissLoading()
+                // Si el usuario se fue del fragmento miestras se cargaban los datos, salir
                 if (!isAdded) return@getListPagesListener
 
                 listPages.clear() //limpiar antes de agregar, sirve para cuando se agrega un nuevo tema
