@@ -14,6 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_common"
-        android:text="@string/text_retry_connection"
+        android:text="@string/text_loading"
         android:textColor="?colorPrimary"/>
 </LinearLayout>

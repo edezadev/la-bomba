@@ -71,4 +71,5 @@
     <string name="action_retry">Reintentar</string>
     <string name="message_offline">Estás jugando sin conexión. Los cambios se sincronizarán después.</string>
     <string name="action_confirm">Confirmar</string>
+    <string name="text_loading">Cargando datos…</string>
 </resources>
