@@ -7,18 +7,23 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.Fragment
 import com.example.labombav2.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /* Todas las activies deberán extender de BaseActivity en lugar de AppCompatActivity para que
  * esta configuración de las barras del sistema esté en todas las pantallas */
 
 abstract class BaseActivity: AppCompatActivity() {
     private var doubleBackPressed = false
+    private var loadingDialog: AlertDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /* Habilitar edge to edge, para la función de pantalla completa con barras de estado
@@ -49,6 +54,22 @@ abstract class BaseActivity: AppCompatActivity() {
             }
 
         })
+    }
+
+    fun showLoading() {
+        if (loadingDialog == null) {
+            val builder = MaterialAlertDialogBuilder(this, R.style.LoadingDialogStyle)
+            val view = layoutInflater.inflate(R.layout.dialog_loading, null)
+            builder.setView(view)
+            builder.setCancelable(false)
+            loadingDialog = builder.create()
+            loadingDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        }
+        if (loadingDialog?.isShowing == false) loadingDialog?.show()
+    }
+
+    fun dismissLoading() {
+        if (loadingDialog?.isShowing == true) loadingDialog?.dismiss()
     }
 
     private fun hideSystemUiHighR() {
@@ -86,4 +107,13 @@ abstract class BaseActivity: AppCompatActivity() {
             }
         }
     }
+}
+
+// Funciones de extensión, para fragments
+fun Fragment.showLoading() {
+    (activity as? BaseActivity)?.showLoading()
+}
+
+fun Fragment.dismissLoading() {
+    (activity as? BaseActivity)?.dismissLoading()
 }
