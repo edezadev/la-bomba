@@ -32,7 +32,6 @@ class MainActivity : BaseActivity() {
         setContentView(binding?.root)
 
         initializeStateListener()
-        checkNetworkAndShowWarning()
 
 //        Inicializar el SDK Google Mobile Ads en segundo plano
         CoroutineScope(Dispatchers.IO).launch {
@@ -71,6 +70,7 @@ class MainActivity : BaseActivity() {
             val currentUser = firebaseAuth.currentUser
             if (currentUser != null) {
                 dismissLoading()
+                checkNetworkAndShowWarning()
                 Log.d("UserFound", "User located in Firebase")
             } else if (shouldRegisterListener) {
                 showLoading() //Mostrar carga antes de llamar a Firebase
