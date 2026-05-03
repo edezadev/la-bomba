@@ -19,6 +19,7 @@
 .idea/tasks.xml
 .idea/usage.statistics.xml
 .idea/shelf/
+.idea/misc.xml
 .DS_Store
 /build
 /captures
