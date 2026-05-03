@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import com.example.labombav2.R
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.databinding.ActivityMainBinding
@@ -19,7 +20,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 class MainActivity : BaseActivity() {
     private var binding: ActivityMainBinding? = null
-
+    private var errorDialog: AlertDialog? = null
+    // Bandera para controlar el registro del listener
+    private var shouldRegisterListener = true
     //  escucha cambios en el estado de la autenticación.
     private lateinit var stateListener: FirebaseAuth.AuthStateListener
 
@@ -27,7 +30,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        FirebaseAuthManager.getAuthToken {}
+
         initializeStateListener()
         checkNetworkAndShowWarning()
 
@@ -37,12 +40,10 @@ class MainActivity : BaseActivity() {
         }
 
         binding?.btnStart?.setOnClickListener {
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
         binding?.btnInstructions?.setOnClickListener {
-            val intent = Intent(this, InstructionsActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, InstructionsActivity::class.java))
         }
     }
     private fun checkNetworkAndShowWarning() {
@@ -54,7 +55,6 @@ class MainActivity : BaseActivity() {
         val isOnline = capabilities != null &&
                 capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
 
-//        Si no hay internet se muestra el snackbar
         if (!isOnline) {
             binding?.let {
                 Snackbar.make(
@@ -66,22 +66,23 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    //  Crear el escuchador de estados
     private fun initializeStateListener() {
         stateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val currentUser = firebaseAuth.currentUser
             if (currentUser != null) {
                 dismissLoading()
                 Log.d("UserFound", "User located in Firebase")
-            } else {
-                showLoading() //Mostramos carga antes de llamar a Firebase
-//                Llamamos a la función y espramos el resultado (true/false)
+            } else if (shouldRegisterListener) {
+                showLoading() //Mostrar carga antes de llamar a Firebase
                 FirebaseAuthManager.createUserAnonymously { success ->
                     Handler(mainLooper).postDelayed({
-                        dismissLoading() //Ocultamos carga al recibir respuesta
-                        /*Si falló la creación (devuelve false) por internet, se muestra el dialogo
-                         que bloquea el juego*/
-                        if (!success)  showBlockingErrorDialog()
+                        dismissLoading()
+                        if (!success) {
+                            shouldRegisterListener = false
+                            // Detenemos la escucha automática
+                            FirebaseAuthManager.auth.removeAuthStateListener(stateListener)
+                            showBlockingErrorDialog()
+                        }
                     }, 1000)
                 }
             }
@@ -89,23 +90,29 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showBlockingErrorDialog() {
-        MaterialAlertDialogBuilder(this)
+        if (errorDialog?.isShowing == true) return
+
+        errorDialog = MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.title_connection_error))
             .setMessage(getString(R.string.message_connection_required))
             .setPositiveButton(getString(R.string.action_retry)) {_ ,_ ->
+                shouldRegisterListener = true // Reactivamos la bandera
                 showLoading()
-                // Refrescamos el listener que ya existe
-                FirebaseAuthManager.auth.removeAuthStateListener (stateListener)
+                // Reiniciamos la escucha
                 FirebaseAuthManager.auth.addAuthStateListener(stateListener)
+                // Pertmitir que se pueda crear uno nuevo después de presionar reintentar
+                errorDialog = null
             }
-            .setCancelable(false) // Evita que el usuario lo cierre tocando fuera
+            .setCancelable(false)
             .show()
     }
 
     override fun onStart() {
-//      comenzar a escuchar los estados de la autenticación
         super.onStart()
-        FirebaseAuthManager.auth.addAuthStateListener(stateListener)
+        // Si la bandera es true (no hay dialogo visible), activamos la escucha
+        if (shouldRegisterListener) {
+            FirebaseAuthManager.auth.addAuthStateListener(stateListener)
+        }
     }
 
     override fun onStop() {
@@ -117,6 +124,8 @@ class MainActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        errorDialog?.dismiss() // Cerrar si la actividad muere
+        errorDialog = null
         binding = null
     }
 }
