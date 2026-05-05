@@ -12,10 +12,12 @@ import com.example.labombav2.controllers.fragments.SliderFragment
 import com.example.labombav2.databinding.ActivityInstructionsBinding
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.utils.Constants
+import com.google.android.material.appbar.MaterialToolbar
 
 class InstructionsActivity : BaseActivity() {
     private var binding: ActivityInstructionsBinding? = null
 
+    private lateinit var toolbar: MaterialToolbar
     private lateinit var viewPager: ViewPager2
     private lateinit var layoutDots: LinearLayout
     private lateinit var adapter: InstructionsAdapter
@@ -28,10 +30,12 @@ class InstructionsActivity : BaseActivity() {
         binding = ActivityInstructionsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         binding?.let {
+            toolbar = it.toolbar
             viewPager = it.viewPager
             layoutDots = it.layoutDots
         }
 
+        toolbar.setNavigationOnClickListener{ onBackPressedDispatcher.onBackPressed() }
         infoOfSlides()
         addDots(0) //Empieza indicando el slide 0
         setupViewPager()
@@ -113,7 +117,6 @@ class InstructionsActivity : BaseActivity() {
             override fun handleOnBackPressed() {
                 finish()
             }
-
         })
     }
 
