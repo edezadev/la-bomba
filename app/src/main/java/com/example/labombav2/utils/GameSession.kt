@@ -19,4 +19,8 @@ object GameSession {
         time = 30000
         loser.clear()
     }
+
+    fun hasChanges(): Boolean {
+        return penalty != null || topics.isNotEmpty()
+    }
 }

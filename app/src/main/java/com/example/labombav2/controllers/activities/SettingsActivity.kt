@@ -3,14 +3,15 @@ package com.example.labombav2.controllers.activities
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.labombav2.R
 import com.example.labombav2.databinding.ActivitySettingsBinding
 import com.example.labombav2.utils.BaseActivity
 import com.example.labombav2.controllers.fragments.PenaltyFragment
 import com.example.labombav2.controllers.fragments.TimerFragment
+import com.example.labombav2.utils.GameSession
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SettingsActivity : BaseActivity() {
     private var binding: ActivitySettingsBinding? = null
@@ -65,16 +66,29 @@ class SettingsActivity : BaseActivity() {
                 if (fragmentManager.backStackEntryCount > 1)  {
                     fragmentManager.popBackStack()
                 }else {
-                    Toast.makeText(this,
-                        "Aqui va dialogo de confirmación de abandono del juego",
-                        Toast.LENGTH_SHORT).show()
-                    finish()
+                    if (GameSession.hasChanges()) {
+                        showAlertExit()
+                    } else {
+                        finish()
+                    }
                 }
                 true
             }
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showAlertExit() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.title_alert))
+            .setMessage(getString(R.string.message_exit_settings))
+            .setPositiveButton(getString(R.string.exit)) {dialog, _ ->
+                GameSession.reset()
+                finish()
+            }
+            .setNegativeButton(getString(R.string.action_negative), null)
+            .show()
     }
 
     override fun onDestroy() {
