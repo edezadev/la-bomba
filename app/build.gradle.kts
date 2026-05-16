@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.labombav2"
+    namespace = "com.edeza.labomba"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.labombav2"
+        applicationId = "com.edeza.labomba"
         minSdk = 25
         targetSdk = 34
         versionCode = 1
