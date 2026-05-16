@@ -9,29 +9,7 @@ object FirebaseAuthManager {
 //  Inicializar Firebase Auth
     val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
-    private lateinit var authToken: String
     private lateinit var uid: String
-
-    fun getAuthToken(callback: (String) -> Unit) {
-        if (FirebaseAuthManager::authToken.isInitialized) {
-//          si ya está inicializado devuelve el token existente
-            callback(authToken)
-        } else {
-//          Obtiene el token y lo almacena
-            val currentUser = auth.currentUser
-            currentUser?.getIdToken(true)
-                ?.addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        authToken = it.result.token.toString()
-                        Log.d("TokenFound", "Successfully acquired user")
-                        callback(authToken)
-                    } else {
-                        Log.e("ErrorGettingToken", it.exception.toString())
-                        callback("")
-                    }
-                }
-        }
-    }
 
     fun createUserAnonymously(onResult: (Boolean) -> Unit) {
         auth.signInAnonymously()
