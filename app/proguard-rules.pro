@@ -1,21 +1,38 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# ===== FIREBASE RULES =====
+-keepnames class com.firebase.** { *; }
+-keepnames class com.google.firebase.** { *; }
+-keep class com.google.firebase.** { *; }
+-keep interface com.google.firebase.** { *; }
+-keepclasseswithmembers class * {
+    @com.google.firebase.firestore.PropertyName *;
+}
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# ===== APP MODELS =====
+-keep class com.edeza.labomba.models.** { *; }
+-keep class com.edeza.labomba.config.** { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# ===== KOTLIN METADATA =====
+-keepattributes *Annotation*
+-keep class kotlin.Metadata { *; }
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# ===== CRASH REPORTING =====
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+
+# ===== GOOGLE LIBRARIES =====
+-keep class com.google.android.gms.** { *; }
+-keep interface com.google.android.gms.** { *; }
+-keep class com.google.android.material.** { *; }
+-keep interface com.google.android.material.** { *; }
+
+# ===== VIEW BINDING =====
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# ===== ADS & MEDIA3 =====
+-keep class com.google.android.gms.ads.** { *; }
+-keep class androidx.media3.** { *; }
