@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "LaBombaV2"
+rootProject.name = "la-bomba"
 include(":app")
