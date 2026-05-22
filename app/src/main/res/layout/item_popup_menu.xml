@@ -4,5 +4,4 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/padding_small"
     android:maxLines="@integer/max_lines_item"
-    android:textAppearance="?attr/textAppearanceBodyLarge"
-    android:textColor="?colorOnSurface"/>
+    android:textAppearance="?attr/textAppearanceLargePopupMenu"/>

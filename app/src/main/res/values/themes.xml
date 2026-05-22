@@ -18,7 +18,10 @@
         <!--Recursos generales de la app-->
         <item name="android:fontFamily">@font/piximisa</item>
         <item name="android:windowBackground">@drawable/background</item>
-<!--        <item name="bottomSheetDialogTheme">@style/ThemeModalBottomSheetDialog</item>-->
+        <item name="popupMenuBackground">@drawable/custom_popup_background</item>
+        <item name="textAppearanceLargePopupMenu">@style/CustomTextAppearanceBodyLarge</item>
+        <item name="materialAlertDialogTheme">@style/CustomMaterialDialogTheme</item>
+        <item name="bottomSheetDialogTheme">@style/CustomModalBottomSheetDialog</item>
 
         <!--No permitir el modo oscuro-->
         <item name="android:forceDarkAllowed" tools:targetApi="Q">false</item>

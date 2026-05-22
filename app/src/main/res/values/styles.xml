@@ -10,8 +10,19 @@
         <item name="rippleColor">@color/ripple</item>
     </style>
 
-    <style name="PopupMenuStyle" parent="Widget.Material3.PopupMenu">
-        <item name="android:textColor">?colorOnSurfaceVariant</item>
+    <style name="CustomTextAppearanceBodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="CustomMaterialDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:backgroundTint">?attr/colorSurfaceVariant</item>
+    </style>
+
+    <style name="CustomModalBottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheetDialogStyle</item>
+    </style>
+    <style name="ModalBottomSheetDialogStyle" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">?attr/colorSurfaceVariant</item>
     </style>
 
     <style name="LoadingDialogStyle" parent="Theme.Material3.DayNight.Dialog">
