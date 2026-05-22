@@ -16,8 +16,7 @@
             android:layout_height="?actionBarSize"
             app:menu="@menu/menu_toolbar"
             app:titleTextColor="?colorPrimary"
-            app:titleCentered="true"
-            app:popupTheme="@style/PopupMenuStyle"/>
+            app:titleCentered="true"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
