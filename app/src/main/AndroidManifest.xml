@@ -18,9 +18,11 @@
         <activity
             android:name=".controllers.activities.ResultsActivity"
             android:exported="false" />
+            android:configChanges="uiMode"
         <activity
             android:name=".controllers.activities.StartGameActivity"
             android:exported="false" />
+            android:configChanges="uiMode"
         <activity
             android:name=".controllers.activities.InstructionsActivity"
             android:configChanges="uiMode"
