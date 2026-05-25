@@ -12,10 +12,13 @@ import com.edeza.labomba.controllers.fragments.SliderFragment
 import com.edeza.labomba.databinding.ActivityInstructionsBinding
 import com.edeza.labomba.utils.BaseActivity
 import com.edeza.labomba.utils.Constants
+import com.edeza.labomba.utils.setupInsets
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 
 class InstructionsActivity : BaseActivity() {
     private var binding: ActivityInstructionsBinding? = null
+    private lateinit var appBarLayout: AppBarLayout
 
     private lateinit var toolbar: MaterialToolbar
     private lateinit var viewPager: ViewPager2
@@ -30,11 +33,13 @@ class InstructionsActivity : BaseActivity() {
         binding = ActivityInstructionsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         binding?.let {
+            appBarLayout = it.appBarLayout
             toolbar = it.toolbar
             viewPager = it.viewPager
             layoutDots = it.layoutDots
         }
 
+        appBarLayout.setupInsets()
         toolbar.setNavigationOnClickListener{ onBackPressedDispatcher.onBackPressed() }
         infoOfSlides()
         addDots(0) //Empieza indicando el slide 0

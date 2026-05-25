@@ -10,11 +10,16 @@ import com.edeza.labomba.utils.BaseActivity
 import com.edeza.labomba.controllers.fragments.PenaltyFragment
 import com.edeza.labomba.controllers.fragments.TimerFragment
 import com.edeza.labomba.utils.GameSession
+import com.edeza.labomba.utils.setupInsets
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SettingsActivity : BaseActivity() {
     private var binding: ActivitySettingsBinding? = null
+    private lateinit var appBarLayout: AppBarLayout
+    private lateinit var toolbar: MaterialToolbar
     private lateinit var btnNext: MaterialButton
     private var currentFragment: Fragment? = null //para validar el ultimo fragmento
 
@@ -22,10 +27,13 @@ class SettingsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
-        btnNext = binding?.btnNext!!
-//      Toolbar
-        setSupportActionBar(binding?.toolbar)
+        binding?.let {
+            appBarLayout = it.appBarLayout
+            toolbar = it.toolbar
+            btnNext = it.btnNext
+        }
+        appBarLayout.setupInsets()
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) //mostrar el botón de navegación
 
 //      Primer fragmento

@@ -16,6 +16,8 @@ import com.edeza.labomba.models.LoserModel
 import com.edeza.labomba.utils.AdsManager
 import com.edeza.labomba.utils.BaseActivity
 import com.edeza.labomba.utils.GameSession
+import com.edeza.labomba.utils.setupInsets
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 
@@ -23,6 +25,7 @@ class ResultsActivity : BaseActivity() {
     private var binding: ActivityResultsBinding? = null
     private var adapter: PlayerResultsAdapter? = null
     private var potentialLosers = listOf<LoserModel>()
+    private lateinit var appBarLayout: AppBarLayout
     private lateinit var toolbar: MaterialToolbar
     private lateinit var tvLoserAndPenalty: TextView
     private lateinit var recyclerResults: RecyclerView
@@ -37,6 +40,7 @@ class ResultsActivity : BaseActivity() {
         setContentView(binding?.root)
         AdsManager.init(this) //Inicializar la carga del anuncio
         binding?.let {
+            appBarLayout = it.appBarLayout
             toolbar = it.toolbar
             tvLoserAndPenalty = it.tvLoserAndPenalty
             recyclerResults = it.recyclerResults
@@ -46,6 +50,7 @@ class ResultsActivity : BaseActivity() {
             btnGoToHomeSingle = it.btnGoToHomeSingle
         }
 
+        appBarLayout.setupInsets()
         toolbar.title = getString(R.string.results_title)
         setupRecyclerView()
 

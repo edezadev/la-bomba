@@ -24,9 +24,12 @@ import java.util.Locale
 import androidx.core.net.toUri
 import com.edeza.labomba.models.LoserModel
 import com.edeza.labomba.utils.AdsManager
+import com.edeza.labomba.utils.setupInsets
+import com.google.android.material.appbar.AppBarLayout
 
 class StartGameActivity : BaseActivity(), OnLoserListener {
     private var binding: ActivityStartGameBinding? = null
+    private lateinit var appBarLayout: AppBarLayout
     private lateinit var toolbar: MaterialToolbar
     private lateinit var tvTime: TextView
     private lateinit var btnPlayPause: MaterialButton
@@ -44,11 +47,13 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
         setContentView(binding?.root)
         AdsManager.init(this) //Inicializar la carga del anuncio
         binding?.let {
+            appBarLayout = it.appBarLayout
             toolbar = it.toolbar
             tvTime = it.tvTime
             btnPlayPause = it.btnPlayPause
             tvTopicName = it.tvTopicName
         }
+        appBarLayout.setupInsets()
         toolbar.overflowIcon?.setTint(ContextCompat.getColor(this, R.color.primary))
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
