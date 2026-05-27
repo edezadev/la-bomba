@@ -8,8 +8,8 @@ Una aplicación Android emocionante para jugar con amigos. ¡Responde preguntas 
 - 📚 **Temas Personalizados**: Crea temas propios para las preguntas
 - 🎭 **Castigos Entretenidos**: Castigos personalizados para el perdedor
 - 👥 **Multijugador**: Juega con 2 o más jugadores
-- ☁️ **Sincronización Cloud**: Todos tus datos sincronizados con Firebase
-- 📶 **Offline**: Juega sin internet (datos se sincronizan después)
+- ☁️ **Almacenamiento en la Nube**: Tus temas y castigos se guardan en Firebase
+- 📶 **Modo Offline**: Juega sin internet (se requiere conexión para guardar datos)
 
 ## 📋 Requisitos Técnicos
 
@@ -73,7 +73,7 @@ app/src/main/java/com/edeza/labomba/
 ## 🔐 Seguridad y Privacidad
 
 - Autenticación anónima (sin email requerido)
-- Datos almacenados con reglas de seguridad
+  Datos protegidos por Firebase Firestore
 - ProGuard habilitado para ofuscación
 - Ver [Política de Privacidad](PRIVACY.md)
 
