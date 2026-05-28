@@ -1,7 +1,7 @@
 package com.edeza.labomba.config.auth
 
-import android.util.Log
 import com.edeza.labomba.config.database.PenaltyDbManager
+import com.edeza.labomba.utils.Logger
 import com.google.firebase.auth.FirebaseAuth
 import kotlin.lazy
 
@@ -17,7 +17,7 @@ object FirebaseAuthManager {
                 if (it.isSuccessful) {
                     val user = it.result?.user
                     if (user != null) {
-                        Log.d("CreatedUser", "Successfully created an anonymous user in Firebase")
+                        Logger.debug("CreatedUser", "Successfully created an anonymous user in Firebase")
 //                        Crear datos inciales en la base de datos
                         PenaltyDbManager.saveDataUser(user.uid)
 //                        Avisar éxito (Devuelve true) a la activity
@@ -26,7 +26,7 @@ object FirebaseAuthManager {
                         onResult(false)
                     }
                 } else {
-                    Log.e("ErrorCreatingUser", it.exception.toString())
+                    Logger.error("ErrorCreatingUser", "Error creating an anonymous user in Firebase", it.exception)
 //                    Avisar error (devuelve false) a la activity
                     onResult(false)
                 }
@@ -42,7 +42,7 @@ object FirebaseAuthManager {
                 uid = currentUser.uid
                 callBack(uid)
             }else {
-                Log.e("ErrorGettingUid", "Couldn't get UID, user not found")
+                Logger.error("ErrorGettingUid", "Couldn't get UID, user not found")
             }
         }
     }

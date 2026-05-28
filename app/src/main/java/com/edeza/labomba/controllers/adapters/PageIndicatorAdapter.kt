@@ -1,7 +1,6 @@
 package com.edeza.labomba.controllers.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -9,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.edeza.labomba.R
 import com.edeza.labomba.controllers.fragments.TopicsFragment
 import com.edeza.labomba.databinding.ItemPageIndicatorBinding
+import com.edeza.labomba.utils.Logger
 import com.edeza.labomba.utils.listeners.OnCurrentPageListener
 
 class PageIndicatorAdapter (
@@ -54,7 +54,7 @@ class PageIndicatorAdapter (
 
     override fun onCurrentPageChange(currentPage: Int) {
 //        Manejar el valor de current page
-        Log.e("CURRENT", currentPage.toString())
+        Logger.error("CURRENT", currentPage.toString())
         this.currentPage = currentPage
     }
 }

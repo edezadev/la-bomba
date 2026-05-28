@@ -1,9 +1,9 @@
 package com.edeza.labomba.config.database
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.edeza.labomba.models.PenaltyModel
 import com.edeza.labomba.utils.Constants
+import com.edeza.labomba.utils.Logger
 import com.google.firebase.firestore.ListenerRegistration
 
 object PenaltyDbManager {
@@ -27,11 +27,10 @@ object PenaltyDbManager {
             penaltiesRef.add(penalty)
                 .addOnSuccessListener {
                     updatePenalty(uid, it.id, mapOf(Constants.ID to it.id))
-                    Log.d("DataSuccessfullyAdded", "Penalty created successfully")
+                    Logger.debug("DataSuccessfullyAdded", "Penalty created successfully")
                 }
                 .addOnFailureListener {
-                    Log.e("ErrorAddingData", "Error creating penalty", it)
-
+                    Logger.error("ErrorAddingData", "Error creating penalty", it)
                 }
         }
     }
@@ -43,7 +42,7 @@ object PenaltyDbManager {
         return userRef.document(uid).collection(Constants.PENALTIES).orderBy("name")
             .addSnapshotListener{snapshot, error ->
                 if (error != null) {
-                    Log.e("ErrorGettingPenalties",
+                    Logger.error("ErrorGettingPenalties",
                         "The penalties for the user could not be retrieved", error)
                     return@addSnapshotListener
                 }
@@ -65,10 +64,10 @@ object PenaltyDbManager {
             .addOnSuccessListener {
                 //  Actualizar el id que por defecto que se crea vacío
                 updatePenalty(uid, it.id, mapOf(Constants.ID to it.id))
-                Log.d("PenaltySuccessfullyAdded", "New penalty added successfully")
+                Logger.debug("PenaltySuccessfullyAdded", "New penalty added successfully")
             }
             .addOnFailureListener {
-                Log.e("ErrorCreatingPenalty", "Error adding a new penalty", it)
+                Logger.error("ErrorCreatingPenalty", "Error adding a new penalty", it)
             }
 
     }
@@ -76,20 +75,20 @@ object PenaltyDbManager {
      fun updatePenalty(uid: String, id: String, updates: Map<String, Any>){
         userRef.document(uid).collection(Constants.PENALTIES).document(id).update(updates)
             .addOnSuccessListener {
-                Log.d("PenaltySuccessfullyUpdated", "The penalty was updated successfully")
+                Logger.debug("PenaltySuccessfullyUpdated", "The penalty was updated successfully")
             }
             .addOnFailureListener {
-                Log.e("ErrorUpdatingPenalty", "Couldn't update the penalty", it)
+                Logger.error("ErrorUpdatingPenalty", "Couldn't update the penalty", it)
             }
     }
 
     fun deletePenalty(uid: String, idPenalty: String){
         userRef.document(uid).collection(Constants.PENALTIES).document(idPenalty).delete()
             .addOnSuccessListener {
-                Log.d("PenaltyDeleted", "The penalty was deleted successfully")
+                Logger.debug("PenaltyDeleted", "The penalty was deleted successfully")
             }
             .addOnFailureListener {
-                Log.e("ErrorDeletingPenalty", "Couldn't delete the penalty",it)
+                Logger.error("ErrorDeletingPenalty", "Couldn't delete the penalty", it)
             }
     }
 }

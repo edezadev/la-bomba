@@ -1,9 +1,9 @@
 package com.edeza.labomba.config.database
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.edeza.labomba.models.TopicModel
 import com.edeza.labomba.utils.Constants
+import com.edeza.labomba.utils.Logger
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
@@ -22,20 +22,20 @@ object TopicDbManager {
         userRef.document(uid).collection(Constants.TOPICS).add(topic)
             .addOnSuccessListener {
                 updateTopic(uid, it.id, mapOf(Constants.ID to it.id))
-                Log.d("TopicSuccessfullyAdded", "New topic added successfully")
+                Logger.debug("TopicSuccessfullyAdded", "New topic added successfully")
             }
             .addOnFailureListener {
-                Log.e("ErrorCreatingTopic", "Error adding a new topic", it)
+                Logger.error("ErrorCreatingTopic", "Error adding a new topic", it)
             }
     }
 
     fun updateTopic(uid: String, id: String, updates: Map<String, Any>) {
         userRef.document(uid).collection(Constants.TOPICS).document(id).update(updates)
             .addOnSuccessListener {
-                Log.d("TopicSuccessfullyUpdated", "The Topic was updated successfully")
+                Logger.debug("TopicSuccessfullyUpdated", "The Topic was updated successfully")
             }
             .addOnFailureListener {
-                Log.e("ErrorUpdatingTopic", "Couldn't update the topic", it)
+                Logger.error("ErrorUpdatingTopic", "Couldn't update the topic", it)
             }
     }
 
@@ -44,7 +44,7 @@ object TopicDbManager {
         return userRef.document(uid).collection(Constants.TOPICS)
             .addSnapshotListener {snapshot, error ->
                 if (error != null) {
-                    Log.e("ErrorGettingTopics",
+                    Logger.error("ErrorGettingTopics",
                         "The topics for user could not be retrieved", error)
                     return@addSnapshotListener
                 }
@@ -97,7 +97,7 @@ object TopicDbManager {
 
             result.get().await()
         }catch (e: Exception) {
-            Log.e("ErrorTopicsPage", "Failed to load the topics page", e)
+            Logger.error("ErrorTopicsPage", "Failed to load the topics page", e)
             null
         }
     }
@@ -112,10 +112,10 @@ object TopicDbManager {
     fun deleteTopic(uid: String, idTopic: String) {
         userRef.document(uid).collection(Constants.TOPICS).document(idTopic).delete()
             .addOnSuccessListener {
-                Log.d("TopicDeleted", "The topic was deleted successfully")
+                Logger.debug("TopicDeleted", "The topic was deleted successfully")
             }
             .addOnFailureListener {
-                Log.e("ErrorDeletingTopic", "Couldn't delete the topic", it)
+                Logger.error("ErrorDeletingTopic", "Couldn't delete the topic", it)
             }
     }
 }

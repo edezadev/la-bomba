@@ -5,12 +5,12 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import com.edeza.labomba.R
 import com.edeza.labomba.utils.BaseActivity
 import com.edeza.labomba.databinding.ActivityMainBinding
 import com.edeza.labomba.config.auth.FirebaseAuthManager
+import com.edeza.labomba.utils.Logger
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -71,7 +71,7 @@ class MainActivity : BaseActivity() {
             if (currentUser != null) {
                 dismissLoading()
                 checkNetworkAndShowWarning()
-                Log.d("UserFound", "User located in Firebase")
+                Logger.debug("UserFound", "User located in Firebase")
             } else if (shouldRegisterListener) {
                 showLoading() //Mostrar carga antes de llamar a Firebase
                 FirebaseAuthManager.createUserAnonymously { success ->
