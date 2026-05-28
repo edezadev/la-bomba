@@ -1,10 +1,44 @@
-*.iml
+#Gradle
 .gradle
-/local.properties
-.idea/
-.DS_Store
 /build
+/app/build
+
+#Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
 /captures
+
+# Build outputs
+*.apk
+*.aab
+*.ap_
+*.o
+*.class
+
+# ===== CREDENCIALES (CRÍTICO) =====
+google-services.json
+google-services-debug.json
+*.keystore
+*.jks
+keystore.properties
+/local.properties
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+*.swp
+*.swo
+*~
+.vscode/
+
+# Gradle wrapper
+gradle-wrapper.jar
 .externalNativeBuild
 .cxx
-local.properties
