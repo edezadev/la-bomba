@@ -62,7 +62,7 @@ app/src/main/java/com/edeza/labomba/
     - Elige tiempo de bomba
 
 2. **Juega**:
-    - El juego mostrará un tema, ej: "Nombre de nimales que empiecen con A"
+    - El juego mostrará un tema, ej: "Nombre de animales que empiecen con A"
     - Responde correctamente y pasa la bomba rápido
     - ¡No dejes que explote!
 
@@ -73,7 +73,7 @@ app/src/main/java/com/edeza/labomba/
 ## 🔐 Seguridad y Privacidad
 
 - Autenticación anónima (sin email requerido)
-  Datos protegidos por Firebase Firestore
+- Datos protegidos por Firebase Firestore
 - ProGuard habilitado para ofuscación
 - Ver [Política de Privacidad](PRIVACY.md)
 
