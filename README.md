@@ -74,7 +74,7 @@ app/src/main/java/com/edeza/labomba/
 
 - Autenticación anónima (sin email requerido)
 - Datos protegidos por Firebase Firestore
-- ProGuard habilitado para ofuscación
+- Código ofuscado con ProGuard/R8 en release
 - Ver [Política de Privacidad](PRIVACY.md)
 
 ## 📄 Licencia
