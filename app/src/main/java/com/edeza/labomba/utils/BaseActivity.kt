@@ -82,9 +82,7 @@ abstract class BaseActivity: AppCompatActivity() {
     }
 
     fun dismissLoading() {
-        if (!isFinishing && !isDestroyed && loadingDialog?.isShowing == true) {
-            loadingDialog?.dismiss()
-        }
+        if (loadingDialog?.isShowing == true) loadingDialog?.dismiss()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
