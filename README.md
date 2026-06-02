@@ -79,7 +79,7 @@ app/src/main/java/com/edeza/labomba/
 
 ## 📄 Licencia
 
-Este proyecto está bajo licencia MIT. Ver [LICENSE](LICENSE).
+Este proyecto está bajo la Licencia Apache 2.0. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ## 👨‍💻 Autor
 
