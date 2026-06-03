@@ -24,10 +24,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 abstract class BaseActivity: AppCompatActivity() {
     private var doubleBackPressed = false
     private var loadingDialog: AlertDialog? = null
+    private val doubleBackHandler = Handler(Looper.getMainLooper())
+    private val resetDoubleBackRunnable = Runnable { doubleBackPressed = false }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupImmersiveMode()
+
 
         /*Anular la navegación back del sistema, doble toque para salir de la app*/
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -41,11 +44,8 @@ abstract class BaseActivity: AppCompatActivity() {
                 doubleBackPressed = true
                 Toast.makeText(this@BaseActivity, getString(R.string.action_back), Toast.LENGTH_LONG).show()
 //                Tras 2 seg. se vuelve a poner en false si el usuario no presiona de nuevo
-                Handler(Looper.getMainLooper()).postDelayed({
-                    doubleBackPressed = false
-                }, 2000)
+                doubleBackHandler.postDelayed(resetDoubleBackRunnable, 2000)
             }
-
         })
     }
     @Suppress("DEPRECATION")
@@ -82,7 +82,16 @@ abstract class BaseActivity: AppCompatActivity() {
     }
 
     fun dismissLoading() {
-        if (loadingDialog?.isShowing == true) loadingDialog?.dismiss()
+        try {
+            // Validar que la actividad siga activa para evitar BadTokenException
+            if (!isFinishing && !isDestroyed && loadingDialog?.isShowing == true) {
+                loadingDialog?.dismiss()
+            }
+        } catch (e: Exception) {
+            Logger.error("BaseActivity", "Error while closing the loading dialog", e)
+        }finally {
+            loadingDialog = null
+        }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -95,6 +104,13 @@ abstract class BaseActivity: AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         super.onConfigurationChanged(newConfig)
         setupImmersiveMode() // Re-oculta si el sistema intentó mostrarlas al cambiar de modo oscuro
+    }
+
+    override fun onDestroy() {
+        // Cancelar procesos pendientes para evitar fugas de memoria y errores de referencia
+        doubleBackHandler.removeCallbacks(resetDoubleBackRunnable)
+        dismissLoading()
+        super.onDestroy()
     }
 }
 
