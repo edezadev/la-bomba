@@ -136,4 +136,9 @@ class ResultsActivity : BaseActivity() {
             finish()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
 }
