@@ -98,4 +98,9 @@ class SelectLoserBottomSheet : BottomSheetDialogFragment() {
     companion object{
         const val TAG = "SelectLoserModalBottomSheet"
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

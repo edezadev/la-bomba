@@ -123,4 +123,9 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
             listenerRegistration.remove()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

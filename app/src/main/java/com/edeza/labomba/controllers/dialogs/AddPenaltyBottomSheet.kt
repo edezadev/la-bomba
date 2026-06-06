@@ -79,4 +79,9 @@ class AddPenaltyBottomSheet: BottomSheetDialogFragment() {
     companion object {
         const val TAG = "AddPenaltyModalBottomSheet"
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

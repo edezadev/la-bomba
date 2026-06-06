@@ -128,4 +128,9 @@ class AddTopicBottomSheet : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "AddTopicModalBottomSheet"
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

@@ -106,4 +106,9 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
             listenerRegistration.remove()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

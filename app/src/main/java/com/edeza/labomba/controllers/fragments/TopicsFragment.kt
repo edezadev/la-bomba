@@ -148,4 +148,11 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
             listenerRegistration.remove()
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+        pageTopicsAdapter = null
+        pageIndicatorAdapter = null
+    }
 }

@@ -105,4 +105,9 @@ class TimerFragment : Fragment() {
             }
             .show()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

@@ -127,4 +127,9 @@ class AddPlayerBottomSheet : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "AddPlayerModalBottomSheet"
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }

@@ -56,4 +56,10 @@ class SliderFragment : Fragment() {
 
         return view
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 }
