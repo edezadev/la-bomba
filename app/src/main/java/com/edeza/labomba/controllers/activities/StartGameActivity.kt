@@ -24,6 +24,7 @@ import java.util.Locale
 import androidx.core.net.toUri
 import com.edeza.labomba.models.LoserModel
 import com.edeza.labomba.utils.AdsManager
+import com.edeza.labomba.utils.Constants
 import com.edeza.labomba.utils.setupInsets
 import com.google.android.material.appbar.AppBarLayout
 
@@ -102,7 +103,7 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
         )
         val resourceId = soundMap[GameSession.time] ?: R.raw.thirty_sec
 
-        mediaItem = MediaItem.fromUri("android.resource://$packageName/$resourceId".toUri())
+        mediaItem = MediaItem.fromUri("${Constants.SCHEME_ANDROID_RESOURCE}$packageName/$resourceId".toUri())
         exoPlayer.setMediaItem(mediaItem)
         exoPlayer.prepare()
 
