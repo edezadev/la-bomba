@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AlertDialog
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.edeza.labomba.R
 import com.edeza.labomba.utils.BaseActivity
 import com.edeza.labomba.databinding.ActivityMainBinding
@@ -20,14 +21,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 class MainActivity : BaseActivity() {
     private var binding: ActivityMainBinding? = null
+    private var isReady = false // Bandera para controlar la splash
     private var errorDialog: AlertDialog? = null
     // Bandera para controlar el registro del listener
-    private var shouldRegisterListener = true
+    private var isAuthListenerEnabled = true
     //  escucha cambios en el estado de la autenticación.
     private lateinit var stateListener: FirebaseAuth.AuthStateListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        // Mantener la splash visible mientras Firebase autentica
+        splashScreen.setKeepOnScreenCondition { !isReady }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
@@ -69,19 +75,24 @@ class MainActivity : BaseActivity() {
         stateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val currentUser = firebaseAuth.currentUser
             if (currentUser != null) {
+                isReady = true //Quitar el splash
                 dismissLoading()
                 checkNetworkAndShowWarning()
                 Logger.debug("UserFound", "User located in Firebase")
-            } else if (shouldRegisterListener) {
+            } else if (isAuthListenerEnabled) {
                 showLoading() //Mostrar carga antes de llamar a Firebase
                 FirebaseAuthManager.createUserAnonymously { success ->
+                    isReady = true //Quitar el splash
+
                     Handler(mainLooper).postDelayed({
-                        dismissLoading()
-                        if (!success) {
-                            shouldRegisterListener = false
-                            // Detenemos la escucha automática
-                            FirebaseAuthManager.auth.removeAuthStateListener(stateListener)
-                            showBlockingErrorDialog()
+                        if (!isFinishing && !isDestroyed) {
+                            dismissLoading()
+                            if (!success) {
+                                isAuthListenerEnabled = false
+                                // Detenemos la escucha automática
+                                FirebaseAuthManager.auth.removeAuthStateListener(stateListener)
+                                showBlockingErrorDialog()
+                            }
                         }
                     }, 1000)
                 }
@@ -96,7 +107,7 @@ class MainActivity : BaseActivity() {
             .setTitle(getString(R.string.title_connection_error))
             .setMessage(getString(R.string.message_connection_required))
             .setPositiveButton(getString(R.string.action_retry)) {_ ,_ ->
-                shouldRegisterListener = true // Reactivamos la bandera
+                isAuthListenerEnabled = true // Reactivamos la bandera
                 showLoading()
                 // Reiniciamos la escucha
                 FirebaseAuthManager.auth.addAuthStateListener(stateListener)
@@ -110,7 +121,7 @@ class MainActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         // Si la bandera es true (no hay dialogo visible), activamos la escucha
-        if (shouldRegisterListener) {
+        if (isAuthListenerEnabled) {
             FirebaseAuthManager.auth.addAuthStateListener(stateListener)
         }
     }
