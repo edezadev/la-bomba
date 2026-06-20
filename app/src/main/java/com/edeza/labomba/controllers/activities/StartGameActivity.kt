@@ -22,6 +22,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Locale
 import androidx.core.net.toUri
+import com.edeza.labomba.BuildConfig
 import com.edeza.labomba.models.LoserModel
 import com.edeza.labomba.utils.AdsManager
 import com.edeza.labomba.utils.Constants
@@ -46,7 +47,7 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
         super.onCreate(savedInstanceState)
         binding = ActivityStartGameBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        AdsManager.init(this) //Inicializar la carga del anuncio
+        AdsManager.loadAd(this, BuildConfig.ID_ADS_STARTGAME) //Inicializar la carga del anuncio
         binding?.let {
             appBarLayout = it.appBarLayout
             toolbar = it.toolbar
@@ -166,7 +167,7 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
             .setTitle(getString(R.string.title_alert))
             .setMessage(getString(R.string.message_exit_game))
             .setPositiveButton(getString(R.string.exit)) { dialog, _ ->
-                AdsManager.showAd(this) {
+                AdsManager.showAd(this, BuildConfig.ID_ADS_STARTGAME) {
                     GameSession.reset()
                     dialog.dismiss()
                     val intent = Intent(this, MainActivity::class.java)
@@ -199,7 +200,7 @@ class StartGameActivity : BaseActivity(), OnLoserListener {
             prepareNextRound() //Prepara la siguiente ronda
         } else {
 //            Fin del juego
-            AdsManager.showAd(this) {
+            AdsManager.showAd(this, BuildConfig.ID_ADS_STARTGAME) {
                 startActivity(Intent(this, ResultsActivity::class.java))
                 finish()
             }

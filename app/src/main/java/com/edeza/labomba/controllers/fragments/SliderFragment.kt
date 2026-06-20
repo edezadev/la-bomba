@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.edeza.labomba.BuildConfig
 import com.edeza.labomba.R
 import com.edeza.labomba.controllers.activities.SettingsActivity
 import com.edeza.labomba.databinding.FragmentSliderBinding
@@ -33,7 +34,7 @@ class SliderFragment : Fragment() {
             ivInstruction = it.ivInstruction
             btnStart = it.btnStart
         }
-        AdsManager.init(requireContext())
+        AdsManager.loadAd(requireContext(), BuildConfig.ID_ADS_INSTRUCTIONS)
 
         if (arguments != null) {
             tvTitle.text = requireArguments().getString(Constants.TITLE)
@@ -45,7 +46,7 @@ class SliderFragment : Fragment() {
         }
 
         btnStart.setOnClickListener {
-            AdsManager.showAd(requireActivity()) {
+            AdsManager.showAd(requireActivity(), BuildConfig.ID_ADS_INSTRUCTIONS) {
                 startActivity(Intent(it.context, SettingsActivity::class.java))
                 /* Destruir la activity y eliminarla de la pila de activities, esto con el fin de que al
                 * presionar el botón "atrás" de SettingActvity, no regrese a InstructionsActivity sino

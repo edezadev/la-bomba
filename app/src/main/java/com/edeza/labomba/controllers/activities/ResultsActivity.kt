@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.Group
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.edeza.labomba.BuildConfig
 import com.edeza.labomba.R
 import com.edeza.labomba.config.auth.FirebaseAuthManager
 import com.edeza.labomba.config.database.PlayerDbManager
@@ -38,7 +39,7 @@ class ResultsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityResultsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        AdsManager.init(this) //Inicializar la carga del anuncio
+        AdsManager.loadAd(this, BuildConfig.ID_ADS_RESULTS) //Inicializar la carga del anuncio
         binding?.let {
             appBarLayout = it.appBarLayout
             toolbar = it.toolbar
@@ -105,7 +106,7 @@ class ResultsActivity : BaseActivity() {
     }
 
     private fun goToHome() {
-        AdsManager.showAd(this) {
+        AdsManager.showAd(this, BuildConfig.ID_ADS_RESULTS) {
             GameSession.reset() //Limpiar todos los datos del juego
             startActivity(Intent(this, MainActivity::class.java))
         }
