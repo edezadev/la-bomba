@@ -35,7 +35,7 @@ android {
         debug {
             val testId = "\"${getProperty("ADMOB_INTERSTITIAL_DEBUG", "ca-app-pub-3940256099942544/1033173712")}\""
             buildConfigField("String", "ID_ADS_INSTRUCTIONS", testId)
-            buildConfigField("String", "ID_ADS_SETTINGS", testId)
+            buildConfigField("String", "ID_ADS_STARTGAME", testId)
             buildConfigField("String", "ID_ADS_RESULTS", testId)
         }
 
@@ -46,7 +46,7 @@ android {
 
             manifestPlaceholders["admobAppId"] = getProperty("ADMOB_APP_ID")
             buildConfigField("String", "ID_ADS_INSTRUCTIONS", "\"${getProperty("ADMOB_INTERSTITIAL_INSTRUCTIONS")}\"")
-            buildConfigField("String", "ID_ADS_SETTINGS", "\"${getProperty("ADMOB_INTERSTITIAL_SETTINGS")}\"")
+            buildConfigField("String", "ID_ADS_STARTGAME", "\"${getProperty("ADMOB_INTERSTITIAL_STARTGAME")}\"")
             buildConfigField("String", "ID_ADS_RESULTS", "\"${getProperty("ADMOB_INTERSTITIAL_RESULTS")}\"")
 
             proguardFiles(
