@@ -1,4 +1,12 @@
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+val properties = Properties()
+val propertiesFile = project.rootProject.file("local.properties")
+if (propertiesFile.exists()) {
+    properties.load(propertiesFile.inputStream())
+}
+
+fun getProperty (key: String, default: String = ""): String = properties.getProperty(key) ?: default
 
 plugins {
     id("com.android.application")
@@ -19,28 +27,31 @@ android {
         versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // El manifest usará por defecto el ID de debug
+        manifestPlaceholders["admobAppId"] = getProperty("ADMOB_APP_ID_DEBUG", "ca-app-pub-3940256099942544~3347511713")
     }
 
     buildTypes {
         debug {
-            buildConfigField(
-                "String",
-                "ADMOB_INTERSTITIAL_ID",
-                "\"ca-app-pub-3940256099942544/1033173712\""
-            )
+            val testId = "\"${getProperty("ADMOB_INTERSTITIAL_DEBUG", "ca-app-pub-3940256099942544/1033173712")}\""
+            buildConfigField("String", "ID_ADS_INSTRUCTIONS", testId)
+            buildConfigField("String", "ID_ADS_SETTINGS", testId)
+            buildConfigField("String", "ID_ADS_RESULTS", testId)
         }
+
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
+
+            manifestPlaceholders["admobAppId"] = getProperty("ADMOB_APP_ID")
+            buildConfigField("String", "ID_ADS_INSTRUCTIONS", "\"${getProperty("ADMOB_INTERSTITIAL_INSTRUCTIONS")}\"")
+            buildConfigField("String", "ID_ADS_SETTINGS", "\"${getProperty("ADMOB_INTERSTITIAL_SETTINGS")}\"")
+            buildConfigField("String", "ID_ADS_RESULTS", "\"${getProperty("ADMOB_INTERSTITIAL_RESULTS")}\"")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
-            )
-            buildConfigField(
-                "String",
-                "ADMOB_INTERSTITIAL_ID",
-                "\"ca-app-pub-5104866358258971/2376726136\""
             )
         }
     }
@@ -49,6 +60,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlin{
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_1_8)
