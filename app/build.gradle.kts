@@ -97,7 +97,7 @@ dependencies {
     // Google AdsMob
     implementation("com.google.android.gms:play-services-ads:24.9.0")
     // Firebase App Check
-    implementation("com.google.firebase:firebase-appcheck-debug")
+    debugImplementation("com.google.firebase:firebase-appcheck-debug")
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
