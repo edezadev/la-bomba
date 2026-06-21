@@ -86,16 +86,19 @@ dependencies {
     /* Importar el Firebase BoM, con esto la app siempre utilizará las versiones compatibles
      * de las bibliotecas de Firebase para Android */
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-    // Dependencia para Firebase SDK for Google Analytics
+    // Firebase SDK for Google Analytics
     implementation("com.google.firebase:firebase-analytics-ktx")
-    // Dependencia para Firebase Authentication
+    // Firebase Authentication
     implementation("com.google.firebase:firebase-auth-ktx")
-    // Dependencia para Cloud Firestore
+    // Cloud Firestore
     implementation("com.google.firebase:firebase-firestore")
-    // Dependencias para Media3 ExoPlayer
+    // Media3 ExoPlayer
     implementation("androidx.media3:media3-exoplayer:1.5.0")
-    // Dependencia para AdMob
+    // Google AdsMob
     implementation("com.google.android.gms:play-services-ads:24.9.0")
+    // Firebase App Check
+    implementation("com.google.firebase:firebase-appcheck-debug")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
