@@ -1,6 +1,6 @@
 # Política de Privacidad - La Bomba
 
-**Última actualización**: Mayo 2026
+**Última actualización**: Junio 2026
 
 ## 1. Información que Recopilamos
 
@@ -16,8 +16,10 @@
 ### 1.3 Información Técnica
 - Tipo de dispositivo y versión Android
 - Idioma del sistema
-- Datos de crashes (si ocurren)
-- Analytics de uso
+- País o ciudad aproximada
+- Datos de sesión (duración, frecuencia de uso)
+- Pantallas visitadas dentro de la app
+- Evento de primera apertura y desinstalación
 
 ## 2. Cómo Usamos la Información
 - **Persistencia**: Los datos se almacenan en Firebase Firestore usando tu ID anónimo. Si desinstals la app, estos datos se pierden porque no puedes acceder a ellos sin el mismo ID
