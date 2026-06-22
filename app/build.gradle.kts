@@ -31,6 +31,18 @@ android {
         manifestPlaceholders["admobAppId"] = getProperty("ADMOB_APP_ID_DEBUG", "ca-app-pub-3940256099942544~3347511713")
     }
 
+    signingConfigs {
+        create("release") {
+            val path = getProperty("KEYSTORE_PATH")
+            if (path.isNotEmpty()) {
+                storeFile = file(path)
+                storePassword = getProperty("STORE_PASSWORD")
+                keyAlias = getProperty("KEY_ALIAS")
+                keyPassword = getProperty("KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             val testId = "\"${getProperty("ADMOB_INTERSTITIAL_DEBUG", "ca-app-pub-3940256099942544/1033173712")}\""
@@ -40,6 +52,7 @@ android {
         }
 
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
