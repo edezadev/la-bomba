@@ -19,9 +19,10 @@ object FirebaseAuthManager {
                     if (user != null) {
                         Logger.debug("CreatedUser", "Successfully created an anonymous user in Firebase")
 //                        Crear datos inciales en la base de datos
-                        PenaltyDbManager.saveDataUser(user.uid)
-//                        Avisar éxito (Devuelve true) a la activity
-                        onResult(true)
+                        PenaltyDbManager.saveDataUser(user.uid) { success ->
+//                          Avisar éxito (Devuelve true) a la activity
+                            onResult(success)
+                        }
                     } else {
                         onResult(false)
                     }
