@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AlertDialog
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.edeza.labomba.R
@@ -84,17 +83,14 @@ class MainActivity : BaseActivity() {
                 FirebaseAuthManager.createUserAnonymously { success ->
                     isReady = true //Quitar el splash
 
-                    Handler(mainLooper).postDelayed({
-                        if (!isFinishing && !isDestroyed) {
-                            dismissLoading()
-                            if (!success) {
-                                isAuthListenerEnabled = false
-                                // Detenemos la escucha automática
-                                FirebaseAuthManager.auth.removeAuthStateListener(stateListener)
-                                showBlockingErrorDialog()
-                            }
+                    if (!isFinishing && !isDestroyed) {
+                        dismissLoading()
+                        if (!success) {
+                            isAuthListenerEnabled = false
+                            FirebaseAuthManager.auth.removeAuthStateListener(stateListener)
+                            showBlockingErrorDialog()
                         }
-                    }, 1000)
+                    }
                 }
             }
         }
@@ -107,12 +103,12 @@ class MainActivity : BaseActivity() {
             .setTitle(getString(R.string.title_connection_error))
             .setMessage(getString(R.string.message_connection_required))
             .setPositiveButton(getString(R.string.action_retry)) {_ ,_ ->
+                // Pertmitir que se pueda crear uno nuevo después de presionar reintentar
+                errorDialog = null
                 isAuthListenerEnabled = true // Reactivamos la bandera
                 showLoading()
                 // Reiniciamos la escucha
                 FirebaseAuthManager.auth.addAuthStateListener(stateListener)
-                // Pertmitir que se pueda crear uno nuevo después de presionar reintentar
-                errorDialog = null
             }
             .setCancelable(false)
             .show()
