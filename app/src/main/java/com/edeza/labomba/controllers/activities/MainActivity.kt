@@ -74,10 +74,21 @@ class MainActivity : BaseActivity() {
         stateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val currentUser = firebaseAuth.currentUser
             if (currentUser != null) {
-                isReady = true //Quitar el splash
-                dismissLoading()
-                checkNetworkAndShowWarning()
-                Logger.debug("UserFound", "User located in Firebase")
+                showLoading()
+                FirebaseAuthManager.initializeUser { success ->
+                    isReady = true //Quitar el splash
+                    dismissLoading()
+
+                    if (success) {
+                        checkNetworkAndShowWarning()
+                        Logger.debug("UserReady", "User authenticated and data verified")
+                    } else {
+                        isAuthListenerEnabled = false
+                        // Detenemos la escucha automática
+                        FirebaseAuthManager.auth.removeAuthStateListener(stateListener)
+                        showBlockingErrorDialog()
+                    }
+                }
             } else if (isAuthListenerEnabled) {
                 showLoading() //Mostrar carga antes de llamar a Firebase
                 FirebaseAuthManager.createUserAnonymously { success ->

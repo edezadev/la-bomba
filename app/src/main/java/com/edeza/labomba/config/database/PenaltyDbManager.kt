@@ -26,16 +26,30 @@ object PenaltyDbManager {
         val penaltiesRef = userRef.document(uid).collection(Constants.PENALTIES)
         val tasks = listPenalties.map { penalty -> penaltiesRef.add(penalty) }
 
-    Tasks.whenAllSuccess<DocumentReference>(tasks)
-        .addOnSuccessListener { results ->
-            results.forEach { docRef -> updatePenalty(uid, docRef.id, mapOf(Constants.ID to docRef.id)) }
-            Logger.debug("DataSuccessfullyAdded", "Penalty created successfully")
-            onResult(true)
-        }
-        .addOnFailureListener {
-            Logger.error("ErrorAddingData", "Error creating penalty", it)
-            onResult(false)
-        }
+        Tasks.whenAllSuccess<DocumentReference>(tasks)
+            .addOnSuccessListener { results ->
+                results.forEach { docRef -> updatePenalty(uid, docRef.id, mapOf(Constants.ID to docRef.id)) }
+                Logger.debug("DataSuccessfullyAdded", "Penalty created successfully")
+                onResult(true)
+            }
+            .addOnFailureListener {
+                Logger.error("ErrorAddingData", "Error creating penalty", it)
+                onResult(false)
+            }
+    }
+
+    // Verificar si existe al menos 1 documento
+    fun hasUserData(uid: String, onResult: (Boolean) -> Unit) {
+        userRef.document(uid).collection(Constants.PENALTIES)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { snapshots ->
+                onResult(!snapshots.isEmpty)
+            }
+            .addOnFailureListener {
+                Logger.error("ErrorCheckingUserData", "Could not verify if user has data", it)
+                onResult(false)
+            }
     }
 
     /* Obtener la lsita de los castigos del usuario cada vez que haya un cambio en la colección de

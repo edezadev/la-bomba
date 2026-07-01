@@ -34,6 +34,31 @@ object FirebaseAuthManager {
             }
     }
 
+    fun initializeUser(onResult: (Boolean) -> Unit) {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            checkUserDataExists(currentUser.uid) { exists ->
+                if (exists) {
+                    Logger.debug("UserDataExists", "User data exists in the database")
+                    onResult(true)
+                } else {
+                    Logger.debug("UserDataNotExists", "User data does not exist in the database, creating...")
+                    PenaltyDbManager.saveDataUser(currentUser.uid) { success ->
+                        onResult(success)
+                    }
+                }
+            }
+        } else {
+            createUserAnonymously(onResult)
+        }
+    }
+
+    private fun checkUserDataExists(uid: String, onResult: (Boolean) -> Unit) {
+        PenaltyDbManager.hasUserData(uid) { exists ->
+            onResult(exists)
+        }
+    }
+
     fun getUid(callBack: (String) -> Unit) {
         if (FirebaseAuthManager::uid.isInitialized) {
             callBack(uid)
