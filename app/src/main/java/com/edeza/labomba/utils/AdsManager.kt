@@ -34,7 +34,7 @@ object AdsManager {
                 override fun onAdLoaded(ad: InterstitialAd) {
                     interstitialAd = ad
                     isLoading = false
-                    Logger.debug("AdsManager", "Ad loaded for ID: $adUnitId")
+                    Logger.debug("AdsManager", "Interstitial Ad loaded successfully")
                 }
                 override fun onAdFailedToLoad(error: LoadAdError) {
                     interstitialAd = null

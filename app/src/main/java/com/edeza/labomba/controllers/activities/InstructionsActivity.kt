@@ -6,10 +6,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.viewpager2.widget.ViewPager2
+import com.edeza.labomba.BuildConfig
 import com.edeza.labomba.R
 import com.edeza.labomba.controllers.adapters.InstructionsAdapter
 import com.edeza.labomba.controllers.fragments.SliderFragment
 import com.edeza.labomba.databinding.ActivityInstructionsBinding
+import com.edeza.labomba.utils.AdsManager
 import com.edeza.labomba.utils.BaseActivity
 import com.edeza.labomba.utils.Constants
 import com.edeza.labomba.utils.setupInsets
@@ -32,6 +34,8 @@ class InstructionsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityInstructionsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        AdsManager.loadAd(this, BuildConfig.ID_ADS_INSTRUCTIONS)
+
         binding?.let {
             appBarLayout = it.appBarLayout
             toolbar = it.toolbar

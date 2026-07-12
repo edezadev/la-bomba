@@ -34,7 +34,6 @@ class SliderFragment : Fragment() {
             ivInstruction = it.ivInstruction
             btnStart = it.btnStart
         }
-        AdsManager.loadAd(requireContext(), BuildConfig.ID_ADS_INSTRUCTIONS)
 
         if (arguments != null) {
             tvTitle.text = requireArguments().getString(Constants.TITLE)
@@ -47,7 +46,7 @@ class SliderFragment : Fragment() {
 
         btnStart.setOnClickListener {
             AdsManager.showAd(requireActivity(), BuildConfig.ID_ADS_INSTRUCTIONS) {
-                startActivity(Intent(it.context, SettingsActivity::class.java))
+                startActivity(Intent(requireContext(), SettingsActivity::class.java))
                 /* Destruir la activity y eliminarla de la pila de activities, esto con el fin de que al
                 * presionar el botón "atrás" de SettingActvity, no regrese a InstructionsActivity sino
                 * redirija a MainActivity */
