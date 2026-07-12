@@ -54,8 +54,6 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
             fabAddTopic = it.fabAddTopic
         }
 
-        getListPages()
-
         activity?.let{
             it.updateView(this, getString(R.string.topics_name))
             btnNext = it.findViewById(R.id.btnNext)
@@ -64,6 +62,11 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
         btnNext.setOnClickListener { activity?.addFragment(TimerFragment()) }
         fabAddTopic.setOnClickListener{showAddTopic()}
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getListPages()
     }
 
     private fun getListPages() {

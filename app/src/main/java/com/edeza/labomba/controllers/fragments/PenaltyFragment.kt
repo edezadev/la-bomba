@@ -47,6 +47,24 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
         }
 
         setupRecyclerView()
+
+        activity?.let {
+            it.updateView(this, getString(R.string.penalty_name))
+            btnNext = it.findViewById(R.id.btnNext)
+        }
+
+        btnNext.setOnClickListener { activity?.addFragment(PlayerFragment()) }
+        fabAddPenalty.setOnClickListener { showAddPenalty() }
+
+        return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getListData()
+    }
+
+    private fun getListData() {
         FirebaseAuthManager.getUid { uid ->
             listenerRegistration = PenaltyDbManager.getPenaltiesListener(uid) {
                 if (!isAdded) return@getPenaltiesListener
@@ -59,18 +77,7 @@ class PenaltyFragment : Fragment(), OnPenaltyInsertedListener {
                     addDataRecyclerView(it)
                 }
             }
-        }
-
-        activity?.let {
-            it.updateView(this, getString(R.string.penalty_name))
-            btnNext = it.findViewById(R.id.btnNext)
-        }
-
-        btnNext.setOnClickListener { activity?.addFragment(PlayerFragment()) }
-        fabAddPenalty.setOnClickListener { showAddPenalty() }
-
-        return view
-    }
+        }    }
 
     private fun setupRecyclerView() {
         adapter = PenaltyAdapter(listPenalties)

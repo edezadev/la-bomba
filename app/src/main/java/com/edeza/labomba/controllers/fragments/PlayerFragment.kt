@@ -50,7 +50,6 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
         }
 
         setupRecyclerView()
-        getListData()
 
         activity?.let{
             it.updateView(this, getString(R.string.players_name))
@@ -68,6 +67,11 @@ class PlayerFragment : Fragment(), OnPlayerInsertedListener {
         fabAddPlayer.setOnClickListener{ showAddPlayer() }
 
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getListData()
     }
 
     private fun getListData() {
