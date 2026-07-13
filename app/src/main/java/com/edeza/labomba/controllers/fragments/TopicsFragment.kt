@@ -38,6 +38,7 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     private var listPages: MutableList<MutableList<TopicModel>> = mutableListOf()
 
     private lateinit var listenerRegistration: ListenerRegistration
+    private var currentPage = 0
     private var changeListener: OnCurrentPageListener? = null
 
     override fun onCreateView(
@@ -54,6 +55,12 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
             fabAddTopic = it.fabAddTopic
         }
 
+        recyclerPageIndicator.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+
         activity?.let{
             it.updateView(this, getString(R.string.topics_name))
             btnNext = it.findViewById(R.id.btnNext)
@@ -69,22 +76,22 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
         getListPages()
     }
 
+    // Recupera los temas desde Firestore y procesa la paginación en memoria
     private fun getListPages() {
         showLoading()
         FirebaseAuthManager.getUid { uid ->
             listenerRegistration = TopicDbManager.getListPagesListener(uid) { pages ->
                 dismissLoading()
-                // Si el usuario se fue del fragmento miestras se cargaban los datos, salir
                 if (!isAdded) return@getListPagesListener
 
-                listPages.clear() //limpiar antes de agregar, sirve para cuando se agrega un nuevo tema
+                listPages.clear()
                 if (pages.isEmpty()) {
                     tvNoTopics.visibility = View.VISIBLE
+                    setupViewPager() // Notificamos al ViewPager que la lista ahora está vacía
                 } else {
                     tvNoTopics.visibility = View.GONE
                     listPages.addAll(pages)
                     setupViewPager()
-                    addPageIndicators(0,listPages.size)
                 }
             }
         }
@@ -93,29 +100,34 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
     private fun setupViewPager() {
 //        Por seguridad se verifica si el fragmento sigue vinculado a la Activity
         if (!isAdded || context == null) return
-//        Usar childFragmentManager para ViewPager dentro de fragments
+
         pageTopicsAdapter = PageTopicsAdapter(listPages, childFragmentManager)
         vpPageTopics.adapter = pageTopicsAdapter
+
+        /* Validación de seguridad: Si la página que recordamos ya no existe
+        (ej. se borran temas y ahora hay menos páginas), volvemos a la última disponible.*/
+        if (currentPage >= listPages.size) {
+            currentPage = if (listPages.isNotEmpty()) listPages.size - 1 else 0
+        }
+
+        vpPageTopics.setCurrentItem(currentPage, false)
+        updatePageIndicators(currentPage)
 
         vpPageTopics.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (isAdded) {
+                    currentPage = position
 //                  Permite cambiar visualmente el indicador de la página actual
-                    addPageIndicators(position, listPages.size)
-//                  Aqui se deberia cambiar el valor de currentpage para que sea escuchado en el adapter
+                    updatePageIndicators(position)
                     changeListener?.onCurrentPageChange(position)
                 }
             }
         })
     }
 
-    //  Métodoo para crear los indicadores de la página
-    private fun addPageIndicators(currentPage: Int, totalPages: Int) {
-        recyclerPageIndicator.layoutManager = LinearLayoutManager(requireContext(),
-            LinearLayoutManager.HORIZONTAL, false)
-        pageIndicatorAdapter = PageIndicatorAdapter(currentPage, totalPages) { numPage ->
-//          Cambiar la página de acuerdo a la posición del indicador que se hizo click
+    private fun updatePageIndicators(currentPage: Int) {
+        pageIndicatorAdapter = PageIndicatorAdapter(currentPage, listPages.size) { numPage ->
             vpPageTopics.setCurrentItem(numPage, true)
         }
         recyclerPageIndicator.adapter = pageIndicatorAdapter
@@ -135,12 +147,16 @@ class TopicsFragment : Fragment(), OnTopicInsertedListener {
             TopicDbManager.createTopic(uid, newTopic)
         }
     }
+
     /**
-     * Crear interfaz para listener
-     * Aqui crear metodo de configruacion para listener, variable para instanciar al metodo de la interfaz enviando el nuevo dato
-     * que en este caso seria el nuevo currentPage
-     * En el adapter extender de la interfaz, lo que implementará el metodo de ésta y ahi manejar el valor de currentPage, ademas crear un
-     * objeto de este fragment y llamar al metodo de configuracion */
+     * Registra un listener para detectar cambios en la navegación del ViewPager2.
+     * Esta función actúa como un puente de comunicación (patrón Observer), permitiendo que
+     * componentes externos —como el adapter o la activity— se suscriban a los eventos
+     * de cambio de página. Esto es fundamental para sincronizar estados de la interfaz
+     * o lógica de negocio que dependa de la posición actual del usuario dentro de la
+     * lista paginada de temas.
+     * @param listener Objeto que implementa [OnCurrentPageListener] para recibir las notificaciones.
+     */
     fun setOnDataChangeListener(listener: OnCurrentPageListener) {
         this.changeListener = listener
     }
