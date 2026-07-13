@@ -16,6 +16,7 @@
          <item name="colorOnErrorContainer">@color/onErrorContainer</item>
 
         <!--Recursos generales de la app-->
+        <item name="android:textColorHighlight">@color/textColorHighlight</item>
         <item name="android:fontFamily">@font/piximisa</item>
         <item name="android:windowBackground">@drawable/background</item>
         <item name="popupMenuBackground">@drawable/custom_popup_background</item>

@@ -15,4 +15,5 @@
     <color name="errorContainer">#93000A</color>
     <color name="onErrorContainer">#FFDAD6</color>
     <color name="background">#1c1c1d</color>
+    <color name="textColorHighlight">#33F9CC0E</color>
 </resources>
