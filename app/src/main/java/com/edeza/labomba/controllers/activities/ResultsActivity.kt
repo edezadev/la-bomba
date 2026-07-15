@@ -37,6 +37,15 @@ class ResultsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Validar Process Death: Si no hay datos, la sesión se perdió
+        if (GameSession.loser.isEmpty()) {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+            return
+        }
+
         binding = ActivityResultsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         AdsManager.loadAd(this, BuildConfig.ID_ADS_RESULTS) //Inicializar la carga del anuncio
